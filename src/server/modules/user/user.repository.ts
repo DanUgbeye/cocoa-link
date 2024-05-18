@@ -1,18 +1,13 @@
-import type _mongoose from "mongoose";
-import type { Model } from "mongoose";
-import { UserDocument } from "./user.types";
 import {
   BadRequestException,
   NotFoundException,
   ServerException,
 } from "@/server/utils/http-exceptions";
-import { PasswordUtil } from "@/server/utils/password";
-import {
-  USER_ROLES,
-  User,
-  UserLoginData,
-  UserRole,
-} from "@/types/user.types";
+import { passwordUtil } from "@/server/utils/password";
+import { USER_ROLES, User, UserLoginData, UserRole } from "@/types/user.types";
+import type _mongoose from "mongoose";
+import type { Model } from "mongoose";
+import { UserDocument } from "./user.types";
 
 export default class UserRepository {
   public collection: Model<UserDocument>;
@@ -26,22 +21,19 @@ export default class UserRepository {
    * @param credentials user credentials
    * @param role the user role to login
    */
-  async login(
-    credentials: UserLoginData,
-    role: UserRole = USER_ROLES.USER
-  ) {
+  async login(credentials: UserLoginData, role: UserRole = USER_ROLES.USER) {
     const { email, password } = credentials;
 
     let user: UserDocument | null;
     try {
       user = await this.collection.findOne({ email, role });
-    } catch (error) {
-      throw new ServerException();
+    } catch (error: any) {
+      throw new ServerException(error.message);
     }
 
     if (
       !user ||
-      !(await PasswordUtil.comparePassword(password, user.password))
+      !(await passwordUtil.comparePassword(password, user.password))
     ) {
       throw new BadRequestException("incorrect credentials");
     }
@@ -50,39 +42,23 @@ export default class UserRepository {
   }
 
   /**
-   * registers a new employee
-   * @param employeeData employee data
+   * registers a new user
+   * @param data user data
    */
-  async registerEmployee(employeeData: User) {
-    let employee: UserDocument;
+  async signup(data: Omit<User, "_id" | "role">) {
+    let newUser: any = { ...data };
+    let user: UserDocument;
 
     try {
-      employeeData.password = await PasswordUtil.hashPassword(
-        employeeData.password
-      );
-      employeeData.role = USER_ROLES.USER;
+      newUser.password = await passwordUtil.hashPassword(newUser.password);
+      newUser.role = USER_ROLES.USER;
 
-      employee = await this.collection.create(employeeData);
+      user = await this.collection.create(data);
     } catch (error: any) {
       throw new ServerException(error.message);
     }
 
-    return employee;
-  }
-
-  /** gets all employees */
-  async getAllEmployees() {
-    let users: UserDocument[];
-
-    try {
-      users = await this.collection
-        .find({ role: USER_ROLES.USER })
-        .sort({ createdAt: -1 });
-    } catch (error: any) {
-      throw new ServerException(error.message);
-    }
-
-    return users;
+    return user;
   }
 
   /**

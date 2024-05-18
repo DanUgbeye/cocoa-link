@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import React from "react";
 import "./globals.css";
@@ -8,7 +8,12 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "FAMIS",
   description: "Fixed Assets Maagement System",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 const fontSans = FontSans({
@@ -22,7 +27,7 @@ export default function RootLayout(props: RootLayoutProps) {
   const { children } = props;
 
   return (
-    <html lang="en">
+    <html lang="en" className=" bg-neutral-100 ">
       <body
         className={cn(
           "bg-background min-h-screen font-sans antialiased",

@@ -6,7 +6,7 @@ const secret = SERVER_CONFIG.TOKEN_SECRET;
 
 const _1_DAY = 24 * 60 * 60; // 3 days
 
-export class TokenUtil {
+class TokenUtil {
   /**
    * creates a jwt token
    * @param data the data to create a token with
@@ -35,3 +35,5 @@ export class TokenUtil {
     return response;
   }
 }
+
+export const tokenUtil = new TokenUtil();

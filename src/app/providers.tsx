@@ -17,6 +17,7 @@ export default function Providers({ children }: PropsWithChildren) {
         autoClose={2000}
         newestOnTop={false}
         theme="colored"
+        stacked
         hideProgressBar
       />
 

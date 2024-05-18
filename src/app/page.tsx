@@ -1,33 +1,36 @@
 "use client";
 
 import { Container } from "@/components/container";
+import { buttonVariants } from "@/components/ui/button";
+import { PAGES } from "@/data/page-map";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
 export default function HomePage() {
   return (
-    <main className=" flex min-h-screen flex-col items-center justify-between p-24 ">
+    <main className=" flex min-h-screen flex-col items-center justify-between py-10 ">
       <Container>
-        <div className=" mx-auto flex w-full flex-col gap-y-12 rounded-lg bg-white/20 py-12 backdrop-blur-sm ">
-          <h1 className=" text-4xl font-bold ">
+        <div className=" bg-blue-800 mx-auto flex w-full max-w-lg rounded flex-col gap-y-10 text-white px-6 py-12 backdrop-blur-sm ">
+          <h1 className=" text-2xl md:text-3xl font-bold text-center w-full ">
             FIXED ASSETS MANAGEMENT INFORMATION SYSTEM
           </h1>
 
-          <div className=" mx-auto flex w-full max-w-sm flex-col gap-y-8 py-12 ">
+          <center className=" mx-auto  w-full space-y-8 py-12 ">
             <Link
-              href={"/auth/manager-login"}
-              className=" grid h-12 place-items-center rounded-lg border border-black bg-blue-600 font-bold transition-all duration-300 hover:bg-blue-800 "
+              href={PAGES.ADMIN_LOGIN}
+              className={cn(buttonVariants(), " w-full sm:w-60 max-w-60 bg-blue-600 hover:bg-blue-500 ")}
             >
               ADMIN LOGIN
             </Link>
 
             <Link
-              href={"/auth/employee-login"}
-              className=" grid h-12 place-items-center rounded-lg border border-black bg-blue-600 font-bold transition-all duration-300 hover:bg-blue-800 "
+              href={PAGES.LOGIN}
+              className={cn(buttonVariants(), " w-full sm:w-60 max-w-60 bg-blue-600 hover:bg-blue-500 ")}
             >
               USER LOGIN
             </Link>
-          </div>
+          </center>
         </div>
       </Container>
     </main>

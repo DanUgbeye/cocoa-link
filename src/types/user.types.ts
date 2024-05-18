@@ -18,10 +18,8 @@ export type UserLoginData = {
   password: string;
 };
 
-export type NewEmployeeData = {
+export type NewUserData = {
   email: string;
   name: string;
   password: string;
-  sex: string;
-  phoneNumber: string;
 };

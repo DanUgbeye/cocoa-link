@@ -5,6 +5,7 @@ import type _mongoose from "mongoose";
 import { connect } from "mongoose";
 import { SERVER_CONFIG } from "./../config/server.config";
 import registerModels from "./register-models";
+import { setupDB } from "./setup";
 
 declare global {
   // eslint-disable-next-line
@@ -36,7 +37,7 @@ if (!cached) {
   cached = { conn: undefined, promise: undefined };
 }
 
-async function connectDB(): Promise<typeof _mongoose | undefined> {
+async function connectDB(): Promise<typeof _mongoose> {
   try {
     if (cached.conn) {
       return cached.conn;
@@ -49,19 +50,19 @@ async function connectDB(): Promise<typeof _mongoose | undefined> {
 
       cached.promise = connect(MONGO_DB_URL!, opts);
 
+      cached.conn = await cached.promise;
       if (!registered) {
         registerModels();
+        await setupDB(cached.conn);
         registered = true;
       }
     }
-
-    cached.conn = await cached.promise;
+    
+    return cached.conn!;
   } catch (e) {
     cached.promise = undefined;
     throw e;
   }
-
-  return cached.conn!;
 }
 
 export default connectDB;
