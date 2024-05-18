@@ -47,7 +47,6 @@ export async function signupUser(formState: FormState, formData: FormData) {
       maxAge: expiresIn,
     });
   } catch (error: any) {
-    // console.log(error);
     return fromErrorToFormState(error);
   }
 
@@ -78,7 +77,6 @@ export async function loginUser(formState: FormState, formData: FormData) {
       maxAge: expiresIn,
     });
   } catch (error: any) {
-    // console.log(error);
     return fromErrorToFormState(error);
   }
 
@@ -109,7 +107,6 @@ export async function loginAdmin(formState: FormState, formData: FormData) {
       maxAge: expiresIn,
     });
   } catch (error: any) {
-    // console.log(error);
     return fromErrorToFormState(error);
   }
   redirect(PAGES.DASHBOARD);

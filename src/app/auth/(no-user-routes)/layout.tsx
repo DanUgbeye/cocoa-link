@@ -8,7 +8,6 @@ async function verifyNoUser() {
   "use server";
   const userExists = cookies().get(COOKIE_KEYS.AUTH);
   if (userExists) {
-    console.log("redirecting");
     redirect(PAGES.DASHBOARD);
   }
 }
