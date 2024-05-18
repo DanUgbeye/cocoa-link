@@ -5,6 +5,7 @@ import { PAGES } from "@/data/page-map";
 import { fromErrorToFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
 import { AuthTokenPayload } from "@/server/modules/auth/auth.types";
+import { AuthTokenPayloadSchema } from "@/server/modules/auth/auth.validation";
 import UserRepository from "@/server/modules/user/user.repository";
 import {
   UserLoginSchema,
@@ -12,7 +13,7 @@ import {
 } from "@/server/modules/user/user.validation";
 import { passwordUtil } from "@/server/utils/password";
 import { tokenUtil } from "@/server/utils/token";
-import { USER_ROLES } from "@/types";
+import { ClientUser, USER_ROLES, User } from "@/types";
 import { FormState } from "@/types/form.types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -117,4 +118,26 @@ export async function loginAdmin(formState: FormState, formData: FormData) {
 export async function logout() {
   cookies().delete(COOKIE_KEYS.AUTH);
   redirect(PAGES.HOME);
+}
+
+export async function getLoggedInUser() {
+  try {
+    const authCookie = cookies().get(COOKIE_KEYS.AUTH);
+    if (!authCookie) return undefined;
+
+    const authToken = authCookie.value;
+    const authPayload = tokenUtil.verifyJwtToken(authToken);
+    const validAuthPayload = AuthTokenPayloadSchema.safeParse(authPayload);
+    if (validAuthPayload.error) return undefined;
+
+    const db = await connectDB();
+    const userRepo = new UserRepository(db);
+    const { password, ...user } = (
+      await userRepo.getProfile(validAuthPayload.data.id)
+    ).toObject() as User;
+
+    return JSON.parse(JSON.stringify(user)) as ClientUser;
+  } catch (error: any) {
+    return undefined;
+  }
 }

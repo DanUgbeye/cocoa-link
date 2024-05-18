@@ -11,7 +11,7 @@ export default function NavLink(props: NavLinkProps) {
     <Link
       {...rest}
       className={cn(
-        " text-white underline-offset-4 hover:underline ",
+        " text-white/70 hover:text-white duration-300 ",
         className
       )}
     >

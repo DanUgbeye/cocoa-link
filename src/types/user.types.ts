@@ -13,6 +13,13 @@ export interface User {
   password: string;
 }
 
+export interface ClientUser {
+  _id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+}
+
 export type UserLoginData = {
   email: string;
   password: string;
