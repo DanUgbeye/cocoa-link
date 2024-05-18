@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Exception from "../http-exceptions";
+import Exception from "./http-exceptions";
 
 export default class ServerResponse {
   static success(message: string): any;

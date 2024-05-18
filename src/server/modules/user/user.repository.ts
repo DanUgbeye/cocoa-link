@@ -5,7 +5,7 @@ import {
   BadRequestException,
   NotFoundException,
   ServerException,
-} from "@/server/http-exceptions";
+} from "@/server/utils/http-exceptions";
 import { PasswordUtil } from "@/server/utils/password";
 import {
   USER_ROLES,

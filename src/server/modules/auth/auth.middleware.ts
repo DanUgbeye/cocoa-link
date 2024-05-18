@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import AuthHelpers from "./auth.helpers";
 import ServerResponse from "@/server/utils/response";
-import { AuthenticationException } from "@/server/http-exceptions";
+import { AuthenticationException } from "@/server/utils/http-exceptions";
 
 export default class AuthMiddleware {
   /**

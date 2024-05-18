@@ -1,5 +1,5 @@
 import connectDB from "@/server/db/connect";
-import { ServerException } from "@/server/http-exceptions";
+import { ServerException } from "@/server/utils/http-exceptions";
 import UserRepository from "@/server/modules/user/user.repository";
 import ServerResponse from "@/server/utils/response";
 import { TokenUtil } from "@/server/utils/token";

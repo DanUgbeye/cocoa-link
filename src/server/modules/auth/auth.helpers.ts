@@ -1,7 +1,7 @@
 import {
   AuthenticationException,
   AuthorizationException,
-} from "@/server/http-exceptions";
+} from "@/server/utils/http-exceptions";
 import { TokenUtil } from "@/server/utils/token";
 import { UserRole } from "@/types/user.types";
 import { NextRequest } from "next/server";

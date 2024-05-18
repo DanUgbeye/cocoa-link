@@ -1,5 +1,5 @@
 import { SERVER_CONFIG } from "@/server/config/server.config";
-import { ServerException } from "@/server/http-exceptions";
+import { ServerException } from "@/server/utils/http-exceptions";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({

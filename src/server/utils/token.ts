@@ -1,5 +1,5 @@
 import { SERVER_CONFIG } from "@/server/config/server.config";
-import { AuthenticationException } from "@/server/http-exceptions";
+import { AuthenticationException } from "@/server/utils/http-exceptions";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 
 const secret = SERVER_CONFIG.TOKEN_SECRET;
