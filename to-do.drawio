@@ -1,0 +1,37 @@
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="jUMdBjonj2AX-k_A3gfr">
+        <mxGraphModel dx="686" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="41" width="400" height="369" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-2" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on Admin and user login&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="110" width="240" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-3" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on Assets db module&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="140" width="210" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-4" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on create assets page&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="170" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-5" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on delete assets page&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="200" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-6" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on update&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial; font-size: 16px;&quot;&gt;assets page&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="230" width="230" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-7" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on activity db module for assets&amp;nbsp;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="260" width="290" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="w2OgI2T-95tl59cAuf7G-8" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 16px; background-color: initial;&quot;&gt;Work on create activity page&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="142" y="290" width="230" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;&lt;b&gt;TO DO&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="142" y="60" width="80" height="40" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
