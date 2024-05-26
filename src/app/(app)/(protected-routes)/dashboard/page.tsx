@@ -1,7 +1,13 @@
 import { Container } from "@/components/container";
+import { PAGES } from "@/data/page-map";
+import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
+import { redirect } from "next/navigation";
 import React from "react";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const user = await getLoggedInUser()
+  if(!user) redirect(PAGES.HOME);
+
   // TODO fetch assets
   // TODO check user and admin role and display data
 
@@ -15,3 +21,5 @@ export default function DashboardPage() {
     return <main>{error.message}</main>;
   }
 }
+
+
