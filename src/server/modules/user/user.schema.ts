@@ -2,7 +2,7 @@ import { USER_ROLES } from "@/types/user.types";
 import { UserDocument } from "./user.types";
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema<UserDocument>(
+export const userSchema = new mongoose.Schema<UserDocument>(
   {
     name: {
       type: String,
@@ -29,4 +29,4 @@ const userSchema = new mongoose.Schema<UserDocument>(
   }
 );
 
-export default userSchema;
+

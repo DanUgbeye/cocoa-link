@@ -10,14 +10,6 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
-  password: string;
-}
-
-export interface ClientUser {
-  _id: string;
-  email: string;
-  name: string;
-  role: UserRole;
 }
 
 export type UserLoginData = {

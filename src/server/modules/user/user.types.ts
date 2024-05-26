@@ -1,4 +1,8 @@
-import { User } from "@/types/user.types";
+import { User } from "@/types";
 import { Document } from "mongoose";
 
-export interface UserDocument extends Omit<User, "_id">, Document {}
+export type ServerUser = User & {
+  password: string;
+};
+
+export interface UserDocument extends Omit<ServerUser, "_id">, Document {}

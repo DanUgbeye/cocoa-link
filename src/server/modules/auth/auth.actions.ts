@@ -13,10 +13,11 @@ import {
 } from "@/server/modules/user/user.validation";
 import { passwordUtil } from "@/server/utils/password";
 import { tokenUtil } from "@/server/utils/token";
-import { ClientUser, USER_ROLES, User } from "@/types";
+import { USER_ROLES, User } from "@/types";
 import { FormState } from "@/types/form.types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { ServerUser } from "../user/user.types";
 
 export async function signupUser(formState: FormState, formData: FormData) {
   try {
@@ -131,9 +132,9 @@ export async function getLoggedInUser() {
     const userRepo = new UserRepository(db);
     const { password, ...user } = (
       await userRepo.getProfile(validAuthPayload.data.id)
-    ).toObject() as User;
+    ).toObject() as ServerUser;
 
-    return JSON.parse(JSON.stringify(user)) as ClientUser;
+    return JSON.parse(JSON.stringify(user)) as User;
   } catch (error: any) {
     return undefined;
   }

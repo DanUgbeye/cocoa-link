@@ -1,9 +1,9 @@
+import { USER_ROLES } from "@/types";
 import type _mongoose from "mongoose";
 import { Model } from "mongoose";
-import { UserDocument } from "../modules/user/user.types";
-import { USER_ROLES, User } from "@/types";
-import { passwordUtil } from "../utils/password";
 import { SERVER_CONFIG } from "../config/server.config";
+import { UserDocument } from "../modules/user/user.types";
+import { passwordUtil } from "../utils/password";
 
 export async function setupDB(db: typeof _mongoose) {
   try {
