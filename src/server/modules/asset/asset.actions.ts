@@ -14,3 +14,14 @@ export async function getAllAssets() {
     return [];
   }
 }
+
+export async function getUserAssets(userId: string) {
+  try {
+    const db = await connectDB();
+    const assetModel = db.models.Asset as Model<AssetDocument>;
+
+    return await assetModel.find({ userId });
+  } catch (error: any) {
+    return [];
+  }
+}

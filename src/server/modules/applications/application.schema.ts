@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
 
-const { Schema, model } = mongoose;
-
-export const applicationSchema = new Schema({
-  id: { type: String, required: true, unique: true },
-  assetId: { type: String, required: true },
+export const applicationSchema = new mongoose.Schema({
+  assetId: { type: String, required: true, ref: "Assets" },
   from: { type: String, required: true },
   to: { type: String, required: true },
   reason: { type: String, required: true },

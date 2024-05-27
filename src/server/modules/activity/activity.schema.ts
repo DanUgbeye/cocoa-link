@@ -2,7 +2,6 @@ import { Schema } from "mongoose";
 import { ActivityDocument } from "./activity.types";
 
 export const activitySchema = new Schema<ActivityDocument>({
-  id: { type: String, required: true, unique: true },
   type: {
     type: String,
     enum: [
