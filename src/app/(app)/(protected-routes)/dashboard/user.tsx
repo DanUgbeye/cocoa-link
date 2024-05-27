@@ -1,16 +1,41 @@
 import { Container } from "@/components/container";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getUserAssets } from "@/server/modules/asset/asset.actions";
-import React from "react";
+import AssetsTable from "./assets-table";
 
 export default async function UserDashboardPage(props: { userId: string }) {
   const { userId } = props;
-  const userAssets = await getUserAssets(userId);
-  // TODO fetch assets for user
+  const assets = await getUserAssets(userId);
+  const activeAssets = assets.filter((asset) => asset.status !== "Sold");
 
   return (
     <main className=" py-10 ">
-      <Container>UserDashboardPage</Container>
-      <div className="  ">{JSON.stringify(userAssets)}</div>
+      <Container>
+        <Card>
+          <CardHeader className="px-7">
+            <CardTitle>Assets</CardTitle>
+            <CardDescription>All available assets</CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            {activeAssets.length <= 0 ? (
+              <>
+                <div className=" py-10 text-center ">
+                  There are no available assets
+                </div>
+              </>
+            ) : (
+              <AssetsTable assets={activeAssets} />
+            )}
+          </CardContent>
+        </Card>
+      </Container>
     </main>
   );
 }

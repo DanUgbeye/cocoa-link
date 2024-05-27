@@ -1,10 +1,10 @@
 import { Container } from "@/components/container";
 import React from "react";
 
-export default function CreateAssetPage() {
+export default function ViewAssetDetailsPage() {
   return (
     <main className=" py-10 ">
-      <Container>Create Asset Page</Container>
+      <Container>ViewAssetDetailsPage</Container>
     </main>
   );
 }

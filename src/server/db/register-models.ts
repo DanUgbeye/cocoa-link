@@ -15,7 +15,7 @@ export default function registerModels() {
     console.log("Registering Activity Model");
     model("Activity", activitySchema);
 
-    console.log("Registering Appication Model");
+    console.log("Registering Application Model");
     model("Application", applicationSchema);
 
     global.registeredModels = true;

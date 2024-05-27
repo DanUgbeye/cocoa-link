@@ -10,5 +10,7 @@ export type Asset = {
   depreciationRate: number;
   purchaseCost: number;
   totalExpenditure: number;
+  currentValue: number;
+  currentValuePercentage: number;
   status: AssetStatus;
 };

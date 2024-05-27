@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 // CSS FILES
 import "react-toastify/dist/ReactToastify.min.css";
+import 'react-circular-progressbar/dist/styles.css';
 
 const queryClient = new QueryClient();
 

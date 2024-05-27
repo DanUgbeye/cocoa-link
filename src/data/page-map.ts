@@ -7,4 +7,9 @@ export const PAGES = {
 
   DASHBOARD: "/dashboard",
   ASSETS: "/assets",
+  CREATE_ASSET: "/assets/create",
+  CREATE_ACTIVITY: "/activity/create",
+  CREATE_APPLICATION: "/application/create",
+
+  ADD_USER: "/users/add",
 } as const;

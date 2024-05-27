@@ -2,15 +2,15 @@
 
 import { PAGES } from "@/data/page-map";
 import { logout } from "@/server/modules/auth/auth.actions";
-import { ClientUser, USER_ROLES } from "@/types/user.types";
-import { Container } from "../container";
-import NavLink from "./nav-link";
+import { User, USER_ROLES } from "@/types/user.types";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
-import { Power, PowerCircle } from "lucide-react";
+import { Container } from "../container";
 import { Button } from "../ui/button";
+import NavLink from "./nav-link";
 
 interface NavbarProps {
-  user?: ClientUser;
+  user?: User;
 }
 
 export default function Navbar(props: NavbarProps) {
@@ -32,8 +32,8 @@ export default function Navbar(props: NavbarProps) {
 
           <div className=" flex justify-end gap-x-12 gap-y-4 rounded-xl px-3 sm:flex-row sm:px-8 ">
             {user && (
-              <div className=" mx-auto flex w-fit items-center gap-x-7 sm:mx-0 ">
-                <NavLink href={PAGES.HOME} className=" ">
+              <div className=" mx-auto flex w-fit items-center gap-x-5 sm:mx-0 ">
+                <NavLink href={PAGES.DASHBOARD} className=" ">
                   Dashboard
                 </NavLink>
 
@@ -42,13 +42,21 @@ export default function Navbar(props: NavbarProps) {
                     <NavLink href={PAGES.ASSETS} className=" ">
                       Assets
                     </NavLink>
+
+                    <NavLink href={PAGES.ADD_USER} className=" ">
+                      Users
+                    </NavLink>
                   </>
                 )}
 
                 {user.role === USER_ROLES.USER && (
-                  <div className="mr-auto flex ">
-                    <NavLink href={"/sales"} className=" ">
-                      Sales
+                  <div className="mr-auto flex w-fit items-center gap-x-5 sm:mx-0 ">
+                    <NavLink href={PAGES.CREATE_ASSET} className=" ">
+                      Create Asset
+                    </NavLink>
+
+                    <NavLink href={PAGES.CREATE_APPLICATION} className=" ">
+                      Applications
                     </NavLink>
                   </div>
                 )}
@@ -57,7 +65,7 @@ export default function Navbar(props: NavbarProps) {
                   onClick={handleLogout}
                   className=" flex w-fit items-center gap-x-2 rounded bg-transparent px-4 text-sm duration-300 hover:bg-white/20 "
                 >
-                  <Power className=" size-4 " />
+                  <LogOut className=" size-4 " />
                   Log out
                 </Button>
               </div>
