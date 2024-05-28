@@ -35,8 +35,9 @@ assetSchema.virtual("currentValue").get(function () {
 assetSchema.virtual("currentValuePercentage").get(function () {
   // @ts-ignore
   const currentValue = this.currentValue;
-  const currentValuePercentage =
-    ((currentValue as number) / this.purchaseCost) * 100;
+  const currentValuePercentage = (
+    currentValue ? ((currentValue as number) / this.purchaseCost) * 100 : 0
+  ) as number;
   return currentValuePercentage;
 });
 

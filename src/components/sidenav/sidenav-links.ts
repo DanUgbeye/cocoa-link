@@ -1,6 +1,6 @@
 import { PAGES } from "@/data/page-map";
 import { SideNavLinkGroupData } from "@/types/sidenav.types";
-import { Folder, FolderPlus, Home, UserPlus } from "lucide-react";
+import { Folder, FolderPlus, FolderSync, Home, UserPlus } from "lucide-react";
 
 export const ADMIN_SIDENAV_LINKS: SideNavLinkGroupData[] = [
   {
@@ -20,6 +20,11 @@ export const ADMIN_SIDENAV_LINKS: SideNavLinkGroupData[] = [
         name: "View Asset",
         href: PAGES.ASSETS,
         icon: Folder,
+      },
+      {
+        name: "Transfer Applications",
+        href: PAGES.APPLICATIONS,
+        icon: FolderSync,
       },
     ],
   },
@@ -59,15 +64,10 @@ export const USER_SIDENAV_LINKS: SideNavLinkGroupData[] = [
         href: PAGES.CREATE_ASSET,
         icon: FolderPlus,
       },
-    ],
-  },
-  {
-    groupName: "Users",
-    links: [
       {
-        name: "Add User",
-        href: PAGES.ADD_USER,
-        icon: UserPlus,
+        name: "Transfer Applications",
+        href: PAGES.APPLICATIONS,
+        icon: FolderSync,
       },
     ],
   },
