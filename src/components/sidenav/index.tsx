@@ -69,8 +69,8 @@ export function SideNav(props: SideNavProps) {
 
   const navLinks = React.useMemo(() => {
     return (
-      <div className=" ">
-        <div className=" space-y-2 ">
+      <div className=" pt-4 ">
+        <div className=" space-y-4 ">
           {sideNavLinks.map((item) => {
             const { groupName, links } = item;
 

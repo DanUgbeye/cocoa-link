@@ -28,9 +28,8 @@ const SideNavWrapper = React.forwardRef<HTMLElement, SideNavWrapperProps>(
 
         <Separator />
 
-        <ScrollArea style={{ height: `calc(100dvh - 4.5rem)` }}>
+        <ScrollArea style={{ height: `calc(100dvh - 5rem)` }}>
           {children}
-          <div className=" h-12 " />
         </ScrollArea>
       </aside>
     );

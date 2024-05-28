@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
 import React, { HTMLAttributes } from "react";
-import { Button, ButtonProps } from "../../components/ui/button";
+import { Button, ButtonProps } from "./ui/button";
 import { useAppStore } from "@/client/store";
 
 export interface SideNavLinkProps
@@ -20,8 +20,8 @@ export default function SideNavLink(props: SideNavLinkProps) {
       className={cn(
         " grid h-12 grid-cols-[minmax(auto,1.5rem),1fr] items-center gap-x-2 rounded-none bg-transparent hover:bg-transparent pl-6 text-sm duration-300 ",
         {
-          " bg-white/10 text-white ": active,
-          "  text-neutral-100 hover:bg-white/10 ": !active,
+          " bg-white/20 text-white hover:bg-white/20 ": active,
+          "  text-white/70 hover:bg-white/10 ": !active,
         },
         className
       )}
@@ -84,7 +84,7 @@ export function SideNavLinkGroup(props: SideNavLinkGroupProps) {
         <Button
           variant={"ghost"}
           className={
-            " pointer-events-none flex h-11 cursor-pointer items-center justify-start pl-6 text-xs font-medium text-neutral-300 "
+            " pointer-events-none flex h-8 cursor-pointer items-center justify-start pl-6 text-xs font-medium text-neutral-300 "
           }
           asChild
           disabled

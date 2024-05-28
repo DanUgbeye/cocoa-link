@@ -4,7 +4,7 @@ import { Folder, FolderPlus, Home, UserPlus } from "lucide-react";
 
 export const ADMIN_SIDENAV_LINKS: SideNavLinkGroupData[] = [
   {
-    groupName: "Start",
+    groupName: "",
     links: [
       {
         name: "Dashboard",
@@ -37,7 +37,7 @@ export const ADMIN_SIDENAV_LINKS: SideNavLinkGroupData[] = [
 
 export const USER_SIDENAV_LINKS: SideNavLinkGroupData[] = [
   {
-    groupName: "Start",
+    groupName: "",
     links: [
       {
         name: "Dashboard",
@@ -50,7 +50,7 @@ export const USER_SIDENAV_LINKS: SideNavLinkGroupData[] = [
     groupName: "Assets",
     links: [
       {
-        name: "View Asset",
+        name: "View Assets",
         href: PAGES.ASSETS,
         icon: Folder,
       },
