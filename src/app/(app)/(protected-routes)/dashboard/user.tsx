@@ -7,12 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getUserAssets } from "@/server/modules/asset/asset.actions";
-import AssetsTable from "./assets-table";
+import AssetsTable from "../../../../components/assets-table";
 import { getUserApplications } from "@/server/modules/applications/application.actions";
 import { redirect } from "next/navigation";
 import { PAGES } from "@/data/page-map";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
-import ApplicationsTable from "./applications-table";
+import ApplicationsTable from "../../../../components/applications-table";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";

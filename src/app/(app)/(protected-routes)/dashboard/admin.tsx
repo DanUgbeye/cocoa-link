@@ -7,11 +7,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getAllAssets } from "@/server/modules/asset/asset.actions";
-import AssetsTable from "./assets-table";
+import AssetsTable from "../../../../components/assets-table";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { PAGES } from "@/data/page-map";
 import { redirect } from "next/navigation";
-import ApplicationsTable from "./applications-table";
+import ApplicationsTable from "../../../../components/applications-table";
 import { getAllApplications } from "@/server/modules/applications/application.actions";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";

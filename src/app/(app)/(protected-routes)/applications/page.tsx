@@ -13,7 +13,7 @@ import {
 } from "@/server/modules/applications/application.actions";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { redirect } from "next/navigation";
-import ApplicationsTable from "../dashboard/applications-table";
+import ApplicationsTable from "../../../../components/applications-table";
 import { FullApplication } from "@/types/application.types";
 import Link from "next/link";
 import { cn } from "@/lib/utils";

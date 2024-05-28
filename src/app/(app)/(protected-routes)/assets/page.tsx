@@ -6,7 +6,7 @@ import {
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { Asset } from "@/types/asset.types";
 import { redirect } from "next/navigation";
-import AssetsTable from "../dashboard/assets-table";
+import AssetsTable from "../../../../components/assets-table";
 import { Container } from "@/components/container";
 import {
   Card,
