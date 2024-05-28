@@ -48,7 +48,7 @@ export default function AssetsTable(props: { assets: Asset[] }) {
             <TableRow
               key={asset._id}
               className={cn("bg-accent", {
-                " opacity-50 pointer-events-none ": asset.status === "Sold",
+                " pointer-events-none opacity-50 ": asset.status === "Sold",
               })}
             >
               <TableCell>
@@ -65,7 +65,7 @@ export default function AssetsTable(props: { assets: Asset[] }) {
 
               <TableCell className="hidden text-center sm:table-cell">
                 <Badge
-                  className={cn("px-3 py-1 text-xs", {
+                  className={cn("w-[5rem] justify-center py-1 text-xs", {
                     " bg-green-200 text-green-600 hover:bg-green-200 ":
                       asset.status === "Active",
                     " bg-red-200 text-red-600 hover:bg-red-200 ":

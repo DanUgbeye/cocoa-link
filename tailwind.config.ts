@@ -19,6 +19,12 @@ const config = {
       },
     },
     extend: {
+      margin: {
+        sidenav: "clamp(15rem, 10%, 15rem)",
+      },
+      width: {
+        sidenav: "clamp(15rem, 10%, 15rem)",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },

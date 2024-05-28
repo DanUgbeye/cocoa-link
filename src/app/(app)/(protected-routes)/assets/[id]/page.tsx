@@ -4,7 +4,9 @@ import React from "react";
 export default function ViewAssetDetailsPage() {
   return (
     <main className=" py-10 ">
-      <Container>ViewAssetDetailsPage</Container>
+      <Container>
+        Hello world
+      </Container>
     </main>
   );
 }

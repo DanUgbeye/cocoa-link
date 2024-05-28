@@ -1,13 +1,13 @@
 "use client";
 
+import { useAppStore } from "@/client/store";
 import { PAGES } from "@/data/page-map";
 import { logout } from "@/server/modules/auth/auth.actions";
-import { User, USER_ROLES } from "@/types/user.types";
-import { LogOut } from "lucide-react";
+import { User } from "@/types/user.types";
+import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { Container } from "../container";
 import { Button } from "../ui/button";
-import NavLink from "./nav-link";
 
 interface NavbarProps {
   user?: User;
@@ -15,60 +15,41 @@ interface NavbarProps {
 
 export default function Navbar(props: NavbarProps) {
   const { user } = props;
+  const { toggleSidenav } = useAppStore();
 
   async function handleLogout() {
     await logout();
   }
 
   return (
-    <nav className=" flex items-center bg-blue-800 text-white ">
+    <nav className=" flex items-center bg-white text-black">
       <Container className=" h-fit ">
-        <div className=" grid h-[5rem] grid-cols-[auto,1fr] items-center gap-x-6 ">
-          <div className="  ">
-            <Link href={PAGES.HOME} className=" text-3xl font-extralight ">
+        <div className=" flex h-[5rem] items-center gap-x-6 ">
+          <div className=" flex items-center gap-x-4 lg:hidden ">
+            <Button
+              variant={"outline"}
+              className=" size-9 bg-transparent p-2 text-black hover:bg-white/10 "
+              onClick={() => {
+                toggleSidenav();
+              }}
+            >
+              <Menu />
+            </Button>
+
+            <Link href={PAGES.HOME} className=" w-full text-2xl font-semibold ">
               FAMIS
             </Link>
           </div>
 
-          <div className=" flex justify-end gap-x-12 gap-y-4 rounded-xl px-3 sm:flex-row sm:px-8 ">
+          <div className=" flex w-full justify-end gap-x-12 gap-y-4 rounded-xl px-3 sm:flex-row sm:px-8 ">
             {user && (
-              <div className=" mx-auto flex w-fit items-center gap-x-5 sm:mx-0 ">
-                <NavLink href={PAGES.DASHBOARD} className=" ">
-                  Dashboard
-                </NavLink>
-
-                {user.role === USER_ROLES.ADMIN && (
-                  <>
-                    <NavLink href={PAGES.ASSETS} className=" ">
-                      Assets
-                    </NavLink>
-
-                    <NavLink href={PAGES.ADD_USER} className=" ">
-                      Users
-                    </NavLink>
-                  </>
-                )}
-
-                {user.role === USER_ROLES.USER && (
-                  <div className="mr-auto flex w-fit items-center gap-x-5 sm:mx-0 ">
-                    <NavLink href={PAGES.CREATE_ASSET} className=" ">
-                      Create Asset
-                    </NavLink>
-
-                    <NavLink href={PAGES.CREATE_APPLICATION} className=" ">
-                      Applications
-                    </NavLink>
-                  </div>
-                )}
-
-                <Button
-                  onClick={handleLogout}
-                  className=" flex w-fit items-center gap-x-2 rounded bg-transparent px-4 text-sm duration-300 hover:bg-white/20 "
-                >
-                  <LogOut className=" size-4 " />
-                  Log out
-                </Button>
-              </div>
+              <Button
+                onClick={handleLogout}
+                className=" ml-auto flex w-fit items-center gap-x-2 rounded bg-transparent px-4 text-sm text-black duration-300 hover:bg-white/20 "
+              >
+                <LogOut className=" size-4 " />
+                Log out
+              </Button>
             )}
           </div>
         </div>
