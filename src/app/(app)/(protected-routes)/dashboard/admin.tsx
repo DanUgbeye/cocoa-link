@@ -13,6 +13,9 @@ import { PAGES } from "@/data/page-map";
 import { redirect } from "next/navigation";
 import ApplicationsTable from "./applications-table";
 import { getAllApplications } from "@/server/modules/applications/application.actions";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default async function AdminDashboardPage(props: { userId: string }) {
   const { userId } = props;
@@ -38,9 +41,25 @@ export default async function AdminDashboardPage(props: { userId: string }) {
         </div>
 
         <Card>
-          <CardHeader className="px-7">
-            <CardTitle>Assets</CardTitle>
-            <CardDescription>All available assets</CardDescription>
+          <CardHeader className="px-7 ">
+            <div className="flex flex-wrap justify-between gap-4">
+              <div className=" space-y-1 ">
+                <CardTitle>Assets</CardTitle>
+                <CardDescription>All available assets</CardDescription>
+              </div>
+
+              <div className=" flex justify-end ">
+                <Link
+                  href={PAGES.CREATE_APPLICATION}
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "text-blue-700"
+                  )}
+                >
+                  See all
+                </Link>
+              </div>
+            </div>
           </CardHeader>
 
           <CardContent>
@@ -55,27 +74,32 @@ export default async function AdminDashboardPage(props: { userId: string }) {
             )}
           </CardContent>
         </Card>
+        
+        {applications.length > 0 && (
+          <Card>
+            <CardHeader className="px-7">
+              <CardTitle>Transfer Applications</CardTitle>
+              <CardDescription>
+                All transfer applications will appear here
+              </CardDescription>
+            </CardHeader>
 
-        <Card>
-          <CardHeader className="px-7">
-            <CardTitle>Transfer Applications</CardTitle>
-            <CardDescription>
-              All transfer applications will appear here
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            {applications.length <= 0 ? (
-              <>
-                <div className=" py-10 text-center ">
-                  There are no open applications
-                </div>
-              </>
-            ) : (
-              <ApplicationsTable applications={applications} role={user.role} />
-            )}
-          </CardContent>
-        </Card>
+            <CardContent>
+              {applications.length <= 0 ? (
+                <>
+                  <div className=" py-10 text-center ">
+                    There are no open applications
+                  </div>
+                </>
+              ) : (
+                <ApplicationsTable
+                  applications={applications}
+                  role={user.role}
+                />
+              )}
+            </CardContent>
+          </Card>
+        )}
       </Container>
     </main>
   );

@@ -13,6 +13,9 @@ import { redirect } from "next/navigation";
 import { PAGES } from "@/data/page-map";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import ApplicationsTable from "./applications-table";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function UserDashboardPage(props: { userId: string }) {
   const { userId } = props;
@@ -39,8 +42,24 @@ export default async function UserDashboardPage(props: { userId: string }) {
 
         <Card>
           <CardHeader className="px-7">
-            <CardTitle>Assets</CardTitle>
-            <CardDescription>All available assets</CardDescription>
+            <div className="flex flex-wrap justify-between gap-4">
+              <div className=" space-y-1 ">
+                <CardTitle>Assets</CardTitle>
+                <CardDescription>All available assets</CardDescription>
+              </div>
+
+              <div className=" flex justify-end ">
+                <Link
+                  href={PAGES.CREATE_APPLICATION}
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "text-blue-700"
+                  )}
+                >
+                  See all
+                </Link>
+              </div>
+            </div>
           </CardHeader>
 
           <CardContent>

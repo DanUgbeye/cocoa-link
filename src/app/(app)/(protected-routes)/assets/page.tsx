@@ -15,6 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function ViewAssetsPage() {
   const user = await getLoggedInUser();
@@ -32,7 +35,16 @@ export default async function ViewAssetsPage() {
 
   return (
     <main className=" py-10 ">
-      <Container>
+      <Container className=" space-y-5">
+        <div className=" flex justify-end ">
+          <Link
+            href={PAGES.CREATE_ASSET}
+            className={cn(buttonVariants({}), " bg-blue-700 hover:bg-blue-600")}
+          >
+            Add Asset
+          </Link>
+        </div>
+
         <Card>
           <CardHeader className="px-7">
             <CardTitle>Assets</CardTitle>
