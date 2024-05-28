@@ -36,14 +36,19 @@ export default async function ViewAssetsPage() {
   return (
     <main className=" py-10 ">
       <Container className=" space-y-5">
-        <div className=" flex justify-end ">
-          <Link
-            href={PAGES.CREATE_ASSET}
-            className={cn(buttonVariants({}), " bg-blue-700 hover:bg-blue-600")}
-          >
-            Add Asset
-          </Link>
-        </div>
+        {user.role === "user" && (
+          <div className=" flex justify-end ">
+            <Link
+              href={PAGES.CREATE_ASSET}
+              className={cn(
+                buttonVariants({}),
+                " bg-blue-700 hover:bg-blue-600"
+              )}
+            >
+              Add Asset
+            </Link>
+          </div>
+        )}
 
         <Card>
           <CardHeader className="px-7">

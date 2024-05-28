@@ -14,6 +14,7 @@ export default async function AppLayout({ children }: PropsWithChildren) {
 
         <section className={cn(" lg:ml-sidenav flex min-h-[100vh] flex-col ")}>
           <Navbar user={user} />
+          
           <section className=" min-h-[calc(100dvh-10rem)] ">{children}</section>
         </section>
       </section>

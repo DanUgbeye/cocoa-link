@@ -34,7 +34,7 @@ export default function CreateAssetScreen() {
     }
     if (changedState.status === "SUCCESS") {
       toast.success(changedState.message);
-      redirect(PAGES.DASHBOARD);
+      redirect(PAGES.ASSETS);
     }
   });
 
@@ -98,7 +98,7 @@ export default function CreateAssetScreen() {
 
                 <div className="grid gap-3">
                   <Label htmlFor="depreciationRate">
-                    Depreciation Rate (percentage per day)
+                    Depreciation Rate (percentage per year)
                   </Label>
                   <Input
                     id="depreciationRate"

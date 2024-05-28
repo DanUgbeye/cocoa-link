@@ -1,6 +1,7 @@
-import RoundProgressBar from "@/components/round-progress-bar";
+"use client";
+
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,12 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
 import { UserRole } from "@/types";
 import { FullApplication } from "@/types/application.types";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 
 export default function ApplicationsTable(props: {
   applications: FullApplication[];
@@ -22,15 +20,23 @@ export default function ApplicationsTable(props: {
 }) {
   const { applications, role = "user" } = props;
 
+  function handleAcceptTransfer() {}
+
+  function handleRejectTransfer() {}
+
+  function handleDeleteTransfer() {}
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Asset Name</TableHead>
 
-          <TableHead className="hidden text-center sm:table-cell">
-            From
-          </TableHead>
+          {role === "admin" && (
+            <TableHead className="hidden text-center sm:table-cell">
+              From
+            </TableHead>
+          )}
 
           <TableHead className="hidden text-center sm:table-cell">To</TableHead>
 
@@ -38,7 +44,7 @@ export default function ApplicationsTable(props: {
             Status
           </TableHead>
 
-          {role === "admin" && <TableHead className="text-center"></TableHead>}
+          <TableHead className="text-center"></TableHead>
         </TableRow>
       </TableHeader>
 
@@ -48,7 +54,9 @@ export default function ApplicationsTable(props: {
             <TableRow
               key={application._id}
               className={cn("bg-accent", {
-                " pointer-events-none opacity-50 ": application.approved,
+                " pointer-events-none opacity-50 ":
+                  application.status === "Cancelled" ||
+                  application.status === "Approved",
               })}
             >
               <TableCell>
@@ -59,35 +67,60 @@ export default function ApplicationsTable(props: {
                 </div>
               </TableCell>
 
+              {role === "admin" && (
+                <TableCell className="hidden text-center sm:table-cell">
+                  {application.from.name}
+                </TableCell>
+              )}
+
               <TableCell className="hidden text-center sm:table-cell">
-                {application.from.name}
+                {application.to.name}
               </TableCell>
 
               <TableCell className="hidden text-center sm:table-cell">
                 <Badge
                   className={cn("w-[5rem] justify-center py-1 text-xs", {
                     " bg-green-200 text-green-600 hover:bg-green-200 ":
-                      application.approved,
-                    " bg-red-200 text-red-600 hover:bg-red-200 ":
-                      application.approved,
+                      application.status === "Approved",
+                    " bg-amber-200 text-amber-600 hover:bg-amber-200 ":
+                      application.status === "Pending",
                   })}
                   variant="secondary"
                 >
-                  {application.approved ? "Approved" : "Pending"}
+                  {application.status}
                 </Badge>
               </TableCell>
 
-              {role === "admin" && (
-                <TableCell className="text-right">
-                  <div className=" mx-auto flex items-center gap-2 ">
-                    <Button className=" bg-green-600 hover:bg-green-500">
+              <TableCell className="text-right">
+                {role === "admin" && (
+                  <div className=" mx-auto flex items-center justify-end gap-2 ">
+                    <Button
+                      className=" bg-green-600 hover:bg-green-500"
+                      onClick={() => handleAcceptTransfer()}
+                    >
                       Approve
                     </Button>
 
-                    <Button variant={"destructive"}>Reject</Button>
+                    <Button
+                      variant={"destructive"}
+                      onClick={() => handleRejectTransfer()}
+                    >
+                      Reject
+                    </Button>
                   </div>
-                </TableCell>
-              )}
+                )}
+
+                {role === "user" && (
+                  <div className=" mx-auto flex items-center justify-end gap-2 ">
+                    <Button
+                      variant={"destructive"}
+                      onClick={() => handleDeleteTransfer()}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
+              </TableCell>
             </TableRow>
           );
         })}

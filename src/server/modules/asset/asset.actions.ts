@@ -1,16 +1,15 @@
 "use server";
 
+import { PAGES } from "@/data/page-map";
+import { fromErrorToFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
-import { AssetDocument } from "./asset.types";
-import { Model } from "mongoose";
 import { Asset } from "@/types/asset.types";
 import { FormState } from "@/types/form.types";
-import { CreateAssetSchema } from "./asset.validation";
-import { fromErrorToFormState } from "@/lib/utils";
-import { redirect } from "next/navigation";
-import { PAGES } from "@/data/page-map";
+import { Model } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "../auth/auth.actions";
+import { AssetDocument } from "./asset.types";
+import { CreateAssetSchema } from "./asset.validation";
 
 export async function getAllAssets() {
   try {
@@ -64,9 +63,10 @@ export async function createAsset(formState: FormState, formData: FormData) {
     } satisfies FormState;
 
     revalidatePath(PAGES.DASHBOARD);
+    revalidatePath(PAGES.ASSETS);
     return response;
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return fromErrorToFormState(error);
   }
 }

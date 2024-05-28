@@ -3,6 +3,7 @@ export const PAGES = {
 
   SIGNUP: "/auth/signup",
   LOGIN: "/auth/login",
+  LOGOUT: "/auth/logout",
   ADMIN_LOGIN: "/auth/admin-login",
 
   DASHBOARD: "/dashboard",

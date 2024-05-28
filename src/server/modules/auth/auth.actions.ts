@@ -113,9 +113,9 @@ export async function loginAdmin(formState: FormState, formData: FormData) {
   redirect(PAGES.DASHBOARD);
 }
 
-export async function logout() {
+export async function logout(redirectUrl?: string) {
   cookies().delete(COOKIE_KEYS.AUTH);
-  redirect(PAGES.HOME);
+  redirect(redirectUrl ? redirectUrl : PAGES.HOME);
 }
 
 export async function getLoggedInUser() {
@@ -137,5 +137,19 @@ export async function getLoggedInUser() {
     return JSON.parse(JSON.stringify(user)) as User;
   } catch (error: any) {
     return undefined;
+  }
+}
+
+export async function verifyAuth() {
+  try {
+    const authCookie = cookies().get(COOKIE_KEYS.AUTH);
+    if (!authCookie) return true;
+
+    const authToken = authCookie.value;
+    const authPayload = tokenUtil.verifyJwtToken(authToken);
+    const validAuthPayload = AuthTokenPayloadSchema.parse(authPayload);
+    return true;
+  } catch (error: any) {
+    return false;
   }
 }

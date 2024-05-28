@@ -36,16 +36,19 @@ export default function Navbar(props: NavbarProps) {
               <Menu />
             </Button>
 
-            <Link href={PAGES.HOME} className=" w-full text-2xl font-semibold ">
+            <Link
+              href={user ? PAGES.DASHBOARD : PAGES.HOME}
+              className=" w-full text-2xl font-semibold "
+            >
               FAMIS
             </Link>
           </div>
 
-          <div className=" flex w-full justify-end gap-x-12 gap-y-4 rounded-xl px-3 sm:flex-row sm:px-8 ">
+          <div className=" flex w-full justify-end ">
             {user && (
               <Button
                 onClick={handleLogout}
-                className=" ml-auto flex w-fit items-center gap-x-2 rounded bg-transparent px-4 text-sm text-black duration-300 hover:bg-white/20 "
+                className=" ml-auto flex w-fit items-center gap-x-2 rounded bg-transparent text-sm text-black duration-300 hover:bg-red-50 hover:text-red-700 "
               >
                 <LogOut className=" size-4 " />
                 Log out

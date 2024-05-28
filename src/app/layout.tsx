@@ -4,6 +4,9 @@ import React from "react";
 import "./globals.css";
 import Providers from "./providers";
 import { cn } from "@/lib/utils";
+import { verifyAuth } from "@/server/modules/auth/auth.actions";
+import { redirect } from "next/navigation";
+import { PAGES } from "@/data/page-map";
 
 export const metadata: Metadata = {
   title: "FAMIS",

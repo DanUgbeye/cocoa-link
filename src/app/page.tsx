@@ -1,5 +1,3 @@
-"use client";
-
 import { Container } from "@/components/container";
 import { buttonVariants } from "@/components/ui/button";
 import { PAGES } from "@/data/page-map";

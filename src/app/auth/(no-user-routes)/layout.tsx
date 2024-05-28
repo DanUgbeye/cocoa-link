@@ -7,6 +7,7 @@ import { PropsWithChildren } from "react";
 async function verifyNoUser() {
   "use server";
   const userExists = cookies().get(COOKIE_KEYS.AUTH);
+  
   if (userExists) {
     redirect(PAGES.DASHBOARD);
   }

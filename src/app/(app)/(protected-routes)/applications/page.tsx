@@ -24,10 +24,10 @@ export default async function ViewApplicationsPage() {
   if (!user) redirect(PAGES.HOME);
 
   let applications: FullApplication[];
-  if (user.role !== "admin") {
-    applications = await getAllApplications({ approved: true });
+  if (user.role === "admin") {
+    applications = await getAllApplications({ status: "Pending" });
   } else {
-    applications = await getUserApplications(user._id, { approved: true });
+    applications = await getUserApplications(user._id, { status: "Pending" });
   }
 
   return (
@@ -44,7 +44,7 @@ export default async function ViewApplicationsPage() {
 
         <Card>
           <CardHeader className="px-7">
-            <div className=" ">
+            <div className=" space-y-1 ">
               <CardTitle>Transfer Applications</CardTitle>
               <CardDescription>
                 All transfer applications will appear here
@@ -56,7 +56,7 @@ export default async function ViewApplicationsPage() {
             {applications.length <= 0 ? (
               <>
                 <div className=" py-10 text-center ">
-                  There are no open applications
+                  You have no open transfer applications
                 </div>
               </>
             ) : (

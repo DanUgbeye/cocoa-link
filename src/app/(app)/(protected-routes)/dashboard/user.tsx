@@ -25,7 +25,7 @@ export default async function UserDashboardPage(props: { userId: string }) {
   }
   const assets = await getUserAssets(userId);
   const activeAssets = assets.filter((asset) => asset.status !== "Sold");
-  const applications = await getUserApplications(userId, { approved: true });
+  const applications = await getUserApplications(userId, { status: "Pending" });
 
   return (
     <main className=" py-10 ">
@@ -50,7 +50,7 @@ export default async function UserDashboardPage(props: { userId: string }) {
 
               <div className=" flex justify-end ">
                 <Link
-                  href={PAGES.CREATE_APPLICATION}
+                  href={PAGES.ASSETS}
                   className={cn(
                     buttonVariants({ variant: "link" }),
                     "text-blue-700"
@@ -78,17 +78,33 @@ export default async function UserDashboardPage(props: { userId: string }) {
         {applications.length > 0 && (
           <Card>
             <CardHeader className="px-7">
-              <CardTitle>Transfer Applications</CardTitle>
-              <CardDescription>
-                All transfer applications will appear here
-              </CardDescription>
+              <div className="flex flex-wrap justify-between gap-4">
+                <div className=" space-y-1 ">
+                  <CardTitle>Transfer Applications</CardTitle>
+                  <CardDescription>
+                    All transfer applications will appear here
+                  </CardDescription>
+                </div>
+
+                <div className=" flex justify-end ">
+                  <Link
+                    href={PAGES.APPLICATIONS}
+                    className={cn(
+                      buttonVariants({ variant: "link" }),
+                      "text-blue-700"
+                    )}
+                  >
+                    See all
+                  </Link>
+                </div>
+              </div>
             </CardHeader>
 
             <CardContent>
               {applications.length <= 0 ? (
                 <>
                   <div className=" py-10 text-center ">
-                    There are no open applications
+                    You have no open transfer applications
                   </div>
                 </>
               ) : (

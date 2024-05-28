@@ -2,13 +2,15 @@ import mongoose from "mongoose";
 
 export const applicationSchema = new mongoose.Schema(
   {
-    asset: { type: mongoose.Types.ObjectId, required: true, ref: "assets" },
-    from: { type: mongoose.Types.ObjectId, required: true, ref: "users" },
-    to: { type: mongoose.Types.ObjectId, required: true, ref: "users" },
+    asset: { type: mongoose.Types.ObjectId, required: true, ref: "Asset" },
+    from: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+    to: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
     reason: { type: String },
-    approved: { type: Boolean, default: false },
-    approvedAt: { type: Date, default: null },
-    createdAt: { type: Date, required: true },
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Cancelled"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );
