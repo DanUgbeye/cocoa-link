@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import UsersTable from "@/components/users-table";
+import UsersTable from "@/components/tables/users-table";
 import { PAGES } from "@/data/page-map";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { getAllUsers } from "@/server/modules/user/user.actions";

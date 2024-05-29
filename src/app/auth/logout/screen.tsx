@@ -14,7 +14,7 @@ export default function LogoutScreen(props: { redirect?: string }) {
   return (
     <section>
       <center className=" py-10 ">
-        <Spinner className=" size-10 animate-spin text-blue-600 duration-300 " />
+        <Spinner className=" size-10 animate-spin text-blue-600 duration-700 " />
       </center>
     </section>
   );

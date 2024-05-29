@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const assetSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: true, ref: "users" },
+    userId: { type: String, required: true, ref: "User" },
     name: { type: String, required: true },
     description: { type: String },
     currentLocation: { type: String, required: true },

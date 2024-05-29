@@ -13,6 +13,7 @@ export type ActivityType = (typeof ACTIVITY_TYPE)[keyof typeof ACTIVITY_TYPE];
 
 export interface Activity {
   _id: string;
+  asset: string
   type: ActivityType;
   date: Date;
   amount: number;

@@ -1,7 +1,10 @@
 import { Schema } from "mongoose";
-import { ActivityDocument } from "./activity.types";
 
-export const activitySchema = new Schema<ActivityDocument>({
+export const activitySchema = new Schema({
+  asset: {
+    type: String,
+    ref: "Asset",
+  },
   type: {
     type: String,
     enum: [

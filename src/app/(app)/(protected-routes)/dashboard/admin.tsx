@@ -1,5 +1,5 @@
-import ApplicationsTable from "@/components/applications-table";
-import AssetsTable from "@/components/assets-table";
+import ApplicationsTable from "@/components/tables/applications-table";
+import AssetsTable from "@/components/tables/assets-table";
 import { Container } from "@/components/container";
 import { buttonVariants } from "@/components/ui/button";
 import {

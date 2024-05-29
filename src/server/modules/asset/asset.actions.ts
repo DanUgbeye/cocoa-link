@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "../auth/auth.actions";
 import { AssetDocument } from "./asset.types";
 import { CreateAssetSchema } from "./asset.validation";
+import { z } from "zod";
 
 export async function getAllAssets() {
   try {
@@ -35,6 +36,19 @@ export async function getUserAssets(userId: string) {
   }
 }
 
+export async function getAsset(assetId: string) {
+  try {
+    const db = await connectDB();
+    const assetModel = db.models.Asset as Model<AssetDocument>;
+
+    return JSON.parse(
+      JSON.stringify(await assetModel.findOne({ _id: assetId }))
+    ) as Asset;
+  } catch (error: any) {
+    return undefined;
+  }
+}
+
 export async function createAsset(formState: FormState, formData: FormData) {
   try {
     const user = await getLoggedInUser();
@@ -56,17 +70,52 @@ export async function createAsset(formState: FormState, formData: FormData) {
     const assetModel = db.models.Asset as Model<AssetDocument>;
     await assetModel.create({ ...validData, userId: user._id });
 
-    const response = {
+    revalidatePath(PAGES.DASHBOARD);
+    revalidatePath(PAGES.ASSETS);
+
+    return {
       status: "SUCCESS",
       message: "asset created",
       timestamp: new Date().getTime(),
     } satisfies FormState;
+  } catch (error: any) {
+    console.log(error);
+    return fromErrorToFormState(error);
+  }
+}
+
+export async function deleteAsset(formState: FormState, formData: FormData) {
+  try {
+    const user = await getLoggedInUser();
+    if (!user) {
+      throw new Error("Unauthorised");
+    }
+
+    let assetId = z.string().parse(formData.get("assetId"));
+
+    const db = await connectDB();
+    const assetModel = db.models.Asset as Model<AssetDocument>;
+    const asset = (await assetModel.findOne({ _id: assetId })) as Asset | null;
+
+    if (!asset) {
+      throw new Error("asset not found");
+    }
+
+    if (user.role !== "admin" && asset.userId !== user._id) {
+      throw new Error("Unauthorised");
+    }
+
+    await assetModel.deleteOne({ _id: assetId });
 
     revalidatePath(PAGES.DASHBOARD);
     revalidatePath(PAGES.ASSETS);
-    return response;
+
+    return {
+      status: "SUCCESS",
+      message: "asset deleted",
+      timestamp: new Date().getTime(),
+    } satisfies FormState;
   } catch (error: any) {
-    console.log(error);
     return fromErrorToFormState(error);
   }
 }

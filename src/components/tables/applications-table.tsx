@@ -21,8 +21,8 @@ import { UserRole } from "@/types";
 import { FullApplication } from "@/types/application.types";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
-import FormButton from "./form-button";
-import Spinner from "./spinner";
+import FormButton from "../form-button";
+import Spinner from "../spinner";
 
 export default function ApplicationsTable(props: {
   applications: FullApplication[];

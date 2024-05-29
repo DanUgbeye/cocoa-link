@@ -14,8 +14,8 @@ import { deleteUser } from "@/server/modules/user/user.actions";
 import { User } from "@/types";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
-import FormButton from "./form-button";
-import Spinner from "./spinner";
+import FormButton from "../form-button";
+import Spinner from "../spinner";
 
 export default function UsersTable(props: { users: User[] }) {
   const { users } = props;
