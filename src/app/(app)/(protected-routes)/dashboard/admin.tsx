@@ -1,4 +1,7 @@
+import ApplicationsTable from "@/components/applications-table";
+import AssetsTable from "@/components/assets-table";
 import { Container } from "@/components/container";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,16 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getAllAssets } from "@/server/modules/asset/asset.actions";
-import AssetsTable from "../../../../components/assets-table";
-import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { PAGES } from "@/data/page-map";
-import { redirect } from "next/navigation";
-import ApplicationsTable from "../../../../components/applications-table";
-import { getAllApplications } from "@/server/modules/applications/application.actions";
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getAllApplications } from "@/server/modules/applications/application.actions";
+import { getAllAssets } from "@/server/modules/asset/asset.actions";
+import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function AdminDashboardPage(props: { userId: string }) {
   const { userId } = props;
@@ -25,8 +25,10 @@ export default async function AdminDashboardPage(props: { userId: string }) {
   }
   const assets = await getAllAssets();
   const activeAssets = assets.filter((asset) => asset.status !== "Sold");
-  const applications = await getAllApplications({ status: "Pending" });
-
+  const applications = (await getAllApplications()).filter(
+    (app) => app.status === "Pending"
+  );
+  
   return (
     <main className=" py-10 ">
       <Container className=" space-y-10 ">

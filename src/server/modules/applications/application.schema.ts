@@ -2,13 +2,28 @@ import mongoose from "mongoose";
 
 export const applicationSchema = new mongoose.Schema(
   {
-    asset: { type: mongoose.Types.ObjectId, required: true, ref: "Asset" },
-    from: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
-    to: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+    asset: {
+      type: String,
+      unique: false,
+      required: true,
+      ref: "Asset",
+    },
+    from: {
+      type: String,
+      unique: false,
+      required: true,
+      ref: "User",
+    },
+    to: {
+      type: String,
+      unique: false,
+      required: true,
+      ref: "User",
+    },
     reason: { type: String },
     status: {
       type: String,
-      enum: ["Pending", "Approved", "Cancelled"],
+      enum: ["Pending", "Approved", "Rejected"],
       default: "Pending",
     },
   },

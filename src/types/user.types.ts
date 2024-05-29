@@ -10,6 +10,8 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type UserLoginData = {

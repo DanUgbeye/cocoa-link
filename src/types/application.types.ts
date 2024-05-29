@@ -1,7 +1,7 @@
 import { Asset } from "./asset.types";
 import { User } from "./user.types";
 
-export type ApplicationStatus = "Pending" | "Approved" | "Cancelled";
+export type ApplicationStatus = "Pending" | "Approved" | "Rejected";
 
 export type Application = {
   _id: string;

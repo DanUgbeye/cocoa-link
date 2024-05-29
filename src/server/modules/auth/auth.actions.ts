@@ -32,6 +32,7 @@ export async function signupUser(formState: FormState, formData: FormData) {
     if (await userRepo.collection.findOne({ email: validData.email })) {
       throw new Error("email already exists");
     }
+    
     validData.password = await passwordUtil.hashPassword(validData.password);
     const res = await userRepo.signup(validData);
 

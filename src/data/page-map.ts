@@ -14,5 +14,6 @@ export const PAGES = {
   APPLICATIONS: "/applications",
   CREATE_APPLICATION: "/applications/create",
 
+  USERS: "/users",
   ADD_USER: "/users/add",
 } as const;

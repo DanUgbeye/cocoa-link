@@ -45,12 +45,12 @@ export default class UserRepository {
    * registers a new user
    * @param data user data
    */
-  async signup(data: Omit<User, "_id" | "role">) {
+  async signup(data: Omit<User, "_id" | "role" | "createdAt" | "updatedAt">) {
     let newUser: any = { ...data };
     let user: UserDocument;
 
     try {
-      newUser.password = await passwordUtil.hashPassword(newUser.password);
+      // newUser.password = await passwordUtil.hashPassword(newUser.password);
       newUser.role = USER_ROLES.USER;
 
       user = await this.collection.create(data);

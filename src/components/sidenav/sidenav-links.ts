@@ -1,6 +1,14 @@
 import { PAGES } from "@/data/page-map";
 import { SideNavLinkGroupData } from "@/types/sidenav.types";
-import { Folder, FolderPlus, FolderSync, Home, UserPlus } from "lucide-react";
+import {
+  Folder,
+  FolderPlus,
+  FolderSync,
+  Home,
+  User,
+  User2,
+  UserPlus,
+} from "lucide-react";
 
 export const ADMIN_SIDENAV_LINKS: SideNavLinkGroupData[] = [
   {
@@ -32,9 +40,9 @@ export const ADMIN_SIDENAV_LINKS: SideNavLinkGroupData[] = [
     groupName: "Users",
     links: [
       {
-        name: "Add User",
-        href: PAGES.ADD_USER,
-        icon: UserPlus,
+        name: "View Users",
+        href: PAGES.USERS,
+        icon: User,
       },
     ],
   },

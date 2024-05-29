@@ -1,4 +1,6 @@
+import ApplicationsTable from "@/components/applications-table";
 import { Container } from "@/components/container";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,17 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
+import { cn } from "@/lib/utils";
 import {
   getAllApplications,
   getUserApplications,
 } from "@/server/modules/applications/application.actions";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
-import { redirect } from "next/navigation";
-import ApplicationsTable from "../../../../components/applications-table";
 import { FullApplication } from "@/types/application.types";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
 export default async function ViewApplicationsPage() {
   const user = await getLoggedInUser();
@@ -25,22 +25,31 @@ export default async function ViewApplicationsPage() {
 
   let applications: FullApplication[];
   if (user.role === "admin") {
-    applications = await getAllApplications({ status: "Pending" });
+    applications = (await getAllApplications()).filter(
+      (app) => app.status === "Pending"
+    );
   } else {
-    applications = await getUserApplications(user._id, { status: "Pending" });
+    applications = (await getUserApplications(user._id)).filter(
+      (app) => app.status === "Pending"
+    );
   }
 
   return (
     <main className=" py-10 ">
       <Container className=" space-y-5 ">
-        <div className=" flex justify-end ">
-          <Link
-            href={PAGES.CREATE_APPLICATION}
-            className={cn(buttonVariants({}), " bg-blue-700 hover:bg-blue-600")}
-          >
-            Transfer Asset
-          </Link>
-        </div>
+        {user.role === "user" && (
+          <div className=" flex justify-end ">
+            <Link
+              href={PAGES.CREATE_APPLICATION}
+              className={cn(
+                buttonVariants({}),
+                " bg-blue-700 hover:bg-blue-600"
+              )}
+            >
+              Transfer Asset
+            </Link>,
+          </div>
+        )}
 
         <Card>
           <CardHeader className="px-7">

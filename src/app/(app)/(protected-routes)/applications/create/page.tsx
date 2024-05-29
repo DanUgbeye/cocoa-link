@@ -12,20 +12,22 @@ import TransferAssetScreen from "./screen";
 export default async function TransferAssetPage() {
   const user = await getLoggedInUser();
 
-  if (!user) {
+  if (!user || user.role === "admin") {
     redirect(PAGES.DASHBOARD);
   }
 
   const appUsers = await getAllUsers();
-  let assets: Asset[];
+  let assets: Asset[]  = (await getUserAssets(user._id)).filter(
+    (asset) => asset.status !== "Sold"
+  );;
 
-  if (user.role === "admin") {
-    assets = (await getAllAssets()).filter((asset) => asset.status !== "Sold");
-  } else {
-    assets = (await getUserAssets(user._id)).filter(
-      (asset) => asset.status !== "Sold"
-    );
-  }
+  // if (user.role === "admin") {
+  //   assets = (await getAllAssets()).filter((asset) => asset.status !== "Sold");
+  // } else {
+  //   assets = (await getUserAssets(user._id)).filter(
+  //     (asset) => asset.status !== "Sold"
+  //   );
+  // }
 
   return (
     <TransferAssetScreen

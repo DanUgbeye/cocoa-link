@@ -1,13 +1,6 @@
-import { PAGES } from "@/data/page-map";
-import {
-  getAllAssets,
-  getUserAssets,
-} from "@/server/modules/asset/asset.actions";
-import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
-import { Asset } from "@/types/asset.types";
-import { redirect } from "next/navigation";
-import AssetsTable from "../../../../components/assets-table";
+import AssetsTable from "@/components/assets-table";
 import { Container } from "@/components/container";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,9 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
+import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import {
+  getAllAssets,
+  getUserAssets,
+} from "@/server/modules/asset/asset.actions";
+import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
+import { Asset } from "@/types/asset.types";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function ViewAssetsPage() {
   const user = await getLoggedInUser();

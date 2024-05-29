@@ -10,17 +10,19 @@ import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "../auth/auth.actions";
 import { ApplicationDocument } from "./application.types";
 import { CreateApplicationSchema } from "./application.validation";
+import { Asset } from "@/types/asset.types";
+import { ActivityDocument } from "../activity/activity.types";
+import { z } from "zod";
+import { AssetDocument } from "../asset/asset.types";
 
-export async function getAllApplications(filter?: {
-  status?: ApplicationStatus;
-}) {
+export async function getAllApplications() {
   try {
     const db = await connectDB();
     const applicationModel = db.models
       .Application as Model<ApplicationDocument>;
 
     const applications = await applicationModel
-      .find(filter || {})
+      .find()
       .populate("asset")
       .populate("from", "-password")
       .populate("to", "-password");
@@ -32,26 +34,21 @@ export async function getAllApplications(filter?: {
   }
 }
 
-export async function getUserApplications(
-  userId: string,
-  filter?: { status?: ApplicationStatus }
-) {
+export async function getUserApplications(userId: string) {
   try {
     const db = await connectDB();
     const applicationModel = db.models
       .Application as Model<ApplicationDocument>;
 
     const applications = await applicationModel
-      .find({
-        userId,
-        ...(filter || {}),
-      })
+      .find({ from: userId })
       .populate("asset", "")
       .populate("from", "-password")
       .populate("to", "-password");
 
     return JSON.parse(JSON.stringify(applications)) as FullApplication[];
   } catch (error: any) {
+    console.log(error);
     return [];
   }
 }
@@ -90,6 +87,176 @@ export async function createApplication(
     revalidatePath(PAGES.DASHBOARD);
     revalidatePath(PAGES.APPLICATIONS);
     return response;
+  } catch (error: any) {
+    return fromErrorToFormState(error);
+  }
+}
+
+export async function approveApplication(
+  formState: FormState,
+  formData: FormData
+) {
+  try {
+    const user = await getLoggedInUser();
+    if (!user) {
+      throw new Error("Unauthorised");
+    }
+
+    let applicationId = z.string().parse(formData.get("applicationId"));
+    const db = await connectDB();
+    const applicationModel = db.models
+      .Application as Model<ApplicationDocument>;
+    const application = await applicationModel
+      .findOne({ _id: applicationId })
+      .populate("asset");
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    if (user.role !== "admin") {
+      if (
+        application.asset &&
+        (application.asset as unknown as Asset).userId !== user._id
+      ) {
+        throw new Error("Unauthorised");
+      }
+    }
+
+    const res = await applicationModel.updateOne(
+      { _id: applicationId },
+      { status: "Approved" },
+      { new: true }
+    );
+
+    if (!res) {
+      throw new Error("Application not found");
+    }
+
+    // CHANGE ASSET OWNER
+    const assetModel = db.models.Asset as Model<AssetDocument>;
+    await assetModel.updateOne(
+      {
+        _id: (application.asset as unknown as Asset)._id,
+      },
+      { userId: application.to }
+    );
+
+    // ADD NEW ACTIVITY
+    const activityModel = db.models.Activity as Model<ActivityDocument>;
+    await activityModel.create({ type: "Transfer" });
+
+    revalidatePath(PAGES.APPLICATIONS);
+    revalidatePath(PAGES.DASHBOARD);
+
+    return {
+      status: "SUCCESS",
+      message: "transfer approved",
+      timestamp: new Date().getTime(),
+    } satisfies FormState;
+  } catch (error: any) {
+    return fromErrorToFormState(error);
+  }
+}
+
+export async function rejectApplication(
+  formState: FormState,
+  formData: FormData
+) {
+  try {
+    const user = await getLoggedInUser();
+    if (!user) {
+      throw new Error("Unauthorised");
+    }
+
+    let applicationId = z.string().parse(formData.get("applicationId"));
+    const db = await connectDB();
+    const applicationModel = db.models
+      .Application as Model<ApplicationDocument>;
+    const application = await applicationModel
+      .findOne({ _id: applicationId })
+      .populate("asset");
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    if (user.role !== "admin") {
+      if (
+        application.asset &&
+        (application.asset as unknown as Asset).userId !== user._id
+      ) {
+        throw new Error("Unauthorised");
+      }
+    }
+
+    const res = await applicationModel.updateOne(
+      { _id: applicationId },
+      { status: "Rejected" },
+      { new: true }
+    );
+
+    if (!res) {
+      throw new Error("Application not found");
+    }
+
+    revalidatePath(PAGES.APPLICATIONS);
+    revalidatePath(PAGES.DASHBOARD);
+
+    return {
+      status: "SUCCESS",
+      message: "transfer rejected",
+      timestamp: new Date().getTime(),
+    } satisfies FormState;
+  } catch (error: any) {
+    return fromErrorToFormState(error);
+  }
+}
+
+export async function deleteApplication(
+  formState: FormState,
+  formData: FormData
+) {
+  try {
+    const user = await getLoggedInUser();
+    if (!user) {
+      throw new Error("Unauthorised");
+    }
+
+    let applicationId = z.string().parse(formData.get("applicationId"));
+    const db = await connectDB();
+    const applicationModel = db.models
+      .Application as Model<ApplicationDocument>;
+    const application = await applicationModel
+      .findOne({ _id: applicationId })
+      .populate("asset");
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    if (user.role !== "admin") {
+      if (
+        application.asset &&
+        (application.asset as unknown as Asset).userId !== user._id
+      ) {
+        throw new Error("Unauthorised");
+      }
+    }
+
+    const res = await applicationModel.deleteOne({ _id: applicationId });
+    if (!res) {
+      throw new Error("Application not found");
+    }
+
+    revalidatePath(PAGES.APPLICATIONS);
+    revalidatePath(PAGES.DASHBOARD);
+
+    return {
+      status: "SUCCESS",
+      message: "transfer deleted",
+      timestamp: new Date().getTime(),
+    } satisfies FormState;
   } catch (error: any) {
     return fromErrorToFormState(error);
   }

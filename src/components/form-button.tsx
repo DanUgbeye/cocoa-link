@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { Button, ButtonProps } from "./ui/button";
+import React from "react";
 import { useFormStatus } from "react-dom";
-import Spinner from "./spinner";
+import { Button, ButtonProps } from "./ui/button";
 
 interface FormButtonProps extends Omit<ButtonProps, "children"> {
   children?: React.ElementType<{ loading: boolean }> | React.ReactNode;
