@@ -48,7 +48,7 @@ export default function Navbar(props: NavbarProps) {
             {user && (
               <Button
                 onClick={handleLogout}
-                className=" ml-auto flex w-fit items-center gap-x-2 rounded bg-transparent text-sm text-black duration-300 hover:bg-red-50 hover:text-red-700 "
+                className=" ml-auto flex w-fit items-center gap-x-2 rounded bg-transparent text-sm text-red-600 duration-300 hover:bg-red-50 hover:text-red-700 "
               >
                 <LogOut className=" size-4 " />
                 Log out
