@@ -37,8 +37,36 @@ export async function createActivity(formState: FormState, formData: FormData) {
       amount: formData.get("amount") || 0,
     });
 
+    // VERIFY THE ACTIVITY TYPE & AMOUNT SIGN
+    switch (true) {
+      case ["Repair", "Upgrade", "Maintenance", "Purchase"].includes(
+        validData.type
+      ): {
+        if (validData.amount !== 0 && validData.amount > 0) {
+          validData.amount = -validData.amount;
+        }
+        break;
+      }
+
+      case ["Damage", "Inspection", "Transfer"].includes(validData.type): {
+        if (validData.amount !== 0) {
+          validData.amount = 0;
+        }
+
+        break;
+      }
+
+      case ["Sale"].includes(validData.type): {
+        if (validData.amount < 0) {
+          validData.amount = Math.abs(validData.amount);
+        }
+
+        break;
+      }
+    }
+
     const db = await connectDB();
-    const activityModel = db.models.Asset as Model<ActivityDocument>;
+    const activityModel = db.models.Activity as Model<ActivityDocument>;
     await activityModel.create({ ...validData });
 
     revalidatePath(PAGES.DASHBOARD);

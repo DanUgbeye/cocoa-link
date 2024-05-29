@@ -43,7 +43,7 @@ export default function ActivityTable(props: {
 
               <TableCell className="text-center">
                 <Badge
-                  className={cn("w-[5rem] justify-center py-1 text-xs", {
+                  className={cn("w-[7rem] justify-center py-1.5 text-xs", {
                     " bg-sky-200 text-sky-600 hover:bg-sky-200 ":
                       activity.type === "Transfer" ||
                       activity.type === "Purchase" ||
@@ -70,7 +70,7 @@ export default function ActivityTable(props: {
                     " text-red-500 ": activity.amount < 0,
                   })}
                 >
-                  {activity.amount > 0
+                  {activity.amount !== 0
                     ? activity.amount.toLocaleString(undefined, {
                         style: "currency",
                         currency: "NGN",

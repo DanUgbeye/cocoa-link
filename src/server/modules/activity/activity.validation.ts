@@ -13,5 +13,5 @@ export const createActivitySchema = z.object({
     "Transfer",
   ]),
   date: z.coerce.date().nullable().default(new Date()),
-  amount: z.number().nullable().default(0),
+  amount: z.number({ coerce: true }).default(0),
 });

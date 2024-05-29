@@ -89,7 +89,7 @@ export default function ViewAssetScreen(props: {
 
                         <FormButton
                           className={cn(
-                            " h-9 bg-red-600 items-center gap-2 w-[6rem] p-0 hover:bg-red-500"
+                            " h-9 w-[6rem] items-center gap-2 bg-red-600 p-0 hover:bg-red-500"
                           )}
                         >
                           {({ loading }) =>
@@ -238,10 +238,10 @@ export default function ViewAssetScreen(props: {
                   <CardDescription>All asset activities</CardDescription>
 
                   <Link
-                    href={`${PAGES.ASSETS}/${asset._id}/edit`}
+                    href={`${PAGES.ASSETS}/${asset._id}/activity`}
                     className={cn(
                       buttonVariants(),
-                      " h-9 gap-2 bg-green-600 p-0 pl-2 pr-4 text-xs hover:bg-green-500"
+                      " h-9 gap-2 bg-green-600 p-0 pl-4 pr-6 text-xs hover:bg-green-500"
                     )}
                   >
                     <Plus className=" size-4 " />
