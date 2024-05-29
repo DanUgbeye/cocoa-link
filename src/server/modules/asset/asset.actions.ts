@@ -11,6 +11,7 @@ import { getLoggedInUser } from "../auth/auth.actions";
 import { AssetDocument } from "./asset.types";
 import { CreateAssetSchema } from "./asset.validation";
 import { z } from "zod";
+import { ActivityDocument } from "../activity/activity.types";
 
 export async function getAllAssets() {
   try {
@@ -55,6 +56,7 @@ export async function createAsset(formState: FormState, formData: FormData) {
     if (!user) {
       throw new Error("Unauthorised");
     }
+    console.log(JSON.stringify(formData.entries(), null, 2), "formData");
 
     let validData = CreateAssetSchema.parse({
       name: formData.get("name"),
@@ -65,10 +67,22 @@ export async function createAsset(formState: FormState, formData: FormData) {
       purchaseCost: formData.get("purchaseCost"),
       status: formData.get("status") || "Active",
     });
+    console.log(JSON.stringify(validData), "validData")
 
     const db = await connectDB();
     const assetModel = db.models.Asset as Model<AssetDocument>;
-    await assetModel.create({ ...validData, userId: user._id });
+    const asset = (await assetModel.create({
+      ...validData,
+      userId: user._id,
+    })) as unknown as Asset;
+
+    const activityModel = db.models.Activity as Model<ActivityDocument>;
+    await activityModel.create({
+      asset: asset._id,
+      type: "Purchase",
+      date: asset.acquisitionDate,
+      amount: asset.purchaseCost,
+    });
 
     revalidatePath(PAGES.DASHBOARD);
     revalidatePath(PAGES.ASSETS);

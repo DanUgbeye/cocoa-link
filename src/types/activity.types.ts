@@ -1,7 +1,7 @@
 export const ACTIVITY_TYPE = {
   DAMAGE: "Damage",
   REPAIR: "Repair",
-  UPGRADE: "Upgade",
+  UPGRADE: "Upgrade",
   MAINTENANCE: "Maintenance",
   PURCHASE: "Purchase",
   INSPECTION: "Inspection",

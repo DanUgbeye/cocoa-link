@@ -44,10 +44,18 @@ export default function ActivityTable(props: {
               <TableCell className="text-center">
                 <Badge
                   className={cn("w-[5rem] justify-center py-1 text-xs", {
+                    " bg-sky-200 text-sky-600 hover:bg-sky-200 ":
+                      activity.type === "Transfer" ||
+                      activity.type === "Purchase" ||
+                      activity.type === "Inspection",
                     " bg-green-200 text-green-600 hover:bg-green-200 ":
-                      activity.type === "Transfer",
+                      activity.type === "Repair" ||
+                      activity.type === "Upgrade" ||
+                      activity.type === "Maintenance",
                     " bg-amber-200 text-amber-600 hover:bg-amber-200 ":
                       activity.type === "Damage",
+                    " bg-red-200 text-red-600 hover:bg-red-200 ":
+                      activity.type === "Sale",
                   })}
                   variant="secondary"
                 >
@@ -56,13 +64,20 @@ export default function ActivityTable(props: {
               </TableCell>
 
               <TableCell className="text-right">
-                {activity.amount > 0
-                  ? activity.amount.toLocaleString(undefined, {
-                      style: "currency",
-                      currency: "NGN",
-                      maximumFractionDigits: 0,
-                    })
-                  : "-"}
+                <div
+                  className={cn({
+                    " text-green-500 ": activity.amount > 0,
+                    " text-red-500 ": activity.amount < 0,
+                  })}
+                >
+                  {activity.amount > 0
+                    ? activity.amount.toLocaleString(undefined, {
+                        style: "currency",
+                        currency: "NGN",
+                        maximumFractionDigits: 0,
+                      })
+                    : "-"}
+                </div>
               </TableCell>
             </TableRow>
           );

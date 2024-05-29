@@ -27,10 +27,10 @@ export default function AssetsTable(props: { assets: Asset[] }) {
           <TableHead className="hidden text-center sm:table-cell">
             Location
           </TableHead>
-
+          {/* 
           <TableHead className="hidden text-center sm:table-cell">
             Status
-          </TableHead>
+          </TableHead> */}
 
           <TableHead className="hidden text-center md:table-cell">
             Acquisition Date
@@ -67,7 +67,7 @@ export default function AssetsTable(props: { assets: Asset[] }) {
                 {asset.currentLocation}
               </TableCell>
 
-              <TableCell className="hidden text-center sm:table-cell">
+              {/* <TableCell className="hidden text-center sm:table-cell">
                 <Badge
                   className={cn("w-[5rem] justify-center py-1 text-xs", {
                     " bg-green-200 text-green-600 hover:bg-green-200 ":
@@ -81,7 +81,7 @@ export default function AssetsTable(props: { assets: Asset[] }) {
                 >
                   {asset.status}
                 </Badge>
-              </TableCell>
+              </TableCell> */}
 
               <TableCell className="hidden text-center md:table-cell">
                 {new Date(asset.acquisitionDate).toLocaleDateString()}

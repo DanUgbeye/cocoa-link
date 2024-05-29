@@ -16,15 +16,7 @@ export default async function ViewAssetDetailsPage(props: {
   if (!user) redirect(PAGES.HOME);
 
   const asset = await getAsset(assetId);
-  if (!asset) {
-    return (
-      <div className=" px-10 py-10 text-4xl font-semibold text-amber-600 ">
-        <center>Asset Not Found!</center>
-      </div>
-    );
-  }
+  const assetActivities = asset ? await getAssetActivities(assetId) : [];
 
-  const assetActivities = await getAssetActivities(assetId);
-  
   return <ViewAssetScreen asset={asset} activities={assetActivities} />;
 }
