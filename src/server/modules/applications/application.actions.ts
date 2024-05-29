@@ -5,19 +5,18 @@ import { fromErrorToFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
 import {
   Application,
-  ApplicationStatus,
-  FullApplication,
+  FullApplication
 } from "@/types/application.types";
+import { Asset } from "@/types/asset.types";
 import { FormState } from "@/types/form.types";
 import { Model } from "mongoose";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { ActivityDocument } from "../activity/activity.types";
+import { AssetDocument } from "../asset/asset.types";
 import { getLoggedInUser } from "../auth/auth.actions";
 import { ApplicationDocument } from "./application.types";
 import { CreateApplicationSchema } from "./application.validation";
-import { Asset } from "@/types/asset.types";
-import { ActivityDocument } from "../activity/activity.types";
-import { z } from "zod";
-import { AssetDocument } from "../asset/asset.types";
 
 export async function getAllApplications() {
   try {
@@ -111,7 +110,10 @@ export async function createApplication(
 
       // ADD NEW ACTIVITY
       const activityModel = db.models.Activity as Model<ActivityDocument>;
-      await activityModel.create({ type: "Transfer" });
+      await activityModel.create({
+        asset: fullApplication.asset._id,
+        type: "Transfer",
+      });
     }
 
     const response = {
@@ -142,19 +144,18 @@ export async function approveApplication(
     const db = await connectDB();
     const applicationModel = db.models
       .Application as Model<ApplicationDocument>;
-    const application = await applicationModel
+    const application = (await applicationModel
       .findOne({ _id: applicationId })
-      .populate("asset");
+      .populate("asset")) as unknown as Omit<Application, "asset"> & {
+      asset: Asset;
+    };
 
     if (!application) {
       throw new Error("Application not found");
     }
 
     if (user.role !== "admin") {
-      if (
-        application.asset &&
-        (application.asset as unknown as Asset).userId !== user._id
-      ) {
+      if (application.asset && application.asset.userId !== user._id) {
         throw new Error("Unauthorised");
       }
     }
@@ -173,14 +174,17 @@ export async function approveApplication(
     const assetModel = db.models.Asset as Model<AssetDocument>;
     await assetModel.updateOne(
       {
-        _id: (application.asset as unknown as Asset)._id,
+        _id: application.asset._id,
       },
       { userId: application.to }
     );
 
     // ADD NEW ACTIVITY
     const activityModel = db.models.Activity as Model<ActivityDocument>;
-    await activityModel.create({ type: "Transfer" });
+    await activityModel.create({
+      asset: application.asset._id,
+      type: "Transfer",
+    });
 
     revalidatePath(PAGES.APPLICATIONS);
     revalidatePath(PAGES.DASHBOARD);

@@ -23,15 +23,11 @@ export default function ActivityTable(props: {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="hidden text-center md:table-cell">
-            Date
-          </TableHead>
+          <TableHead className="">Date</TableHead>
 
-          <TableHead className="hidden text-center lg:table-cell">
-            Activity
-          </TableHead>
+          <TableHead className="text-center">Activity</TableHead>
 
-          <TableHead className="text-center">Amount</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
         </TableRow>
       </TableHeader>
 
@@ -59,12 +55,14 @@ export default function ActivityTable(props: {
                 </Badge>
               </TableCell>
 
-              <TableCell className="hidden text-center lg:table-cell">
-                {activity.amount.toLocaleString(undefined, {
-                  style: "currency",
-                  currency: "NGN",
-                  maximumFractionDigits: 0,
-                })}
+              <TableCell className="text-right">
+                {activity.amount > 0
+                  ? activity.amount.toLocaleString(undefined, {
+                      style: "currency",
+                      currency: "NGN",
+                      maximumFractionDigits: 0,
+                    })
+                  : "-"}
               </TableCell>
             </TableRow>
           );

@@ -4,6 +4,7 @@ export const activitySchema = new Schema({
   asset: {
     type: String,
     ref: "Asset",
+    required: true,
   },
   type: {
     type: String,
