@@ -36,6 +36,10 @@ export default function AssetsTable(props: { assets: Asset[] }) {
             Acquisition Date
           </TableHead>
 
+          <TableHead className="hidden text-right md:table-cell">
+            Initial Cost
+          </TableHead>
+
           <TableHead className="text-center">Current Value</TableHead>
 
           <TableHead className="text-center"></TableHead>
@@ -83,20 +87,38 @@ export default function AssetsTable(props: { assets: Asset[] }) {
                 {new Date(asset.acquisitionDate).toLocaleDateString()}
               </TableCell>
 
+              <TableCell className="hidden text-right md:table-cell">
+                {asset.purchaseCost.toLocaleString(undefined, {
+                  style: "currency",
+                  currency: "NGN",
+                  notation: "compact",
+                })}
+              </TableCell>
+
               <TableCell className="text-right">
-                <div className=" mx-auto size-10 ">
-                  <RoundProgressBar
-                    value={Number(
-                      asset.currentValuePercentage.toLocaleString(undefined, {
-                        maximumFractionDigits: 0,
-                      })
-                    )}
-                    text={`${Number(
-                      asset.currentValuePercentage.toLocaleString(undefined, {
-                        maximumFractionDigits: 0,
-                      })
-                    )}%`}
-                  />
+                <div className=" flex items-center gap-x-2 ">
+                  <div className=" mx-auto size-10 ">
+                    <RoundProgressBar
+                      value={Number(
+                        asset.currentValuePercentage.toLocaleString(undefined, {
+                          maximumFractionDigits: 0,
+                        })
+                      )}
+                      text={`${Number(
+                        asset.currentValuePercentage.toLocaleString(undefined, {
+                          maximumFractionDigits: 0,
+                        })
+                      )}%`}
+                    />
+                  </div>
+
+                  <div className=" ">
+                    {asset.currentValue.toLocaleString(undefined, {
+                      style: "currency",
+                      currency: "NGN",
+                      notation: "compact",
+                    })}
+                  </div>
                 </div>
               </TableCell>
 

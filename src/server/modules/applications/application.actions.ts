@@ -3,7 +3,11 @@
 import { PAGES } from "@/data/page-map";
 import { fromErrorToFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
-import { ApplicationStatus, FullApplication } from "@/types/application.types";
+import {
+  Application,
+  ApplicationStatus,
+  FullApplication,
+} from "@/types/application.types";
 import { FormState } from "@/types/form.types";
 import { Model } from "mongoose";
 import { revalidatePath } from "next/cache";
@@ -73,10 +77,42 @@ export async function createApplication(
     const db = await connectDB();
     const applicationModel = db.models
       .Application as Model<ApplicationDocument>;
-    await applicationModel.create({
+
+    let alreadyExists = await applicationModel.findOne({
+      from: validData.from,
+      to: validData.to,
+      asset: validData.asset,
+      status: "Pending",
+    });
+
+    if (alreadyExists) {
+      throw new Error("pending application exists for this asset");
+    }
+
+    const application = await applicationModel.create({
       ...validData,
       status: user.role === "admin" ? "Approved" : "Pending",
     });
+
+    const fullApplication = (await application.populate("asset")) as Omit<
+      Application,
+      "asset"
+    > & { asset: Asset };
+
+    if (user.role === "admin") {
+      // CHANGE ASSET OWNER
+      const assetModel = db.models.Asset as Model<AssetDocument>;
+      await assetModel.updateOne(
+        {
+          _id: fullApplication.asset._id,
+        },
+        { userId: fullApplication.to }
+      );
+
+      // ADD NEW ACTIVITY
+      const activityModel = db.models.Activity as Model<ActivityDocument>;
+      await activityModel.create({ type: "Transfer" });
+    }
 
     const response = {
       status: "SUCCESS",
