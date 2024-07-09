@@ -45,7 +45,6 @@ export async function signup(formState: FormState, formData: FormData) {
     let user: UserDocument;
 
     try {
-      // newUser.password = await passwordUtil.hashPassword(newUser.password);
       user = await userCollection.create(validData);
     } catch (error: any) {
       throw new ServerException(error.message);
@@ -63,11 +62,11 @@ export async function signup(formState: FormState, formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       maxAge: expiresIn,
     });
+
+    redirect(PAGES.DASHBOARD);
   } catch (error: any) {
     return fromErrorToFormState(error);
   }
-
-  redirect(PAGES.DASHBOARD);
 }
 
 export async function login(formState: FormState, formData: FormData) {
@@ -106,11 +105,11 @@ export async function login(formState: FormState, formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       maxAge: expiresIn,
     });
+
+    redirect(PAGES.DASHBOARD);
   } catch (error: any) {
     return fromErrorToFormState(error);
   }
-
-  redirect(PAGES.DASHBOARD);
 }
 
 export async function logout(redirectUrl?: string) {
