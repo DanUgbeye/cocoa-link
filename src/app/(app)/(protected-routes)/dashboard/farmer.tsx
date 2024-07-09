@@ -25,7 +25,7 @@ export default function FarmerDashboardPage(props: { userId: string }) {
       <Container className=" space-y-10 ">
         <div className=" space-y-1 ">
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-            Welcome {user!.name}
+            Welcome {user?.name}
           </h1>
 
           <div className=" text-sm text-neutral-400 ">
