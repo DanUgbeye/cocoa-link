@@ -1,7 +1,6 @@
 import { model } from "mongoose";
-import { activitySchema } from "../modules/activity/activity.schema";
-import { applicationSchema } from "../modules/applications/application.schema";
-import { assetSchema } from "../modules/asset/asset.schema";
+import { CocoaStoreSchema } from "../modules/cocoa-store/cocoa-store.schema";
+import { TransactionSchema } from "../modules/transaction/transaction.schema";
 import { userSchema } from "../modules/user/user.schema";
 
 export default function registerModels() {
@@ -9,14 +8,11 @@ export default function registerModels() {
     console.log("Registering User Model");
     model("User", userSchema);
 
-    console.log("Registering Asset Model");
-    model("Asset", assetSchema);
+    console.log("Registering CocoaStore Model");
+    model("CocoaStore", CocoaStoreSchema);
 
-    console.log("Registering Activity Model");
-    model("Activity", activitySchema);
-
-    console.log("Registering Application Model");
-    model("Application", applicationSchema);
+    console.log("Registering Transaction Model");
+    model("Transaction", TransactionSchema);
 
     global.registeredModels = true;
   }

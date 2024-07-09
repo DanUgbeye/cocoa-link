@@ -21,7 +21,7 @@ export default class UserRepository {
    * @param credentials user credentials
    * @param role the user role to login
    */
-  async login(credentials: UserLoginData, role: UserRole = USER_ROLES.USER) {
+  async login(credentials: UserLoginData, role: UserRole = USER_ROLES.FARMER) {
     const { email, password } = credentials;
 
     let user: UserDocument | null;
@@ -45,13 +45,16 @@ export default class UserRepository {
    * registers a new user
    * @param data user data
    */
-  async signup(data: Omit<User, "_id" | "role" | "createdAt" | "updatedAt">) {
+  async signup(
+    data: Omit<User, "_id" | "role" | "createdAt" | "updatedAt">,
+    role: UserRole = USER_ROLES.FARMER
+  ) {
     let newUser: any = { ...data };
     let user: UserDocument;
 
     try {
       // newUser.password = await passwordUtil.hashPassword(newUser.password);
-      newUser.role = USER_ROLES.USER;
+      newUser.role = role;
 
       user = await this.collection.create(data);
     } catch (error: any) {

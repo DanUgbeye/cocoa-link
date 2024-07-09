@@ -53,7 +53,7 @@ async function connectDB(): Promise<typeof _mongoose> {
       cached.conn = await cached.promise;
       if (!registered) {
         registerModels();
-        await setupDB(cached.conn);
+        // await setupDB(cached.conn);
         registered = true;
       }
     }

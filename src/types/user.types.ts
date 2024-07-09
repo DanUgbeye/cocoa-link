@@ -1,18 +1,18 @@
 export const USER_ROLES = {
-  ADMIN: "admin",
-  USER: "user",
+  INDUSTRY: "industry",
+  FARMER: "farmer",
 } as const;
 
 export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 
-export interface User {
+export type User = {
   _id: string;
   email: string;
   name: string;
   role: UserRole;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type UserLoginData = {
   email: string;

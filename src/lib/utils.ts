@@ -7,16 +7,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const toFormState = (
+export function toFormState(
   status: FormState["status"],
   message: string
-): FormState => {
+): FormState {
   return {
     status,
     message,
     timestamp: Date.now(),
   };
-};
+}
 
 export function fromErrorToFormState(error: unknown): FormState {
   if (error instanceof ZodError) {

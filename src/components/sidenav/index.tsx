@@ -14,8 +14,11 @@ import {
 import SideNavLink, { SideNavButton, SideNavLinkGroup } from "../sidenav-link";
 import { SideNavWrapperProps } from "../sidenav-wrapper";
 import { DesktopSideNav, MobileSideNav } from "./variants";
-import { User } from "@/types";
-import { ADMIN_SIDENAV_LINKS, USER_SIDENAV_LINKS } from "./sidenav-links";
+import { User, USER_ROLES } from "@/types";
+import {
+  INDUSTRY_SIDENAV_LINKS,
+  FARMER_SIDENAV_LINKS,
+} from "./sidenav-link-data";
 
 export interface BaseSideNavProps extends SideNavWrapperProps {}
 
@@ -31,11 +34,11 @@ export function SideNav(props: SideNavProps) {
   const sideNavLinks = useMemo(() => {
     if (!user) return [];
 
-    if (user.role === "admin") {
-      return ADMIN_SIDENAV_LINKS;
+    if (user.role === USER_ROLES.INDUSTRY) {
+      return INDUSTRY_SIDENAV_LINKS;
     }
 
-    return USER_SIDENAV_LINKS;
+    return FARMER_SIDENAV_LINKS;
   }, [user]);
 
   const activeTab = useMemo(() => {
@@ -43,15 +46,8 @@ export function SideNav(props: SideNavProps) {
       return PAGES.DASHBOARD;
     }
 
-    if (pathname === PAGES.CREATE_ASSET) {
-      return PAGES.CREATE_ASSET;
-    }
-
     const pageUrls = Object.values(PAGES).filter(
-      (url) =>
-        url !== PAGES.DASHBOARD &&
-        url !== PAGES.HOME &&
-        url !== PAGES.CREATE_ASSET
+      (url) => url !== PAGES.DASHBOARD
     );
 
     for (const pageUrl of pageUrls) {

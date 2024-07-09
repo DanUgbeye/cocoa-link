@@ -11,22 +11,22 @@ export default function HomePage() {
       <Container>
         <div className=" bg-blue-800 mx-auto flex w-full max-w-lg rounded flex-col gap-y-10 text-white px-6 py-12 backdrop-blur-sm ">
           <h1 className=" text-2xl md:text-3xl font-bold text-center w-full ">
-            FIXED ASSETS MANAGEMENT INFORMATION SYSTEM
+            COCOA LINK
           </h1>
 
           <center className=" mx-auto  w-full space-y-8 py-12 ">
             <Link
-              href={PAGES.ADMIN_LOGIN}
+              href={PAGES.INDUSTRY_LOGIN}
               className={cn(buttonVariants(), " w-full sm:w-60 max-w-60 bg-blue-600 hover:bg-blue-500 ")}
             >
-              ADMIN LOGIN
+              INDUSTRY LOGIN
             </Link>
 
             <Link
               href={PAGES.LOGIN}
               className={cn(buttonVariants(), " w-full sm:w-60 max-w-60 bg-blue-600 hover:bg-blue-500 ")}
             >
-              USER LOGIN
+              FARMER LOGIN
             </Link>
           </center>
         </div>

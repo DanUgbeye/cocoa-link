@@ -8,13 +8,13 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { PAGES } from "@/data/page-map";
 import { useFormEffect } from "@/hooks/use-form-effect";
-import { loginUser } from "@/server/modules/auth/auth.actions";
+import { loginFarmer } from "@/server/modules/auth/auth.actions";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const [state, action] = useFormState(loginUser, {
+  const [state, action] = useFormState(loginFarmer, {
     status: "UNSET",
     message: "",
     timestamp: Date.now(),

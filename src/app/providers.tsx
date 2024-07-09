@@ -6,23 +6,26 @@ import { ToastContainer } from "react-toastify";
 
 // CSS FILES
 import "react-toastify/dist/ReactToastify.min.css";
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
+import StoreProvider from "@/client/store/provider";
 
 const queryClient = new QueryClient();
 
 export default function Providers({ children }: PropsWithChildren) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        newestOnTop={false}
-        theme="colored"
-        stacked
-        hideProgressBar
-      />
+    <StoreProvider>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          newestOnTop={false}
+          theme="colored"
+          stacked
+          hideProgressBar
+        />
 
-      {children}
-    </QueryClientProvider>
+        {children}
+      </QueryClientProvider>
+    </StoreProvider>
   );
 }

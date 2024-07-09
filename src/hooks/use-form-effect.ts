@@ -7,13 +7,13 @@ export function useFormEffect(
 ) {
   const prevTimestamp = useRef(formState.timestamp);
 
-  const showToast =
+  const allowAction =
     formState.message && formState.timestamp !== prevTimestamp.current;
 
   useEffect(() => {
-    if (showToast) {
+    if (allowAction) {
       prevTimestamp.current = formState.timestamp;
       onStateChange(formState);
     }
-  }, [formState, showToast]);
+  }, [formState, allowAction]);
 }
