@@ -6,14 +6,14 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 async function ensureUserLoggedIn() {
-  const verified = await verifyAuth();
-  if (!verified) {
-    redirect(`${PAGES.LOGOUT}`);
-  }
-
   const isLoggedIn = cookies().get(COOKIE_KEYS.AUTH);
   if (!isLoggedIn) {
     redirect(PAGES.LOGIN);
+  }
+
+  const verified = await verifyAuth();
+  if (!verified) {
+    redirect(`${PAGES.LOGOUT}`);
   }
 }
 

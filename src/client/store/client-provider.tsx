@@ -16,13 +16,14 @@ export default function ClientStoreProvider(props: Props) {
 
   useEffect(() => {
     initialiseStore(initialState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!initialised) {
     return (
-      <Container className=" py-10 ">
+      <Container className=" pt-20 ">
         <center>
-          <Spinner />
+          <Spinner className=" text-amber-900/40 " />
         </center>
       </Container>
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import { StoreInitialState, useAppStore } from "@/client/store";
+import { useAppStore } from "@/client/store";
 import { Container } from "@/components/container";
 import FormButton from "@/components/form-button";
 import Spinner from "@/components/spinner";
@@ -29,10 +29,10 @@ export default function LoginPage() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      const initialState = changedState.data as unknown as StoreInitialState;
-      initialiseStore(initialState);
+      // const initialState = changedState.data as unknown as StoreInitialState;
+      // initialiseStore(initialState);
       toast.success(changedState.message);
-      router.push(PAGES.DASHBOARD);
+      // router.push(PAGES.DASHBOARD);
     }
   });
 
@@ -40,7 +40,7 @@ export default function LoginPage() {
     <main className=" h-full min-h-screen ">
       <Container className=" py-16 ">
         <div className=" mx-auto w-full max-w-lg space-y-10 rounded-lg bg-amber-900/40 px-6 pb-20 pt-12 sm:px-12 ">
-          <div className=" text-center text-2xl font-bold uppercase leading-relaxed text-white md:text-3xl ">
+          <div className=" text-2xl font-bold uppercase leading-relaxed text-white md:text-3xl ">
             <h2 className="  ">LOGIN</h2>
           </div>
 

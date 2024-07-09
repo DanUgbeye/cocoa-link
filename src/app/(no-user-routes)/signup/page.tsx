@@ -1,6 +1,6 @@
 "use client";
 
-import { StoreInitialState, useAppStore } from "@/client/store";
+import { useAppStore } from "@/client/store";
 import { Container } from "@/components/container";
 import FormButton from "@/components/form-button";
 import Spinner from "@/components/spinner";
@@ -41,10 +41,10 @@ export default function SignupPage() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      const initialState = changedState.data as unknown as StoreInitialState;
-      initialiseStore(initialState);
+      // const initialState = changedState.data as unknown as StoreInitialState;
+      // initialiseStore(initialState);
       toast.success(changedState.message);
-      router.push(PAGES.DASHBOARD);
+      // router.push(PAGES.DASHBOARD);
     }
   });
 
@@ -77,7 +77,7 @@ export default function SignupPage() {
                 name="name"
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder={role === USER_ROLES.INDUSTRY ? "CocoaNet" : "John Doe"}
                 required
               />
             </FormItem>

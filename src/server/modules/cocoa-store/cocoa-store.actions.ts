@@ -11,7 +11,20 @@ import { z } from "zod";
 import { getLoggedInUser } from "../auth/auth.actions";
 import { CocoaStoreDocument } from "./cocoa-store.types";
 
-export async function getUserCocoaStores(userId: string) {
+export async function getCocoaStores(userId: string) {
+  try {
+    const db = await connectDB();
+    const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
+    const cocoaStores = await cocoaStoreModel.find({ from: userId });
+
+    return JSON.parse(JSON.stringify(cocoaStores)) as CocoaStore;
+  } catch (error: any) {
+    // console.log(error);
+    return undefined;
+  }
+}
+
+export async function getUserCocoaStore(userId: string) {
   try {
     const db = await connectDB();
     const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;

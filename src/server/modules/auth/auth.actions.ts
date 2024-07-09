@@ -24,7 +24,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { UserDocument } from "../user/user.types";
-import { revalidatePath } from "next/cache";
 
 export async function signup(formState: FormState, formData: FormData) {
   try {
@@ -134,7 +133,9 @@ export const getLoggedInUser = cache(async () => {
     let user: UserDocument | null = null;
 
     try {
-      user = await userCollection.findById(validAuthPayload.data.id);
+      user = await userCollection
+        .findById(validAuthPayload.data.id)
+        .select("-password");
     } catch (err: any) {
       throw new ServerException(err.message);
     }
@@ -143,9 +144,7 @@ export const getLoggedInUser = cache(async () => {
       throw new NotFoundException("user profile not found");
     }
 
-    const { password, ...restUser } = user;
-
-    return JSON.parse(JSON.stringify(restUser)) as User;
+    return JSON.parse(JSON.stringify(user)) as User;
   } catch (error: any) {
     return undefined;
   }

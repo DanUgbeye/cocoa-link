@@ -1,4 +1,9 @@
+"use client";
+
+import { useAppStore } from "@/client/store";
 import { Container } from "@/components/container";
+import SellersTable from "@/components/tables/sellers-table";
+import TransactionsTable from "@/components/tables/transactions-table";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -9,23 +14,23 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
+import { CocoaStoreWithUser } from "@/types";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default async function AdminDashboardPage(props: { userId: string }) {
-  const { userId } = props;
-  const user = await getLoggedInUser();
-  if (!user) {
-    redirect(PAGES.LOGIN);
-  }
+export default function AdminDashboardPage(props: {
+  userId: string;
+  marketDeals: CocoaStoreWithUser[];
+}) {
+  const { userId, marketDeals } = props;
+  const user = useAppStore(({ user }) => user);
+  const transactions = useAppStore(({ transactions }) => transactions);
 
   return (
     <main className=" py-10 ">
       <Container className=" space-y-10 ">
         <div className=" space-y-1 ">
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-            Welcome {user.name}
+            Welcome {user?.name}
           </h1>
 
           <div className=" text-sm text-neutral-400 ">
@@ -37,8 +42,8 @@ export default async function AdminDashboardPage(props: { userId: string }) {
           <CardHeader className="px-7 ">
             <div className="flex flex-wrap justify-between gap-4">
               <div className=" space-y-1 ">
-                <CardTitle>Dashboard</CardTitle>
-                <CardDescription>All available Deals</CardDescription>
+                <CardTitle>Market</CardTitle>
+                <CardDescription>Available deals</CardDescription>
               </div>
 
               <div className=" flex justify-end ">
@@ -56,14 +61,47 @@ export default async function AdminDashboardPage(props: { userId: string }) {
           </CardHeader>
 
           <CardContent>
+            {marketDeals.length <= 0 ? (
+              <>
+                <div className=" py-10 text-center ">no available deals</div>
+              </>
+            ) : (
+              <SellersTable items={marketDeals} />
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="px-7 ">
+            <div className="flex flex-wrap justify-between gap-4">
+              <div className=" space-y-1 ">
+                <CardTitle>Transactions</CardTitle>
+                <CardDescription>Transaction History</CardDescription>
+              </div>
+
+              <div className=" flex justify-end ">
+                <Link
+                  href={PAGES.TRANSACTIONS}
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "text-blue-700"
+                  )}
+                >
+                  See all
+                </Link>
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent>
             {[].length <= 0 ? (
               <>
                 <div className=" py-10 text-center ">
-                  There are no available assets
+                  no previous transactions
                 </div>
               </>
             ) : (
-              <></>
+              <TransactionsTable transactions={transactions} />
             )}
           </CardContent>
         </Card>

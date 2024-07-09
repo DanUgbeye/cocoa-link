@@ -1,4 +1,8 @@
+"use client";
+
+import { useAppStore } from "@/client/store";
 import { Container } from "@/components/container";
+import TransactionsTable from "@/components/tables/transactions-table";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -9,23 +13,19 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default async function UserDashboardPage(props: { userId: string }) {
+export default function FarmerDashboardPage(props: { userId: string }) {
   const { userId } = props;
-  const user = await getLoggedInUser();
-  if (!user) {
-    redirect(PAGES.LOGIN);
-  }
+  const user = useAppStore(({ user }) => user);
+  const transactions = useAppStore(({ transactions }) => transactions);
 
   return (
     <main className=" py-10 ">
       <Container className=" space-y-10 ">
         <div className=" space-y-1 ">
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-            Welcome {user.name}
+            Welcome {user!.name}
           </h1>
 
           <div className=" text-sm text-neutral-400 ">
@@ -37,8 +37,8 @@ export default async function UserDashboardPage(props: { userId: string }) {
           <CardHeader className="px-7">
             <div className="flex flex-wrap justify-between gap-4">
               <div className=" space-y-1 ">
-                <CardTitle>Dashboard</CardTitle>
-                <CardDescription>All available Transactions</CardDescription>
+                <CardTitle>Transactions</CardTitle>
+                <CardDescription>Transactions History</CardDescription>
               </div>
 
               <div className=" flex justify-end ">
@@ -59,11 +59,11 @@ export default async function UserDashboardPage(props: { userId: string }) {
             {[].length <= 0 ? (
               <>
                 <div className=" py-10 text-center ">
-                  There are no available assets
+                  no previous transactions
                 </div>
               </>
             ) : (
-              <></>
+              <TransactionsTable transactions={transactions} />
             )}
           </CardContent>
         </Card>

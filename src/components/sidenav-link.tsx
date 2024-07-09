@@ -20,8 +20,8 @@ export default function SideNavLink(props: SideNavLinkProps) {
       className={cn(
         " grid h-12 grid-cols-[minmax(auto,1.5rem),1fr] items-center gap-x-2 rounded-none bg-transparent hover:bg-transparent pl-6 text-sm duration-300 ",
         {
-          " bg-white/20 text-white hover:bg-white/20 ": active,
-          "  text-white/70 hover:bg-white/10 ": !active,
+          " bg-white/30 text-white hover:bg-white/30 ": active,
+          "  text-white/80 hover:bg-white/10 ": !active,
         },
         className
       )}

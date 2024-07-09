@@ -26,7 +26,7 @@ const config = {
         sidenav: "clamp(15rem, 10%, 15rem)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        montserrat: ["var(--font-montserrat)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
