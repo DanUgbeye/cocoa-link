@@ -47,7 +47,7 @@ export function SideNav(props: SideNavProps) {
     }
 
     const pageUrls = Object.values(PAGES).filter(
-      (url) => url !== PAGES.DASHBOARD
+      (url) => url !== PAGES.DASHBOARD && url !== PAGES.LOGIN
     );
 
     for (const pageUrl of pageUrls) {
