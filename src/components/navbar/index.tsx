@@ -25,7 +25,7 @@ export default function Navbar(props: NavbarProps) {
     <nav className=" flex items-center bg-white text-black">
       <Container className=" h-fit ">
         <div className=" flex h-[5rem] items-center gap-x-6 ">
-          <div className=" flex items-center gap-x-4 lg:hidden ">
+          <div className=" flex w-full items-center gap-x-4  lg:hidden">
             <Button
               variant={"outline"}
               className=" size-9 bg-transparent p-2 text-black hover:bg-white/10 "
@@ -38,7 +38,7 @@ export default function Navbar(props: NavbarProps) {
 
             <Link
               href={user ? PAGES.DASHBOARD : PAGES.LOGIN}
-              className=" w-full text-2xl font-semibold "
+              className=" w-full min-w-fit text-lg font-semibold "
             >
               COCOA LINK
             </Link>

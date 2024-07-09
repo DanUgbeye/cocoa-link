@@ -20,7 +20,7 @@ const SideNavWrapper = React.forwardRef<HTMLElement, SideNavWrapperProps>(
         <div className=" flex h-[5rem] w-full items-center ">
           <Link
             href={PAGES.LOGIN}
-            className=" w-full px-6 text-3xl font-semibold text-white "
+            className=" w-full px-6 text-lg sm:text-2xl font-semibold text-white "
           >
             COCOA LINK
           </Link>
