@@ -37,7 +37,7 @@ export default async function UserDashboardPage(props: { userId: string }) {
           <CardHeader className="px-7">
             <div className="flex flex-wrap justify-between gap-4">
               <div className=" space-y-1 ">
-                <CardTitle>Assets</CardTitle>
+                <CardTitle>Dashboard</CardTitle>
                 <CardDescription>All available Transactions</CardDescription>
               </div>
 
