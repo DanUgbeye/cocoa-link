@@ -3,18 +3,18 @@
 import { Container } from "@/components/container";
 import FormButton from "@/components/form-button";
 import Spinner from "@/components/spinner";
-import { FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { PAGES } from "@/data/page-map";
 import { useFormEffect } from "@/hooks/use-form-effect";
-import { loginIndustry } from "@/server/modules/auth/auth.actions";
+import { login } from "@/server/modules/auth/auth.actions";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 
-export default function AdminLoginPage() {
-  const [state, action] = useFormState(loginIndustry, {
+export default function LoginPage() {
+  const [state, action] = useFormState(login, {
     status: "UNSET",
     message: "",
     timestamp: Date.now(),
@@ -32,9 +32,9 @@ export default function AdminLoginPage() {
   return (
     <main className=" h-full min-h-screen ">
       <Container className=" py-16 ">
-        <div className=" mx-auto w-full max-w-lg space-y-10 rounded-lg bg-blue-800 px-6 pb-20 pt-12 sm:px-12 ">
+        <div className=" mx-auto w-full max-w-lg space-y-10 rounded-lg bg-amber-900/40 px-6 pb-20 pt-12 sm:px-12 ">
           <div className=" text-center text-2xl font-bold uppercase leading-relaxed text-white md:text-3xl ">
-            <h2 className="  ">ADMIN LOGIN</h2>
+            <h2 className="  ">LOGIN</h2>
           </div>
 
           <form action={action} className=" w-full space-y-4 ">
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
             </FormItem>
 
             <div className=" pt-5 ">
-              <FormButton className=" w-full bg-blue-600 hover:bg-blue-500 ">
+              <FormButton className=" w-full bg-amber-800 hover:bg-amber-700">
                 {({ loading }) => {
                   return loading ? <Spinner /> : "Login";
                 }}
@@ -70,14 +70,23 @@ export default function AdminLoginPage() {
           </form>
         </div>
 
-        <center className=" my-5 ">
+        <div className=" my-5 grid grid-cols-[1fr,auto,1fr] items-center justify-center gap-x-3">
           <Link
-            href={PAGES.HOME}
-            className=" text-sm underline-offset-4 hover:underline "
+            href={PAGES.LOGIN}
+            className=" ml-auto text-sm underline-offset-4 hover:underline "
           >
             Back to home
           </Link>
-        </center>
+
+          <div className="h-6 w-px bg-blue-700 "></div>
+
+          <Link
+            href={PAGES.SIGNUP}
+            className=" mr-auto text-sm underline-offset-4 hover:underline "
+          >
+            Signup
+          </Link>
+        </div>
       </Container>
     </main>
   );

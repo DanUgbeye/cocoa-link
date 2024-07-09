@@ -1,5 +1,7 @@
-import { UserLoginData } from "@/types";
+import { USER_ROLES, UserLoginData } from "@/types";
 import { ZodType, z } from "zod";
+
+export const UserRoleSchema = z.enum([USER_ROLES.FARMER, USER_ROLES.INDUSTRY]);
 
 export const UserLoginSchema = z.object({
   email: z.string().toLowerCase().min(1, "email is required").email(),
@@ -10,4 +12,5 @@ export const UserSignupSchema = z.object({
   name: z.string().min(2, "name must be at least 2 characters"),
   email: z.string().toLowerCase().min(1, "email is required").email(),
   password: z.string().min(1, "password is required").min(8).max(16),
+  role: UserRoleSchema.default(USER_ROLES.FARMER),
 }) satisfies ZodType<UserLoginData>;

@@ -17,7 +17,7 @@ export default async function AdminDashboardPage(props: { userId: string }) {
   const { userId } = props;
   const user = await getLoggedInUser();
   if (!user) {
-    redirect(PAGES.HOME);
+    redirect(PAGES.LOGIN);
   }
 
   return (

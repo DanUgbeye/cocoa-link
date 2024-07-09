@@ -7,7 +7,7 @@ import IndustryDashboardPage from "./industry";
 
 export default async function DashboardPage() {
   const user = await getLoggedInUser();
-  if (!user) redirect(PAGES.HOME);
+  if (!user) redirect(PAGES.LOGIN);
 
   if (user.role === USER_ROLES.INDUSTRY) {
     return <IndustryDashboardPage userId={user._id} />;

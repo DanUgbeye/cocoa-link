@@ -6,76 +6,55 @@ import { fromErrorToFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
 import { AuthTokenPayload } from "@/server/modules/auth/auth.types";
 import { AuthTokenPayloadSchema } from "@/server/modules/auth/auth.validation";
-import UserRepository from "@/server/modules/user/user.repository";
 import {
   UserLoginSchema,
   UserSignupSchema,
 } from "@/server/modules/user/user.validation";
+import {
+  BadRequestException,
+  NotFoundException,
+  ServerException,
+} from "@/server/utils/http-exceptions";
 import { passwordUtil } from "@/server/utils/password";
 import { tokenUtil } from "@/server/utils/token";
-import { USER_ROLES, User } from "@/types";
+import { User } from "@/types";
 import { FormState } from "@/types/form.types";
+import { Model } from "mongoose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
-import { ServerUser } from "../user/user.types";
+import { UserDocument } from "../user/user.types";
+import { revalidatePath } from "next/cache";
 
-export async function signupFarmer(formState: FormState, formData: FormData) {
+export async function signup(formState: FormState, formData: FormData) {
   try {
     let validData = UserSignupSchema.parse({
       name: formData.get("name"),
       email: formData.get("email"),
       password: formData.get("password"),
+      role: formData.get("role"),
     });
 
     const db = await connectDB();
-    const userRepo = new UserRepository(db);
-    if (await userRepo.collection.findOne({ email: validData.email })) {
+    const userCollection = db.models.User as Model<UserDocument>;
+
+    if (await userCollection.findOne({ email: validData.email })) {
       throw new Error("email already exists");
     }
 
     validData.password = await passwordUtil.hashPassword(validData.password);
-    const res = await userRepo.signup(validData, USER_ROLES.FARMER);
+    let user: UserDocument;
 
-    const { token, expiresIn } = tokenUtil.createJwtToken<AuthTokenPayload>({
-      id: res._id as string,
-      role: res.role,
-    });
-
-    cookies().set({
-      name: COOKIE_KEYS.AUTH,
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: expiresIn,
-    });
-  } catch (error: any) {
-    return fromErrorToFormState(error);
-  }
-
-  redirect(PAGES.DASHBOARD);
-}
-
-export async function signupIndustry(formState: FormState, formData: FormData) {
-  try {
-    let validData = UserSignupSchema.parse({
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
-
-    const db = await connectDB();
-    const userRepo = new UserRepository(db);
-    if (await userRepo.collection.findOne({ email: validData.email })) {
-      throw new Error("email already exists");
+    try {
+      // newUser.password = await passwordUtil.hashPassword(newUser.password);
+      user = await userCollection.create(validData);
+    } catch (error: any) {
+      throw new ServerException(error.message);
     }
 
-    validData.password = await passwordUtil.hashPassword(validData.password);
-    const res = await userRepo.signup(validData, USER_ROLES.INDUSTRY);
-
     const { token, expiresIn } = tokenUtil.createJwtToken<AuthTokenPayload>({
-      id: res._id as string,
-      role: res.role,
+      id: user._id as string,
+      role: user.role,
     });
 
     cookies().set({
@@ -92,20 +71,33 @@ export async function signupIndustry(formState: FormState, formData: FormData) {
   redirect(PAGES.DASHBOARD);
 }
 
-export async function loginFarmer(formState: FormState, formData: FormData) {
+export async function login(formState: FormState, formData: FormData) {
   try {
-    let validData = UserLoginSchema.parse({
+    let { email, password } = UserLoginSchema.parse({
       email: formData.get("email"),
       password: formData.get("password"),
     });
 
     const db = await connectDB();
-    const userRepo = new UserRepository(db);
-    const res = await userRepo.login(validData, USER_ROLES.FARMER);
+    const userCollection = db.models.User as Model<UserDocument>;
+    let user: UserDocument | null;
+
+    try {
+      user = await userCollection.findOne({ email });
+    } catch (error: any) {
+      throw new ServerException(error.message);
+    }
+
+    if (
+      !user ||
+      !(await passwordUtil.comparePassword(password, user.password))
+    ) {
+      throw new BadRequestException("incorrect credentials");
+    }
 
     const { token, expiresIn } = tokenUtil.createJwtToken<AuthTokenPayload>({
-      id: res._id as string,
-      role: res.role,
+      id: user._id as string,
+      role: user.role,
     });
 
     cookies().set({
@@ -119,41 +111,12 @@ export async function loginFarmer(formState: FormState, formData: FormData) {
     return fromErrorToFormState(error);
   }
 
-  redirect(PAGES.DASHBOARD);
-}
-
-export async function loginIndustry(formState: FormState, formData: FormData) {
-  try {
-    let validData = UserLoginSchema.parse({
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
-
-    const db = await connectDB();
-    const userRepo = new UserRepository(db);
-    const res = await userRepo.login(validData, USER_ROLES.INDUSTRY);
-
-    const { token, expiresIn } = tokenUtil.createJwtToken<AuthTokenPayload>({
-      id: res._id as string,
-      role: res.role,
-    });
-
-    cookies().set({
-      name: COOKIE_KEYS.AUTH,
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: expiresIn,
-    });
-  } catch (error: any) {
-    return fromErrorToFormState(error);
-  }
   redirect(PAGES.DASHBOARD);
 }
 
 export async function logout(redirectUrl?: string) {
   cookies().delete(COOKIE_KEYS.AUTH);
-  redirect(redirectUrl ? redirectUrl : PAGES.HOME);
+  redirect(redirectUrl ? redirectUrl : PAGES.LOGIN);
 }
 
 export const getLoggedInUser = cache(async () => {
@@ -167,12 +130,22 @@ export const getLoggedInUser = cache(async () => {
     if (validAuthPayload.error) return undefined;
 
     const db = await connectDB();
-    const userRepo = new UserRepository(db);
-    const { password, ...user } = (
-      await userRepo.getProfile(validAuthPayload.data.id)
-    ).toObject() as ServerUser;
+    const userCollection = db.models.User as Model<UserDocument>;
+    let user: UserDocument | null = null;
 
-    return JSON.parse(JSON.stringify(user)) as User;
+    try {
+      user = await userCollection.findById(validAuthPayload.data.id);
+    } catch (err: any) {
+      throw new ServerException(err.message);
+    }
+
+    if (!user) {
+      throw new NotFoundException("user profile not found");
+    }
+
+    const { password, ...restUser } = user;
+
+    return JSON.parse(JSON.stringify(restUser)) as User;
   } catch (error: any) {
     return undefined;
   }

@@ -37,7 +37,7 @@ export default function Navbar(props: NavbarProps) {
             </Button>
 
             <Link
-              href={user ? PAGES.DASHBOARD : PAGES.HOME}
+              href={user ? PAGES.DASHBOARD : PAGES.LOGIN}
               className=" w-full text-2xl font-semibold "
             >
               FAMIS

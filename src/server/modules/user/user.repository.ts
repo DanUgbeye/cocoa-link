@@ -4,7 +4,7 @@ import {
   ServerException,
 } from "@/server/utils/http-exceptions";
 import { passwordUtil } from "@/server/utils/password";
-import { USER_ROLES, User, UserLoginData, UserRole } from "@/types/user.types";
+import { User, UserLoginData } from "@/types/user.types";
 import type _mongoose from "mongoose";
 import type { Model } from "mongoose";
 import { UserDocument } from "./user.types";
@@ -21,12 +21,12 @@ export default class UserRepository {
    * @param credentials user credentials
    * @param role the user role to login
    */
-  async login(credentials: UserLoginData, role: UserRole = USER_ROLES.FARMER) {
+  async login(credentials: UserLoginData) {
     const { email, password } = credentials;
 
     let user: UserDocument | null;
     try {
-      user = await this.collection.findOne({ email, role });
+      user = await this.collection.findOne({ email });
     } catch (error: any) {
       throw new ServerException(error.message);
     }
@@ -45,17 +45,12 @@ export default class UserRepository {
    * registers a new user
    * @param data user data
    */
-  async signup(
-    data: Omit<User, "_id" | "role" | "createdAt" | "updatedAt">,
-    role: UserRole = USER_ROLES.FARMER
-  ) {
+  async signup(data: Omit<User, "_id" | "createdAt" | "updatedAt">) {
     let newUser: any = { ...data };
     let user: UserDocument;
 
     try {
       // newUser.password = await passwordUtil.hashPassword(newUser.password);
-      newUser.role = role;
-
       user = await this.collection.create(data);
     } catch (error: any) {
       throw new ServerException(error.message);

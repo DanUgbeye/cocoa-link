@@ -1,9 +1,6 @@
 export const PAGES = {
-  HOME: "/",
-
-  SIGNUP: "/auth/signup",
-  LOGIN: "/auth/login",
-  INDUSTRY_LOGIN: "/auth/industry-login",
+  SIGNUP: "/signup",
+  LOGIN: "/",
   LOGOUT: "/auth/logout",
 
   DASHBOARD: "/dashboard",

@@ -13,7 +13,7 @@ async function ensureUserLoggedIn() {
 
   const isLoggedIn = cookies().get(COOKIE_KEYS.AUTH);
   if (!isLoggedIn) {
-    redirect(PAGES.HOME);
+    redirect(PAGES.LOGIN);
   }
 }
 
