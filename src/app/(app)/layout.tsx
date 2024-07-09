@@ -10,7 +10,7 @@ export default async function AppLayout({ children }: PropsWithChildren) {
   return (
     <section>
       <section className={cn(" h-full min-h-dvh w-full max-w-[100dvw] ")}>
-        <SideNav user={user} className=" bg-blue-900 " />
+        <SideNav user={user} className=" bg-amber-900/40 " />
 
         <section className={cn(" lg:ml-sidenav flex min-h-[100vh] flex-col ")}>
           <Navbar user={user} />

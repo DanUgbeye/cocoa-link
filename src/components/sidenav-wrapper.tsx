@@ -22,7 +22,7 @@ const SideNavWrapper = React.forwardRef<HTMLElement, SideNavWrapperProps>(
             href={PAGES.LOGIN}
             className=" w-full px-6 text-3xl font-semibold text-white "
           >
-            FAMIS
+            COCOA LINK
           </Link>
         </div>
 

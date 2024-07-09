@@ -1,5 +1,6 @@
 "use client";
 
+import { StoreInitialState, useAppStore } from "@/client/store";
 import { Container } from "@/components/container";
 import FormButton from "@/components/form-button";
 import Spinner from "@/components/spinner";
@@ -12,11 +13,14 @@ import { useFormEffect } from "@/hooks/use-form-effect";
 import { signup } from "@/server/modules/auth/auth.actions";
 import { USER_ROLES, UserRole } from "@/types";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 
 export default function SignupPage() {
+  const router = useRouter();
+  const { initialiseStore } = useAppStore();
   const [state, action] = useFormState(signup, {
     status: "UNSET",
     message: "",
@@ -37,7 +41,10 @@ export default function SignupPage() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
+      const initialState = changedState.data as unknown as StoreInitialState;
+      initialiseStore(initialState);
       toast.success(changedState.message);
+      router.push(PAGES.DASHBOARD);
     }
   });
 

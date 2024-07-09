@@ -40,7 +40,7 @@ export default function Navbar(props: NavbarProps) {
               href={user ? PAGES.DASHBOARD : PAGES.LOGIN}
               className=" w-full text-2xl font-semibold "
             >
-              FAMIS
+              COCOA LINK
             </Link>
           </div>
 
