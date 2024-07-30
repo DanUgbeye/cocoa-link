@@ -20,9 +20,11 @@ async function getInitialState(): Promise<StoreInitialState> {
       .Transaction as Model<TransactionDocument>;
     const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
 
-    const transactions = await transactionsModel.find({
-      userId: user._id,
-    });
+    const transactions = await transactionsModel
+      .find({
+        userId: user._id,
+      })
+      .sort({ createdAt: "descending" });
     const cocoaStore =
       user.role === USER_ROLES.FARMER
         ? await cocoaStoreModel.findOne({ userId: user._id })
