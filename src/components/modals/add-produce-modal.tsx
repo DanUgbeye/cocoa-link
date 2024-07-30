@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useFormEffect } from "@/hooks/use-form-effect";
-import { withdrawFromWallet } from "@/server/modules/user/user.actions";
-import { User } from "@/types";
+import { updateCocoaStoreQuantity } from "@/server/modules/cocoa-store/cocoa-store.actions";
+import { CocoaStore, USER_ROLES } from "@/types";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import FormButton from "../form-button";
@@ -19,10 +19,15 @@ import Spinner from "../spinner";
 import { FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 
-export default function WithdrawModal() {
-  const { user, withdrawModalOpen, toggleWithdrawModal, setUser } =
-    useAppStore();
-  const [state, action] = useFormState(withdrawFromWallet, {
+export default function AddProduceModal() {
+  const {
+    user,
+    cocoaStore,
+    addProduceModalOpen,
+    toggleAddProduceModal,
+    setCocoaStore,
+  } = useAppStore();
+  const [state, action] = useFormState(updateCocoaStoreQuantity, {
     status: "UNSET",
     message: "",
     timestamp: Date.now(),
@@ -33,34 +38,51 @@ export default function WithdrawModal() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      setUser(changedState.data as unknown as User);
-      toggleWithdrawModal();
+      setCocoaStore(changedState.data as unknown as CocoaStore);
+      toggleAddProduceModal();
       toast.success(changedState.message);
     }
   });
 
   return (
     <Dialog
-      open={user !== undefined && withdrawModalOpen}
-      onOpenChange={toggleWithdrawModal}
+      open={
+        user !== undefined &&
+        user.role === USER_ROLES.FARMER &&
+        addProduceModalOpen
+      }
+      onOpenChange={toggleAddProduceModal}
     >
       <DialogTrigger hidden></DialogTrigger>
 
       <DialogContent className="w-full max-w-md">
         <DialogHeader>
-          <DialogTitle>Withdraw Funds</DialogTitle>
+          <DialogTitle>Add New Produce</DialogTitle>
 
-          <DialogDescription>Withdraw funds from your wallet</DialogDescription>
+          <DialogDescription>Add new harvest for sale</DialogDescription>
         </DialogHeader>
 
         <form action={action} className="w-full space-y-4">
           <FormItem>
-            <FormLabel className="">Enter Withdraw Amount</FormLabel>
+            <FormLabel className="">Cocoa Quantity (in bags)</FormLabel>
             <Input
-              name="amount"
-              id="amount"
+              name="quantity"
+              id="quantity"
               type="number"
-              placeholder="e.g 20,000"
+              placeholder="e.g 20 bags"
+              required
+            />
+          </FormItem>
+
+          <FormItem>
+            <FormLabel className="">Price Per Bag</FormLabel>
+
+            <Input
+              name="pricePerItem"
+              id="pricePerItem"
+              type="number"
+              placeholder="e.g 300"
+              defaultValue={cocoaStore?.pricePerItem}
               required
             />
           </FormItem>
@@ -68,7 +90,7 @@ export default function WithdrawModal() {
           <div className="pt-5">
             <FormButton className="w-full bg-amber-800 hover:bg-amber-700">
               {({ loading }) => {
-                return loading ? <Spinner /> : "Withdraw";
+                return loading ? <Spinner /> : "Add";
               }}
             </FormButton>
           </div>

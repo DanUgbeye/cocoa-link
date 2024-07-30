@@ -2,16 +2,16 @@ import { User } from "./user.types";
 
 export type CocoaStore = {
   _id: string;
-  user: string;
+  userId: string;
   quantity: number;
   pricePerItem: number;
-  totalSold: number;
+  totalQuantitySold: number;
   totalQuantity: number;
   totalAmountSold: number;
   createdAt: Date;
   updatedAt: Date;
 };
 
-export type CocoaStoreWithUser = Omit<CocoaStore, "user"> & {
+export type CocoaStoreWithUser = Omit<CocoaStore, "userId"> & {
   user: User;
 };

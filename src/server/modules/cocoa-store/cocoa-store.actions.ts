@@ -1,7 +1,6 @@
 "use server";
 
-import { PAGES } from "@/data/page-map";
-import { fromErrorToFormState } from "@/lib/utils";
+import { fromErrorToFormState, toFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
 import { CocoaStore } from "@/types/cocoa-store.types";
 import { FormState } from "@/types/form.types";
@@ -37,7 +36,7 @@ export async function getUserCocoaStore(userId: string) {
   }
 }
 
-export async function updateCocoaStore(
+export async function updateCocoaStoreQuantity(
   formState: FormState,
   formData: FormData
 ) {
@@ -47,31 +46,38 @@ export async function updateCocoaStore(
       throw new Error("Unauthorised");
     }
 
-    let validData = z.object({ quantity: z.number() }).parse({
-      quantity: formData.get("quantity"),
-    });
+    let quantityToAdd = z
+      .number({ coerce: true })
+      .parse(formData.get("quantity"));
 
     const db = await connectDB();
     const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
+    const cocoaStore = await cocoaStoreModel.findOne({ userId: user._id });
+
+    if (!cocoaStore) {
+      throw new Error("not found");
+    }
 
     let updated = await cocoaStoreModel.findOneAndUpdate(
       { userId: user._id },
-      validData
+      {
+        quantity: cocoaStore.quantity + quantityToAdd,
+        totalQuantity: cocoaStore.totalQuantity + quantityToAdd,
+      },
+      { new: true }
     );
 
     if (!updated) {
       throw new Error("Not found");
     }
 
-    const response = {
-      status: "SUCCESS",
-      message: "transfer cocoaStore created",
-      data: JSON.parse(JSON.stringify(updated)) as CocoaStore,
-      timestamp: new Date().getTime(),
-    } satisfies FormState<CocoaStore>;
+    revalidatePath("/", "layout");
 
-    revalidatePath(PAGES.DASHBOARD);
-    return response;
+    return toFormState(
+      "SUCCESS",
+      "quantity updated",
+      JSON.parse(JSON.stringify(updated))
+    );
   } catch (error: any) {
     return fromErrorToFormState(error);
   }

@@ -54,7 +54,7 @@ export default function DepositModal() {
 
         <form action={action} className="w-full space-y-4">
           <FormItem>
-            <FormLabel className="text-white">Enter Deposit Amount</FormLabel>
+            <FormLabel className="">Enter Deposit Amount</FormLabel>
             <Input
               name="amount"
               id="amount"

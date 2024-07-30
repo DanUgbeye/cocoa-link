@@ -15,6 +15,7 @@ export type AppState = {
   cocoaStore?: CocoaStore;
   depositModalOpen: boolean;
   withdrawModalOpen: boolean;
+  addProduceModalOpen: boolean;
 };
 
 export type AppActions = {
@@ -26,6 +27,7 @@ export type AppActions = {
 
   toggleDepositModal(state?: boolean): void;
   toggleWithdrawModal(state?: boolean): void;
+  toggleAddProduceModal(state?: boolean): void;
 };
 
 export type AppStore = AppState & AppActions;
@@ -53,6 +55,16 @@ export const useAppStore = create<AppStore>((set, get) => ({
     } else {
       const { withdrawModalOpen } = get();
       set({ withdrawModalOpen: !withdrawModalOpen });
+    }
+  },
+
+  addProduceModalOpen: false,
+  toggleAddProduceModal(state) {
+    if (state !== undefined) {
+      set({ addProduceModalOpen: state });
+    } else {
+      const { addProduceModalOpen } = get();
+      set({ addProduceModalOpen: !addProduceModalOpen });
     }
   },
 

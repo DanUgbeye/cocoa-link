@@ -49,7 +49,7 @@ export async function signup(formState: FormState, formData: FormData) {
     try {
       user = await userModel.create(validData);
       if (validData.role === USER_ROLES.FARMER) {
-        await cocoaStoreModel.create({ user: user._id });
+        await cocoaStoreModel.create({ userId: user._id });
       }
     } catch (error: any) {
       throw new ServerException(error.message);

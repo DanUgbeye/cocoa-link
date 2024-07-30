@@ -38,7 +38,7 @@ export default function FarmerDashboardPage(props: {}) {
         <section className="grid gap-5 md:grid-cols-3">
           <Stats
             name="Total Cocoa Sold"
-            value={Number(cocoaStore?.totalSold || 0).toLocaleString(
+            value={Number(cocoaStore?.totalQuantitySold || 0).toLocaleString(
               undefined,
               { notation: "compact", compactDisplay: "long" }
             )}

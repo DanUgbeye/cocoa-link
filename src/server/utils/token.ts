@@ -4,7 +4,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 
 const secret = SERVER_CONFIG.TOKEN_SECRET;
 
-const _1_DAY = 24 * 60 * 60; // 3 days
+const _1_DAY = 24 * 60 * 60;
 
 class TokenUtil {
   /**

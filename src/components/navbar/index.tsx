@@ -10,17 +10,31 @@ import {
 } from "@/components/ui/popover";
 import { PAGES } from "@/data/page-map";
 import { logout } from "@/server/modules/auth/auth.actions";
-import { HandCoins, Landmark, LogOut, Menu, Wallet } from "lucide-react";
+import {
+  Boxes,
+  HandCoins,
+  Landmark,
+  LogOut,
+  Menu,
+  PackagePlus,
+  Wallet,
+} from "lucide-react";
 import Link from "next/link";
 import { Container } from "../container";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import { USER_ROLES } from "@/types";
 
 interface NavbarProps {}
 
 export default function Navbar(props: NavbarProps) {
-  const { user, toggleSidenav, toggleDepositModal, toggleWithdrawModal } =
-    useAppStore();
+  const {
+    user,
+    toggleSidenav,
+    toggleDepositModal,
+    toggleWithdrawModal,
+    toggleAddProduceModal,
+  } = useAppStore();
 
   async function handleLogout() {
     await logout();
@@ -61,14 +75,17 @@ export default function Navbar(props: NavbarProps) {
                 </PopoverTrigger>
 
                 <PopoverContent className="mr-10 w-52 p-2">
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <div className="flex items-center justify-between gap-2 rounded bg-neutral-100 px-2 py-2 text-sm font-semibold text-neutral-600">
                       <span>
                         {Number(user.walletBalance).toLocaleString(undefined, {
                           style: "currency",
                           currency: "NGN",
-                          notation: "compact",
-                          compactDisplay: "long",
+                          notation:
+                            user.walletBalance > 100_000
+                              ? "compact"
+                              : "standard",
+                          compactDisplay: "short",
                         })}
                       </span>
 
@@ -79,7 +96,7 @@ export default function Navbar(props: NavbarProps) {
 
                     <div className="">
                       <Button
-                        className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-2 text-sm text-neutral-600 duration-300 hover:bg-amber-600/10"
+                        className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-1 text-xs text-neutral-600 duration-300 hover:bg-amber-600/10"
                         onClick={() => toggleDepositModal()}
                       >
                         <Landmark className="size-4" />
@@ -87,16 +104,36 @@ export default function Navbar(props: NavbarProps) {
                       </Button>
 
                       <Button
-                        className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-2 text-sm text-neutral-600 duration-300 hover:bg-amber-600/10"
+                        className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-1 text-xs text-neutral-600 duration-300 hover:bg-amber-600/10"
                         onClick={() => toggleWithdrawModal()}
                       >
                         <HandCoins className="size-4" />
                         Withdraw
                       </Button>
+                    </div>
 
+                    <Separator className=" " />
+
+                    {user.role === USER_ROLES.FARMER && (
+                      <>
+                        <div className="">
+                          <Button
+                            className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-1 text-xs text-neutral-600 duration-300 hover:bg-amber-600/10"
+                            onClick={() => toggleAddProduceModal()}
+                          >
+                            <PackagePlus className="stroke-1.5 size-4" />
+                            Add Produce
+                          </Button>
+                        </div>
+
+                        <Separator className=" " />
+                      </>
+                    )}
+
+                    <div className=" ">
                       <Button
                         onClick={handleLogout}
-                        className="flex h-fit w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-2 text-sm text-red-600 duration-300 hover:bg-red-200/40 hover:text-red-700"
+                        className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-1 text-xs text-red-600 duration-300 hover:bg-red-200/40 hover:text-red-700"
                       >
                         <LogOut className="size-4" />
                         Logout

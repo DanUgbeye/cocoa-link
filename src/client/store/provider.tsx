@@ -16,15 +16,14 @@ async function getInitialState(): Promise<StoreInitialState> {
     }
 
     const db = await connectDB();
-    const transactionsCollection = db.models
+    const transactionsModel = db.models
       .Transaction as Model<TransactionDocument>;
-    const cocoaStoreCollection = db.models
-      .CocoaStore as Model<CocoaStoreDocument>;
+    const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
 
-    const transactions = await transactionsCollection.find({
+    const transactions = await transactionsModel.find({
       userId: user._id,
     });
-    const cocoaStore = await cocoaStoreCollection.findOne({ user: user._id });
+    const cocoaStore = await cocoaStoreModel.findOne({ userId: user._id });
 
     return {
       user,
