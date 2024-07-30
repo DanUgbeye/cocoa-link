@@ -2,7 +2,7 @@ import connectDB from "@/server/db/connect";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { CocoaStoreDocument } from "@/server/modules/cocoa-store/cocoa-store.types";
 import { TransactionDocument } from "@/server/modules/transaction/transaction.types";
-import { CocoaStore, Transaction } from "@/types";
+import { CocoaStore, Transaction, USER_ROLES } from "@/types";
 import { Model } from "mongoose";
 import { PropsWithChildren } from "react";
 import { StoreInitialState } from ".";
@@ -23,7 +23,10 @@ async function getInitialState(): Promise<StoreInitialState> {
     const transactions = await transactionsModel.find({
       userId: user._id,
     });
-    const cocoaStore = await cocoaStoreModel.findOne({ userId: user._id });
+    const cocoaStore =
+      user.role === USER_ROLES.FARMER
+        ? await cocoaStoreModel.findOne({ userId: user._id })
+        : undefined;
 
     return {
       user,

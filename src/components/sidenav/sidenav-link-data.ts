@@ -12,7 +12,7 @@ export const INDUSTRY_SIDENAV_LINKS: SideNavLinkGroupData[] = [
         icon: Home,
       },
       {
-        name: "Market",
+        name: "Marketplace",
         href: PAGES.MARKET,
         icon: Globe,
       },

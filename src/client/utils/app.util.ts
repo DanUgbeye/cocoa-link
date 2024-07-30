@@ -21,7 +21,7 @@ class AppUtils {
       initials += firstname[1];
     }
 
-    return initials;
+    return initials.toUpperCase();
   }
 }
 

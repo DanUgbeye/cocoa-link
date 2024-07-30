@@ -13,5 +13,5 @@ export type CocoaStore = {
 };
 
 export type CocoaStoreWithUser = Omit<CocoaStore, "userId"> & {
-  user: User;
+  userId: User;
 };

@@ -4,7 +4,7 @@ export const PAGES = {
   LOGOUT: "/auth/logout",
 
   DASHBOARD: "/dashboard",
-  MARKET: "/market",
+  MARKET: "/marketplace",
   TRANSACTIONS: "/transactions",
   WITHDRAW: "/withdraw",
   DEPOSIT: "/deposit",

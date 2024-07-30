@@ -16,10 +16,14 @@ export default async function DashboardPage() {
     const db = await connectDB();
     const cocoaStoreCollection = db.models
       .CocoaStore as Model<CocoaStoreDocument>;
-    const marketDeals = await cocoaStoreCollection.find().populate("user");
+    const marketDeals = await cocoaStoreCollection.find().populate("userId");
 
     return (
       <IndustryDashboardPage
+        stats={{
+          totalPurchased: 0,
+          totalSpent: 0,
+        }}
         marketDeals={
           JSON.parse(JSON.stringify(marketDeals)) as CocoaStoreWithUser[]
         }

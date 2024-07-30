@@ -46,9 +46,15 @@ export async function updateCocoaStoreQuantity(
       throw new Error("Unauthorised");
     }
 
-    let quantityToAdd = z
-      .number({ coerce: true })
-      .parse(formData.get("quantity"));
+    let { quantity: quantityToAdd, pricePerItem } = z
+      .object({
+        quantity: z.number({ coerce: true }),
+        pricePerItem: z.number({ coerce: true }),
+      })
+      .parse({
+        quantity: formData.get("quantity"),
+        pricePerItem: formData.get("pricePerItem"),
+      });
 
     const db = await connectDB();
     const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
@@ -63,6 +69,7 @@ export async function updateCocoaStoreQuantity(
       {
         quantity: cocoaStore.quantity + quantityToAdd,
         totalQuantity: cocoaStore.totalQuantity + quantityToAdd,
+        pricePerItem,
       },
       { new: true }
     );

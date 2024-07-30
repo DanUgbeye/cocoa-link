@@ -25,6 +25,7 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import { UserDocument } from "../user/user.types";
 import { CocoaStoreDocument } from "../cocoa-store/cocoa-store.types";
+import { revalidatePath } from "next/cache";
 
 export async function signup(formState: FormState, formData: FormData) {
   try {
@@ -119,6 +120,7 @@ export async function login(formState: FormState, formData: FormData) {
 
 export async function logout(redirectUrl?: string) {
   cookies().delete(COOKIE_KEYS.AUTH);
+  revalidatePath("/", "layout");
   redirect(redirectUrl ? redirectUrl : PAGES.LOGIN);
 }
 
