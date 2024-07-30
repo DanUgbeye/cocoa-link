@@ -22,8 +22,9 @@ import Stats from "./stats";
 export default function IndustryPage(props: {
   marketDeals: CocoaStoreWithUser[];
   stats: {
-    totalPurchased: number;
-    totalSpent: number;
+    totalQuantityPurchased: number;
+    totalAmountSpent: number;
+    totalAmountDeposited: number;
   };
 }) {
   const { marketDeals, stats } = props;
@@ -50,8 +51,6 @@ export default function IndustryPage(props: {
 
               <span className="text-2xl font-bold">
                 {Number(user?.walletBalance || 0).toLocaleString(undefined, {
-                  notation: "compact",
-                  compactDisplay: "long",
                   style: "currency",
                   currency: "NGN",
                 })}
@@ -65,23 +64,31 @@ export default function IndustryPage(props: {
         <section className="grid gap-5 md:grid-cols-3">
           <Stats
             name="Total Cocoa Bags Purchased"
-            value={Number(stats.totalPurchased).toLocaleString(undefined, {
-              notation: "compact",
-              compactDisplay: "long",
-            })}
+            value={Number(stats.totalQuantityPurchased).toLocaleString(
+              undefined,
+              {
+                notation: "compact",
+                compactDisplay: "long",
+              }
+            )}
+          />
+
+          <Stats
+            name="Total Amount Deposited"
+            value={Number(stats.totalAmountDeposited).toLocaleString(
+              undefined,
+              {
+                notation: "compact",
+                compactDisplay: "long",
+                style: "currency",
+                currency: "NGN",
+              }
+            )}
           />
 
           <Stats
             name="Total Amount Spent"
-            value={Number(stats.totalSpent).toLocaleString(undefined, {
-              notation: "compact",
-              compactDisplay: "long",
-            })}
-          />
-
-          <Stats
-            name="Total Amount Spent"
-            value={Number(stats.totalSpent).toLocaleString(undefined, {
+            value={Number(stats.totalAmountSpent).toLocaleString(undefined, {
               notation: "compact",
               compactDisplay: "long",
               style: "currency",

@@ -41,6 +41,7 @@ export default function AddProduceModal() {
       setCocoaStore(changedState.data as unknown as CocoaStore);
       toggleAddProduceModal();
       toast.success(changedState.message);
+      window.location.reload()
     }
   });
 

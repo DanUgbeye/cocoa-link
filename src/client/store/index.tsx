@@ -1,4 +1,4 @@
-import { CocoaStore, Transaction, User } from "@/types";
+import { CocoaStore, CocoaStoreWithUser, Transaction, User } from "@/types";
 import { create } from "zustand";
 
 export type StoreInitialState = {
@@ -13,9 +13,12 @@ export type AppState = {
   transactions: Transaction[];
   user?: User;
   cocoaStore?: CocoaStore;
+
   depositModalOpen: boolean;
   withdrawModalOpen: boolean;
   addProduceModalOpen: boolean;
+
+  selectedDeal?: CocoaStoreWithUser;
 };
 
 export type AppActions = {
@@ -28,6 +31,8 @@ export type AppActions = {
   toggleDepositModal(state?: boolean): void;
   toggleWithdrawModal(state?: boolean): void;
   toggleAddProduceModal(state?: boolean): void;
+
+  setSelctedDeal(deal?: CocoaStoreWithUser): void;
 };
 
 export type AppStore = AppState & AppActions;
@@ -66,6 +71,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
       const { addProduceModalOpen } = get();
       set({ addProduceModalOpen: !addProduceModalOpen });
     }
+  },
+
+  selectedDeal: undefined,
+  setSelctedDeal(deal) {
+    set({ selectedDeal: deal });
   },
 
   sidenavOpen: false,

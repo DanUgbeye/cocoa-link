@@ -15,7 +15,7 @@ import { CocoaStoreWithUser } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
 
-export default async function MarketPage() {
+export default async function MarketplacePage() {
   const user = await getLoggedInUser();
   if (!user) redirect(PAGES.LOGIN);
 

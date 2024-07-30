@@ -6,7 +6,7 @@ export type CocoaStore = {
   quantity: number;
   pricePerItem: number;
   totalQuantitySold: number;
-  totalQuantity: number;
+  totalQuantityProduced: number;
   totalAmountSold: number;
   createdAt: Date;
   updatedAt: Date;

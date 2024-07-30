@@ -68,7 +68,7 @@ export async function updateCocoaStoreQuantity(
       { userId: user._id },
       {
         quantity: cocoaStore.quantity + quantityToAdd,
-        totalQuantity: cocoaStore.totalQuantity + quantityToAdd,
+        totalQuantityProduced: cocoaStore.totalQuantityProduced + quantityToAdd,
         pricePerItem,
       },
       { new: true }

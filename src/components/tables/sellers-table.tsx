@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -9,9 +11,11 @@ import {
 import { cn } from "@/lib/utils";
 import { CocoaStoreWithUser } from "@/types";
 import { Button } from "../ui/button";
+import { useAppStore } from "@/client/store";
 
 export default function SellersTable(props: { items: CocoaStoreWithUser[] }) {
   const { items } = props;
+  const { setSelctedDeal } = useAppStore();
 
   return (
     <div className="overflow-x-auto">
@@ -66,22 +70,14 @@ export default function SellersTable(props: { items: CocoaStoreWithUser[] }) {
                   </TableCell>
 
                   <TableCell className="">
-                    <form>
-                      <input
-                        type="text"
-                        id="storeId"
-                        defaultValue={item._id}
-                        hidden
-                      />
-
-                      <Button
-                        className={
-                          "h-fit bg-green-500 px-6 py-2 text-white hover:bg-green-600"
-                        }
-                      >
-                        Buy
-                      </Button>
-                    </form>
+                    <Button
+                      className={
+                        "h-fit bg-green-500 px-6 py-2 text-white hover:bg-green-600"
+                      }
+                      onClick={() => setSelctedDeal(item)}
+                    >
+                      Buy
+                    </Button>
                   </TableCell>
                 </TableRow>
               );

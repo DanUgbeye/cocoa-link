@@ -35,6 +35,7 @@ export default function DepositModal() {
       setUser(changedState.data as unknown as User);
       toggleDepositModal();
       toast.success(changedState.message);
+      window.location.reload()
     }
   });
 

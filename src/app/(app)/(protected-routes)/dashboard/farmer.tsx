@@ -45,8 +45,6 @@ export default function FarmerDashboardPage(props: Props) {
 
               <span className="text-2xl font-bold">
                 {Number(user?.walletBalance || 0).toLocaleString(undefined, {
-                  notation: "compact",
-                  compactDisplay: "long",
                   style: "currency",
                   currency: "NGN",
                 })}
@@ -90,14 +88,14 @@ export default function FarmerDashboardPage(props: Props) {
         <section className="grid gap-5 md:grid-cols-3">
           <Stats
             name="Total Cocoa Bags Produced"
-            value={Number(cocoaStore?.totalQuantity || 0).toLocaleString(
+            value={Number(cocoaStore?.totalQuantityProduced || 0).toLocaleString(
               undefined,
               { notation: "compact", compactDisplay: "long" }
             )}
           />
 
           <Stats
-            name="Total Cocoa Sold"
+            name="Total Cocoa Bags Sold"
             value={Number(cocoaStore?.totalQuantitySold || 0).toLocaleString(
               undefined,
               { notation: "compact", compactDisplay: "long" }

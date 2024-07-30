@@ -66,15 +66,24 @@ export default function Navbar(props: NavbarProps) {
           <div className="ml-auto flex w-fit items-center justify-end gap-3">
             {user && (
               <Popover>
-                <PopoverTrigger>
-                  <Avatar className="font-semibold text-neutral-500">
-                    <AvatarFallback>
-                      {appUtils.getUserInitials(user)}
-                    </AvatarFallback>
-                  </Avatar>
+                <PopoverTrigger className="rounded-full py-1 pl-2 pr-4 duration-300 hover:bg-amber-700/10">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="font-semibold text-amber-700">
+                      <AvatarFallback>
+                        {appUtils.getUserInitials(user)}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div className="hidden flex-col sm:flex">
+                      <div className="text-sm font-bold">{user.name}</div>
+                      <div className="text-left text-xs capitalize text-neutral-400">
+                        {user.role}
+                      </div>
+                    </div>
+                  </div>
                 </PopoverTrigger>
 
-                <PopoverContent className="mr-10 w-52 p-2">
+                <PopoverContent className="mr-8 w-52 p-2">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between gap-2 rounded bg-neutral-100 px-2 py-2 text-sm font-semibold text-neutral-600">
                       <span>

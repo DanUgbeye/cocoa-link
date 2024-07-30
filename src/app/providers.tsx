@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import AddProduceModal from "@/components/modals/add-produce-modal";
 import "react-circular-progressbar/dist/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
+import BuyModal from "@/components/modals/buy-modal";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ export default function Providers({ children }: PropsWithChildren) {
       <WithdrawModal />
       <DepositModal />
       <AddProduceModal />
+      <BuyModal />
 
       {children}
     </QueryClientProvider>

@@ -8,21 +8,13 @@ export const TransactionSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: [
-        TRANSACTION_TYPE.DEPOSIT,
-        TRANSACTION_TYPE.PURCHASE,
-        TRANSACTION_TYPE.WITHDRAWAL,
-      ],
+      enum: Object.values(TRANSACTION_TYPE),
       default: TRANSACTION_TYPE.PURCHASE,
     },
     status: {
       type: String,
       required: true,
-      enum: [
-        TRANSACTION_STATUS.SUCCESS,
-        TRANSACTION_STATUS.FAILED,
-        TRANSACTION_STATUS.PENDING,
-      ],
+      enum: Object.values(TRANSACTION_STATUS),
       default: TRANSACTION_STATUS.PENDING,
     },
   },

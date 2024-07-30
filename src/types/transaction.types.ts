@@ -8,6 +8,7 @@ export type TransactionStatus =
 
 export const TRANSACTION_TYPE = {
   PURCHASE: "Purchase",
+  SALE: "Sale",
   WITHDRAWAL: "Withdrawal",
   DEPOSIT: "Deposit",
 } as const;
