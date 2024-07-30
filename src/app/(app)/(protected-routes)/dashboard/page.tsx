@@ -6,6 +6,7 @@ import {
   CocoaStoreWithUser,
   Payment,
   Transaction,
+  TRANSACTION_STATUS,
   TRANSACTION_TYPE,
   USER_ROLES,
 } from "@/types";
@@ -35,6 +36,7 @@ export default async function DashboardPage() {
     const transactions = (await transactionModel.find({
       userId: user._id,
       type: TRANSACTION_TYPE.DEPOSIT,
+      status: TRANSACTION_STATUS.SUCCESS,
     })) as Transaction[];
 
     let buyerStats = {

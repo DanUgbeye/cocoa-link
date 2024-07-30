@@ -85,20 +85,26 @@ export default function Navbar(props: NavbarProps) {
 
                 <PopoverContent className="mr-8 w-52 p-2">
                   <div className="space-y-1">
-                    <div className="flex items-center justify-between gap-2 rounded bg-neutral-100 px-2 py-2 text-sm font-semibold text-neutral-600">
-                      <span>
-                        {Number(user.walletBalance).toLocaleString(undefined, {
-                          style: "currency",
-                          currency: "NGN",
-                          notation:
-                            user.walletBalance > 100_000
-                              ? "compact"
-                              : "standard",
-                          compactDisplay: "short",
-                        })}
-                      </span>
+                    <div className="flex items-center justify-between gap-2 rounded px-2 py-2 text-sm font-semibold text-neutral-600">
+                      <div className="flex flex-col ">
+                        <span className="text-xs font-normal">Wallet</span>
+                        <span>
+                          {Number(user.walletBalance).toLocaleString(
+                            undefined,
+                            {
+                              style: "currency",
+                              currency: "NGN",
+                              notation:
+                                user.walletBalance > 100_000
+                                  ? "compact"
+                                  : "standard",
+                              compactDisplay: "short",
+                            }
+                          )}
+                        </span>
+                      </div>
 
-                      <Wallet className="size-4" />
+                      <Wallet className="size-5" />
                     </div>
 
                     <Separator className=" " />
