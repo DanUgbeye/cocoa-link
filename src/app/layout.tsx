@@ -28,10 +28,10 @@ export default function RootLayout(props: RootLayoutProps) {
   const { children } = props;
 
   return (
-    <html lang="en" className=" bg-neutral-100 ">
+    <html lang="en" className="bg-neutral-100">
       <body
         className={cn(
-          " font-montserrat min-h-screen antialiased",
+          "min-h-screen font-montserrat antialiased",
           montserrat.variable
         )}
       >

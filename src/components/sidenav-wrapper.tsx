@@ -15,12 +15,12 @@ const SideNavWrapper = React.forwardRef<HTMLElement, SideNavWrapperProps>(
       <aside
         {...rest}
         ref={ref}
-        className={cn(" w-sidenav h-dvh flex-col ", className)}
+        className={cn("h-dvh w-sidenav flex-col", className)}
       >
-        <div className=" flex h-[5rem] w-full items-center ">
+        <div className="flex h-[5rem] w-full items-center">
           <Link
             href={PAGES.LOGIN}
-            className=" w-full px-6 text-lg sm:text-2xl font-semibold text-white "
+            className="w-full px-6 text-lg font-semibold text-white sm:text-2xl"
           >
             COCOA LINK
           </Link>

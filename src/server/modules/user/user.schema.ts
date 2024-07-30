@@ -23,10 +23,13 @@ export const userSchema = new mongoose.Schema<UserDocument>(
       type: String,
       required: true,
     },
+    walletBalance: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   {
     timestamps: true,
   }
 );
-
-

@@ -18,10 +18,10 @@ export default function SideNavLink(props: SideNavLinkProps) {
   return (
     <Button
       className={cn(
-        " grid h-12 grid-cols-[minmax(auto,1.5rem),1fr] items-center gap-x-2 rounded-none bg-transparent hover:bg-transparent pl-6 text-sm duration-300 ",
+        "grid h-12 grid-cols-[minmax(auto,1.5rem),1fr] items-center gap-x-2 rounded-none bg-transparent pl-6 text-sm duration-300 hover:bg-transparent",
         {
-          " bg-white/30 text-white hover:bg-white/30 ": active,
-          "  text-white/80 hover:bg-white/10 ": !active,
+          "bg-white/30 text-white hover:bg-white/30": active,
+          "text-white/80 hover:bg-white/10": !active,
         },
         className
       )}
@@ -34,7 +34,7 @@ export default function SideNavLink(props: SideNavLinkProps) {
         }}
         {...rest}
       >
-        <span className=" aspect-square h-5 w-5 self-center justify-self-center ">
+        <span className="aspect-square h-5 w-5 self-center justify-self-center">
           {icon}
         </span>
         {children}
@@ -58,11 +58,11 @@ export function SideNavButton(props: SideNavButtonProps) {
         onClick && onClick(e);
       }}
       className={cn(
-        " hover:bg-primary-base-100/20 grid h-11 grid-cols-[minmax(auto,1.5rem),1fr] items-center gap-x-2 rounded-none bg-transparent pl-6 text-sm text-neutral-900 duration-300 ",
+        "hover:bg-primary-base-100/20 grid h-11 grid-cols-[minmax(auto,1.5rem),1fr] items-center gap-x-2 rounded-none bg-transparent pl-6 text-sm text-neutral-900 duration-300",
         className
       )}
     >
-      <span className=" aspect-square h-5 w-5 self-center justify-self-center ">
+      <span className="aspect-square h-5 w-5 self-center justify-self-center">
         {icon}
       </span>
       {children}
@@ -84,7 +84,7 @@ export function SideNavLinkGroup(props: SideNavLinkGroupProps) {
         <Button
           variant={"ghost"}
           className={
-            " pointer-events-none flex h-8 cursor-pointer items-center justify-start pl-6 text-xs font-medium text-neutral-300 "
+            "pointer-events-none flex h-8 cursor-pointer items-center justify-start pl-6 text-xs font-medium text-neutral-300"
           }
           asChild
           disabled
@@ -93,7 +93,7 @@ export function SideNavLinkGroup(props: SideNavLinkGroupProps) {
         </Button>
       )}
 
-      <div className=" flex flex-col ">{children}</div>
+      <div className="flex flex-col">{children}</div>
     </ul>
   );
 }

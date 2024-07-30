@@ -57,7 +57,7 @@ async function connectDB(): Promise<typeof _mongoose> {
         registered = true;
       }
     }
-    
+
     return cached.conn!;
   } catch (e) {
     cached.promise = undefined;

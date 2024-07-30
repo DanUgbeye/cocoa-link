@@ -32,10 +32,10 @@ export const PasswordInput = React.forwardRef<
     }, [showPassword]);
 
     return (
-      <div className=" relative h-fit ">
+      <div className="relative h-fit">
         <Input
           type={showPwd ? "text" : "password"}
-          className={cn(" pr-8 ", className)}
+          className={cn("pr-8", className)}
           ref={ref}
           {...props}
         />
@@ -44,7 +44,7 @@ export const PasswordInput = React.forwardRef<
           type="button"
           variant={"ghost"}
           className={cn(
-            " absolute right-1 top-[50%] aspect-square h-fit max-h-8 translate-y-[-50%] px-2 py-0 ",
+            "absolute right-1 top-[50%] aspect-square h-fit max-h-8 translate-y-[-50%] px-2 py-0",
             classNames?.showButton
           )}
           onClick={(e) => handleShowPassword()}

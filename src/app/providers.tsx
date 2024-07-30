@@ -1,5 +1,7 @@
 "use client";
 
+import DepositModal from "@/components/modals/deposit-modal";
+import WithdrawModal from "@/components/modals/withdraw-modal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";
 import { ToastContainer } from "react-toastify";
@@ -21,6 +23,8 @@ export default function Providers({ children }: PropsWithChildren) {
         stacked
         hideProgressBar
       />
+      <WithdrawModal />
+      <DepositModal />
 
       {children}
     </QueryClientProvider>

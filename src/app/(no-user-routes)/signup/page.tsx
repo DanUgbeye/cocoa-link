@@ -49,18 +49,18 @@ export default function SignupPage() {
   });
 
   return (
-    <main className=" h-full min-h-screen ">
-      <Container className=" py-16 ">
-        <div className=" mx-auto w-full max-w-lg space-y-5 rounded-lg bg-amber-900/40 px-6 pb-20 pt-12 sm:px-12 ">
-          <div className="  ">
-            <div className=" text-2xl font-bold uppercase leading-relaxed text-white md:text-3xl ">
-              <h2 className="  ">{role} SIGNUP</h2>
+    <main className="h-full min-h-screen">
+      <Container className="py-16">
+        <div className="mx-auto w-full max-w-lg space-y-5 rounded-lg bg-amber-900/40 px-6 pb-20 pt-12 sm:px-12">
+          <div className=" ">
+            <div className="text-2xl font-bold uppercase leading-relaxed text-white md:text-3xl">
+              <h2 className=" ">{role} SIGNUP</h2>
             </div>
 
-            <div className="  ">
+            <div className=" ">
               <Button
                 variant={"link"}
-                className=" px-0 text-white no-underline"
+                className="px-0 text-white no-underline"
                 onClick={() => setRole(otherRole)}
               >
                 Signup as <span className="ml-1 capitalize">{otherRole}</span>?
@@ -68,22 +68,24 @@ export default function SignupPage() {
             </div>
           </div>
 
-          <form action={action} className=" w-full space-y-4 ">
+          <form action={action} className="w-full space-y-4">
             <FormItem>
-              <FormLabel className=" text-white">
+              <FormLabel className="text-white">
                 {role === USER_ROLES.INDUSTRY ? "Industry Name" : "Name"}
               </FormLabel>
               <Input
                 name="name"
                 id="name"
                 type="text"
-                placeholder={role === USER_ROLES.INDUSTRY ? "CocoaNet" : "John Doe"}
+                placeholder={
+                  role === USER_ROLES.INDUSTRY ? "CocoaNet" : "John Doe"
+                }
                 required
               />
             </FormItem>
 
             <FormItem>
-              <FormLabel className=" text-white">Email</FormLabel>
+              <FormLabel className="text-white">Email</FormLabel>
               <Input
                 name="email"
                 id="email"
@@ -94,7 +96,7 @@ export default function SignupPage() {
             </FormItem>
 
             <FormItem>
-              <FormLabel className=" text-white">Password</FormLabel>
+              <FormLabel className="text-white">Password</FormLabel>
               <PasswordInput
                 name="password"
                 id="password"
@@ -106,8 +108,8 @@ export default function SignupPage() {
 
             <input type="hidden" name="role" value={role} />
 
-            <div className=" pt-5 ">
-              <FormButton className=" w-full bg-amber-800 hover:bg-amber-700 ">
+            <div className="pt-5">
+              <FormButton className="w-full bg-amber-800 hover:bg-amber-700">
                 {({ loading }) => {
                   return loading ? <Spinner /> : "Signup";
                 }}
@@ -116,19 +118,19 @@ export default function SignupPage() {
           </form>
         </div>
 
-        <div className=" items-div my-5 grid grid-cols-[1fr,auto,1fr] justify-center gap-x-3">
+        <div className="items-div my-5 grid grid-cols-[1fr,auto,1fr] justify-center gap-x-3">
           <Link
             href={PAGES.LOGIN}
-            className=" ml-auto text-sm underline-offset-4 hover:underline "
+            className="ml-auto text-sm underline-offset-4 hover:underline"
           >
             Back to home
           </Link>
 
-          <div className="h-6 w-px bg-blue-700 "></div>
+          <div className="h-6 w-px bg-blue-700"></div>
 
           <Link
             href={PAGES.LOGIN}
-            className=" mr-auto text-sm underline-offset-4 hover:underline "
+            className="mr-auto text-sm underline-offset-4 hover:underline"
           >
             Login
           </Link>

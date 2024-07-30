@@ -19,16 +19,17 @@ import {
   INDUSTRY_SIDENAV_LINKS,
   FARMER_SIDENAV_LINKS,
 } from "./sidenav-link-data";
+import { useAppStore } from "@/client/store";
 
 export interface BaseSideNavProps extends SideNavWrapperProps {}
 
 export interface SideNavProps extends BaseSideNavProps {
-  user?: User;
   breakpoint?: number;
 }
 
 export function SideNav(props: SideNavProps) {
-  const { breakpoint = DEFAULT_BREAK_POINT, children, user, ...rest } = props;
+  const { breakpoint = DEFAULT_BREAK_POINT, children, ...rest } = props;
+  const { user } = useAppStore();
   const pathname = usePathname();
   const { width } = useWindowSize();
   const sideNavLinks = useMemo(() => {
@@ -65,8 +66,8 @@ export function SideNav(props: SideNavProps) {
 
   const navLinks = React.useMemo(() => {
     return (
-      <div className=" pt-4 ">
-        <div className=" space-y-4 ">
+      <div className="pt-4">
+        <div className="space-y-4">
           {sideNavLinks.map((item) => {
             const { groupName, links } = item;
 
@@ -84,7 +85,7 @@ export function SideNav(props: SideNavProps) {
                         key={`${groupName}-link-${name}-${subIndex}`}
                         {...(rest as SideNavLinkData)}
                         active={(rest as SideNavLinkData).href === activeTab}
-                        icon={<Icon className=" size-5 " />}
+                        icon={<Icon className="size-5" />}
                       >
                         {name}
                       </SideNavLink>
@@ -94,7 +95,7 @@ export function SideNav(props: SideNavProps) {
                       <SideNavButton
                         key={`${groupName}-link-${name}-${subIndex}`}
                         {...(rest as SideNavButtonData)}
-                        icon={<Icon className=" size-5 " />}
+                        icon={<Icon className="size-5" />}
                       >
                         {name}
                       </SideNavButton>

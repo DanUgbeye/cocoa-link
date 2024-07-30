@@ -7,13 +7,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function toFormState(
+export function toFormState<TData = undefined>(
   status: FormState["status"],
-  message: string
-): FormState {
+  message: string,
+  data?: TData
+): FormState<TData> {
   return {
     status,
     message,
+    data,
     timestamp: Date.now(),
   };
 }
@@ -27,4 +29,3 @@ export function fromErrorToFormState(error: unknown): FormState {
     return toFormState("ERROR", "An unknown error occurred");
   }
 }
-

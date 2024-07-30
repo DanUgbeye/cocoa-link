@@ -17,13 +17,14 @@ import {
 } from "@/server/utils/http-exceptions";
 import { passwordUtil } from "@/server/utils/password";
 import { tokenUtil } from "@/server/utils/token";
-import { User } from "@/types";
+import { User, USER_ROLES } from "@/types";
 import { FormState } from "@/types/form.types";
 import { Model } from "mongoose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { UserDocument } from "../user/user.types";
+import { CocoaStoreDocument } from "../cocoa-store/cocoa-store.types";
 
 export async function signup(formState: FormState, formData: FormData) {
   try {
@@ -35,9 +36,10 @@ export async function signup(formState: FormState, formData: FormData) {
     });
 
     const db = await connectDB();
-    const userCollection = db.models.User as Model<UserDocument>;
+    const userModel = db.models.User as Model<UserDocument>;
+    const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
 
-    if (await userCollection.findOne({ email: validData.email })) {
+    if (await userModel.findOne({ email: validData.email })) {
       throw new Error("email already exists");
     }
 
@@ -45,7 +47,10 @@ export async function signup(formState: FormState, formData: FormData) {
     let user: UserDocument;
 
     try {
-      user = await userCollection.create(validData);
+      user = await userModel.create(validData);
+      if (validData.role === USER_ROLES.FARMER) {
+        await cocoaStoreModel.create({ user: user._id });
+      }
     } catch (error: any) {
       throw new ServerException(error.message);
     }
@@ -77,11 +82,11 @@ export async function login(formState: FormState, formData: FormData) {
     });
 
     const db = await connectDB();
-    const userCollection = db.models.User as Model<UserDocument>;
+    const userModel = db.models.User as Model<UserDocument>;
     let user: UserDocument | null;
 
     try {
-      user = await userCollection.findOne({ email });
+      user = await userModel.findOne({ email });
     } catch (error: any) {
       throw new ServerException(error.message);
     }
@@ -128,11 +133,11 @@ export const getLoggedInUser = cache(async () => {
     if (validAuthPayload.error) return undefined;
 
     const db = await connectDB();
-    const userCollection = db.models.User as Model<UserDocument>;
+    const userModel = db.models.User as Model<UserDocument>;
     let user: UserDocument | null = null;
 
     try {
-      user = await userCollection
+      user = await userModel
         .findById(validAuthPayload.data.id)
         .select("-password");
     } catch (err: any) {

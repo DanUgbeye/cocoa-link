@@ -7,7 +7,7 @@ export type TransactionStatus =
   (typeof TRANSACTION_STATUS)[keyof typeof TRANSACTION_STATUS];
 
 export const TRANSACTION_TYPE = {
-  SALE: "Sale",
+  PURCHASE: "Purchase",
   WITHDRAWAL: "Withdrawal",
   DEPOSIT: "Deposit",
 } as const;
@@ -16,9 +16,7 @@ export type TransactionType =
 
 export type Transaction = {
   _id: string;
-  buyerId: string;
-  sellerId: string;
-  quantity: number;
+  userId: string;
   amount: number;
   type: TransactionType;
   status: TransactionStatus;

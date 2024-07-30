@@ -20,7 +20,6 @@ export default async function DashboardPage() {
 
     return (
       <IndustryDashboardPage
-        userId={user._id}
         marketDeals={
           JSON.parse(JSON.stringify(marketDeals)) as CocoaStoreWithUser[]
         }
@@ -28,5 +27,5 @@ export default async function DashboardPage() {
     );
   }
 
-  return <FarmerDashboardPage userId={user._id} />;
+  return <FarmerDashboardPage />;
 }

@@ -8,7 +8,7 @@ export function DesktopSideNav(props: BaseSideNavProps) {
   const { children, className, ...rest } = props;
 
   return (
-    <SideNavWrapper {...rest} className={cn(" fixed top-0 ", className)}>
+    <SideNavWrapper {...rest} className={cn("fixed top-0", className)}>
       {children}
     </SideNavWrapper>
   );

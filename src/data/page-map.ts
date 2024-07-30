@@ -6,4 +6,6 @@ export const PAGES = {
   DASHBOARD: "/dashboard",
   MARKET: "/market",
   TRANSACTIONS: "/transactions",
+  WITHDRAW: "/withdraw",
+  DEPOSIT: "/deposit",
 } as const;

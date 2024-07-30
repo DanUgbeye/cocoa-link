@@ -13,7 +13,7 @@ export function Container(props: ContainerProps) {
   return (
     <div
       className={cn(
-        " mx-auto flex h-full w-full max-w-[100rem] flex-col px-5 sm:px-[5%] xl:px-[6rem] ",
+        "mx-auto flex h-full w-full max-w-[100rem] flex-col px-5 sm:px-[5%] xl:px-[6rem]",
         className || ""
       )}
       {...restProps}

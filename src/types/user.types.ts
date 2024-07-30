@@ -10,6 +10,7 @@ export type User = {
   email: string;
   name: string;
   role: UserRole;
+  walletBalance: number;
   createdAt: Date;
   updatedAt: Date;
 };

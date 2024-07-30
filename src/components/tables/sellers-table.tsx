@@ -36,7 +36,7 @@ export default function SellersTable(props: { items: CocoaStoreWithUser[] }) {
             <TableRow
               key={item._id}
               className={cn("bg-accent", {
-                " pointer-events-none opacity-50 ": item.quantity === 0,
+                "pointer-events-none opacity-50": item.quantity === 0,
               })}
             >
               <TableCell>

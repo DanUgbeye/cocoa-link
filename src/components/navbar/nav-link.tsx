@@ -10,10 +10,7 @@ export default function NavLink(props: NavLinkProps) {
   return (
     <Link
       {...rest}
-      className={cn(
-        " text-white/70 hover:text-white duration-300 ",
-        className
-      )}
+      className={cn("text-white/70 duration-300 hover:text-white", className)}
     >
       {children}
     </Link>

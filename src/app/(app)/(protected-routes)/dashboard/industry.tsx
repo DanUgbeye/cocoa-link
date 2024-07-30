@@ -18,35 +18,34 @@ import { CocoaStoreWithUser } from "@/types";
 import Link from "next/link";
 
 export default function AdminDashboardPage(props: {
-  userId: string;
   marketDeals: CocoaStoreWithUser[];
 }) {
-  const { userId, marketDeals } = props;
+  const { marketDeals } = props;
   const user = useAppStore(({ user }) => user);
   const transactions = useAppStore(({ transactions }) => transactions);
 
   return (
-    <main className=" py-10 ">
-      <Container className=" space-y-10 ">
-        <div className=" space-y-1 ">
+    <main className="py-10">
+      <Container className="space-y-10">
+        <div className="space-y-1">
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
             Welcome {user?.name}
           </h1>
 
-          <div className=" text-sm text-neutral-400 ">
+          <div className="text-sm text-neutral-400">
             Pick up where you left off
           </div>
         </div>
 
         <Card>
-          <CardHeader className="px-7 ">
+          <CardHeader className="px-7">
             <div className="flex flex-wrap justify-between gap-4">
-              <div className=" space-y-1 ">
+              <div className="space-y-1">
                 <CardTitle>Market</CardTitle>
                 <CardDescription>Available deals</CardDescription>
               </div>
 
-              <div className=" flex justify-end ">
+              <div className="flex justify-end">
                 <Link
                   href={PAGES.MARKET}
                   className={cn(
@@ -62,9 +61,7 @@ export default function AdminDashboardPage(props: {
 
           <CardContent>
             {marketDeals.length <= 0 ? (
-              <>
-                <div className=" py-10 text-center ">no available deals</div>
-              </>
+              <div className="py-10 text-center">no available deals</div>
             ) : (
               <SellersTable items={marketDeals} />
             )}
@@ -72,14 +69,14 @@ export default function AdminDashboardPage(props: {
         </Card>
 
         <Card>
-          <CardHeader className="px-7 ">
+          <CardHeader className="px-7">
             <div className="flex flex-wrap justify-between gap-4">
-              <div className=" space-y-1 ">
+              <div className="space-y-1">
                 <CardTitle>Transactions</CardTitle>
                 <CardDescription>Transaction History</CardDescription>
               </div>
 
-              <div className=" flex justify-end ">
+              <div className="flex justify-end">
                 <Link
                   href={PAGES.TRANSACTIONS}
                   className={cn(
@@ -94,14 +91,10 @@ export default function AdminDashboardPage(props: {
           </CardHeader>
 
           <CardContent>
-            {[].length <= 0 ? (
-              <>
-                <div className=" py-10 text-center ">
-                  no previous transactions
-                </div>
-              </>
+            {transactions.length <= 0 ? (
+              <div className="py-10 text-center">no previous transactions</div>
             ) : (
-              <TransactionsTable transactions={transactions} />
+              <TransactionsTable transactions={transactions.slice(0, 5)} />
             )}
           </CardContent>
         </Card>

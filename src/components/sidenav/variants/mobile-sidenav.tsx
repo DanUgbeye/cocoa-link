@@ -1,10 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import SideNavWrapper from "../../sidenav-wrapper";
-import { BaseSideNavProps } from "..";
 import { useAppStore } from "@/client/store";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { BaseSideNavProps } from "..";
+import SideNavWrapper from "../../sidenav-wrapper";
 
 export function MobileSideNav(props: BaseSideNavProps) {
   const { children, className, ...rest } = props;
@@ -14,9 +19,12 @@ export function MobileSideNav(props: BaseSideNavProps) {
     <Sheet open={sidenavOpen} onOpenChange={(state) => toggleSidenav(state)}>
       <SheetContent
         side={"left"}
-        className={cn(" flex w-80 min-w-fit p-0 text-white ")}
+        className={cn("flex w-80 min-w-fit p-0 text-white")}
       >
-        <SideNavWrapper {...rest} className={cn(" min-w-full ", className)}>
+        <SheetDescription hidden />
+        <SheetTitle hidden />
+
+        <SideNavWrapper {...rest} className={cn("min-w-full", className)}>
           {children}
         </SideNavWrapper>
       </SheetContent>

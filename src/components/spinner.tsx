@@ -9,7 +9,7 @@ export default function Spinner(props: SpinnerProps) {
 
   return (
     <CgSpinnerTwoAlt
-      className={twMerge(" h-6 w-6 animate-spin duration-700 ", className)}
+      className={twMerge("h-6 w-6 animate-spin duration-700", className)}
       {...rest}
     />
   );

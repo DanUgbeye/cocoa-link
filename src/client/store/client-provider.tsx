@@ -21,9 +21,9 @@ export default function ClientStoreProvider(props: Props) {
 
   if (!initialised) {
     return (
-      <Container className=" pt-20 ">
+      <Container className="pt-20">
         <center>
-          <Spinner className=" text-amber-900/40 " />
+          <Spinner className="text-amber-900/40" />
         </center>
       </Container>
     );
