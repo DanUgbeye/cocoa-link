@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppStore } from "@/client/store";
 import {
   Table,
   TableBody,
@@ -11,9 +12,8 @@ import {
 import { cn } from "@/lib/utils";
 import { CocoaStoreWithUser } from "@/types";
 import { Button } from "../ui/button";
-import { useAppStore } from "@/client/store";
 
-export default function SellersTable(props: { items: CocoaStoreWithUser[] }) {
+export default function DealsTable(props: { items: CocoaStoreWithUser[] }) {
   const { items } = props;
   const { setSelctedDeal } = useAppStore();
 
@@ -70,14 +70,16 @@ export default function SellersTable(props: { items: CocoaStoreWithUser[] }) {
                   </TableCell>
 
                   <TableCell className="">
-                    <Button
-                      className={
-                        "h-fit bg-green-500 px-6 py-2 text-white hover:bg-green-600"
-                      }
-                      onClick={() => setSelctedDeal(item)}
-                    >
-                      Buy
-                    </Button>
+                    <div className="flex justify-end">
+                      <Button
+                        className={
+                          "h-fit bg-green-500 px-6 py-2 text-white hover:bg-green-600"
+                        }
+                        onClick={() => setSelctedDeal(item)}
+                      >
+                        Order
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );

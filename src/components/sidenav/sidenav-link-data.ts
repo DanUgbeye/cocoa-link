@@ -1,6 +1,6 @@
 import { PAGES } from "@/data/page-map";
 import { SideNavLinkGroupData } from "@/types/sidenav.types";
-import { CircleDollarSign, Globe, Home } from "lucide-react";
+import { CircleDollarSign, Globe, Handshake, Home } from "lucide-react";
 
 export const INDUSTRY_SIDENAV_LINKS: SideNavLinkGroupData[] = [
   {
@@ -15,6 +15,11 @@ export const INDUSTRY_SIDENAV_LINKS: SideNavLinkGroupData[] = [
         name: "Marketplace",
         href: PAGES.MARKET,
         icon: Globe,
+      },
+      {
+        name: "Orders",
+        href: PAGES.ORDERS,
+        icon: Handshake,
       },
       {
         name: "Transactions",
@@ -33,6 +38,11 @@ export const FARMER_SIDENAV_LINKS: SideNavLinkGroupData[] = [
         name: "Dashboard",
         href: PAGES.DASHBOARD,
         icon: Home,
+      },
+      {
+        name: "Orders",
+        href: PAGES.ORDERS,
+        icon: Handshake,
       },
       {
         name: "Transactions",

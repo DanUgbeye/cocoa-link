@@ -1,6 +1,6 @@
 import { model } from "mongoose";
 import { CocoaStoreSchema } from "../modules/cocoa-store/cocoa-store.schema";
-import { PaymentSchema } from "../modules/payment/payment.schema";
+import { OrderSchema } from "../modules/order/order.schema";
 import { TransactionSchema } from "../modules/transaction/transaction.schema";
 import { userSchema } from "../modules/user/user.schema";
 
@@ -15,8 +15,8 @@ export default function registerModels() {
     console.log("Registering Transaction Model");
     model("Transaction", TransactionSchema);
 
-    console.log("Registering Payment Model");
-    model("Payment", PaymentSchema);
+    console.log("Registering Order Model");
+    model("Order", OrderSchema);
 
     global.registeredModels = true;
   }
