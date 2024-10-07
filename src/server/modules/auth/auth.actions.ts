@@ -4,8 +4,6 @@ import { COOKIE_KEYS } from "@/data/keys";
 import { PAGES } from "@/data/page-map";
 import { fromErrorToFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
-import { AuthTokenPayload } from "@/server/modules/auth/auth.types";
-import { AuthTokenPayloadSchema } from "@/server/modules/auth/auth.validation";
 import {
   UserLoginSchema,
   UserSignupSchema,
@@ -17,15 +15,16 @@ import {
 } from "@/server/utils/http-exceptions";
 import { passwordUtil } from "@/server/utils/password";
 import { tokenUtil } from "@/server/utils/token";
-import { User, USER_ROLES } from "@/types";
+import { AuthTokenPayload, User, UserRole } from "@/types";
 import { FormState } from "@/types/form.types";
+import { AuthTokenPayloadSchema } from "@/validation";
 import { Model } from "mongoose";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
+import { MetricDocument } from "../metric/metric.types";
 import { UserDocument } from "../user/user.types";
-import { CocoaStoreDocument } from "../cocoa-store/cocoa-store.types";
-import { revalidatePath } from "next/cache";
 
 export async function signup(formState: FormState, formData: FormData) {
   try {
@@ -38,7 +37,7 @@ export async function signup(formState: FormState, formData: FormData) {
 
     const db = await connectDB();
     const userModel = db.models.User as Model<UserDocument>;
-    const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
+    const metricsModel = db.models.Metric as Model<MetricDocument>;
 
     if (await userModel.findOne({ email: validData.email })) {
       throw new Error("email already exists");
@@ -49,15 +48,15 @@ export async function signup(formState: FormState, formData: FormData) {
 
     try {
       user = await userModel.create(validData);
-      if (validData.role === USER_ROLES.FARMER) {
-        await cocoaStoreModel.create({ userId: user._id });
+      if (validData.role === UserRole.Farmer) {
+        await metricsModel.create({ userId: user._id });
       }
     } catch (error: any) {
       throw new ServerException(error.message);
     }
 
     const { token, expiresIn } = tokenUtil.createJwtToken<AuthTokenPayload>({
-      id: user._id as string,
+      id: String(user._id),
       role: user.role,
     });
 
@@ -68,6 +67,8 @@ export async function signup(formState: FormState, formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       maxAge: expiresIn,
     });
+
+    revalidatePath("/", "layout");
 
     redirect(PAGES.DASHBOARD);
   } catch (error: any) {
@@ -100,7 +101,7 @@ export async function login(formState: FormState, formData: FormData) {
     }
 
     const { token, expiresIn } = tokenUtil.createJwtToken<AuthTokenPayload>({
-      id: user._id as string,
+      id: String(user._id),
       role: user.role,
     });
 
@@ -111,6 +112,8 @@ export async function login(formState: FormState, formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       maxAge: expiresIn,
     });
+
+    revalidatePath("/", "layout");
 
     redirect(PAGES.DASHBOARD);
   } catch (error: any) {
@@ -124,7 +127,7 @@ export async function logout(redirectUrl?: string) {
   redirect(redirectUrl ? redirectUrl : PAGES.LOGIN);
 }
 
-export const getLoggedInUser = cache(async () => {
+export async function getLoggedInUser() {
   try {
     const authCookie = cookies().get(COOKIE_KEYS.AUTH);
     if (!authCookie) return undefined;
@@ -154,7 +157,7 @@ export const getLoggedInUser = cache(async () => {
   } catch (error: any) {
     return undefined;
   }
-});
+}
 
 export async function verifyAuth() {
   try {

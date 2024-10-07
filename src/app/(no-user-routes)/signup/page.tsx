@@ -11,7 +11,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { PAGES } from "@/data/page-map";
 import { useFormEffect } from "@/hooks/use-form-effect";
 import { signup } from "@/server/modules/auth/auth.actions";
-import { USER_ROLES, UserRole } from "@/types";
+import { UserRole } from "@/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -20,20 +20,20 @@ import { toast } from "react-toastify";
 
 export default function SignupPage() {
   const router = useRouter();
-  const { initialiseStore } = useAppStore();
+  const { initializeStore } = useAppStore();
   const [state, action] = useFormState(signup, {
     status: "UNSET",
     message: "",
     timestamp: Date.now(),
   });
 
-  const [role, setRole] = useState<UserRole>(USER_ROLES.FARMER);
+  const [role, setRole] = useState<UserRole>(UserRole.Farmer);
 
   const otherRole = useMemo(() => {
-    if (role === USER_ROLES.FARMER) {
-      return USER_ROLES.INDUSTRY;
+    if (role === UserRole.Farmer) {
+      return UserRole.Industry;
     }
-    return USER_ROLES.FARMER;
+    return UserRole.Farmer;
   }, [role]);
 
   useFormEffect(state, (changedState) => {
@@ -42,7 +42,7 @@ export default function SignupPage() {
     }
     if (changedState.status === "SUCCESS") {
       // const initialState = changedState.data as unknown as StoreInitialState;
-      // initialiseStore(initialState);
+      // initializeStore(initialState);
       toast.success(changedState.message);
       // router.push(PAGES.DASHBOARD);
     }
@@ -71,14 +71,14 @@ export default function SignupPage() {
           <form action={action} className="w-full space-y-4">
             <FormItem>
               <FormLabel className="text-white">
-                {role === USER_ROLES.INDUSTRY ? "Industry Name" : "Name"}
+                {role === UserRole.Industry ? "Industry Name" : "Name"}
               </FormLabel>
               <Input
                 name="name"
                 id="name"
                 type="text"
                 placeholder={
-                  role === USER_ROLES.INDUSTRY ? "CocoaNet" : "John Doe"
+                  role === UserRole.Industry ? "CocoaNet" : "John Doe"
                 }
                 required
               />

@@ -1,56 +1,33 @@
-import connectDB from "@/server/db/connect";
-import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
-import { CocoaStoreDocument } from "@/server/modules/cocoa-store/cocoa-store.types";
-import { TransactionDocument } from "@/server/modules/transaction/transaction.types";
-import { CocoaStore, Transaction, USER_ROLES } from "@/types";
-import { Model } from "mongoose";
-import { PropsWithChildren } from "react";
-import { StoreInitialState } from ".";
-import ClientStoreProvider from "./client-provider";
+"use client";
 
-async function getInitialState(): Promise<StoreInitialState> {
-  try {
-    const user = await getLoggedInUser();
-    if (!user) {
-      throw new Error("no user");
-    }
+import { Container } from "@/components/container";
+import Spinner from "@/components/spinner";
+import { PropsWithChildren, useEffect } from "react";
+import { StoreInitialState, useAppStore } from ".";
 
-    const db = await connectDB();
-    const transactionsModel = db.models
-      .Transaction as Model<TransactionDocument>;
-    const cocoaStoreModel = db.models.CocoaStore as Model<CocoaStoreDocument>;
-
-    const transactions = await transactionsModel
-      .find({
-        userId: user._id,
-      })
-      .sort({ createdAt: "descending" });
-    const cocoaStore =
-      user.role === USER_ROLES.FARMER
-        ? await cocoaStoreModel.findOne({ userId: user._id })
-        : undefined;
-
-    return {
-      user,
-      cocoaStore: cocoaStore
-        ? (JSON.parse(JSON.stringify(cocoaStore)) as CocoaStore)
-        : undefined,
-      transactions: JSON.parse(JSON.stringify(transactions)) as Transaction[],
-    };
-  } catch (error: any) {
-    return { transactions: [] };
-  }
+interface Props extends PropsWithChildren {
+  initialState: StoreInitialState;
 }
 
-interface Props extends PropsWithChildren {}
+export default function ClientStoreProvider(props: Props) {
+  const { children, initialState } = props;
+  const initialized = useAppStore(({ initialized }) => initialized);
+  const { initializeStore } = useAppStore();
 
-export default async function StoreProvider(props: Props) {
-  const { children } = props;
-  const initialState = await getInitialState();
+  useEffect(() => {
+    initializeStore(initialState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  return (
-    <ClientStoreProvider initialState={initialState}>
-      {children}
-    </ClientStoreProvider>
-  );
+  if (!initialized) {
+    return (
+      <Container className="pt-20">
+        <center>
+          <Spinner className="text-amber-900/40" />
+        </center>
+      </Container>
+    );
+  }
+
+  return <>{children}</>;
 }

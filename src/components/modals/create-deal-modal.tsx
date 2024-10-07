@@ -10,24 +10,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useFormEffect } from "@/hooks/use-form-effect";
-import { updateCocoaStoreQuantity } from "@/server/modules/cocoa-store/cocoa-store.actions";
-import { CocoaStore, USER_ROLES } from "@/types";
+import { createDeal } from "@/server/modules/deal/deal.actions";
+import { } from "@/server/modules/metric/metric.actions";
+import { CocoaVariant, UserRole } from "@/types";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import FormButton from "../form-button";
+import { Select } from "../select";
 import Spinner from "../spinner";
 import { FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 
-export default function AddProduceModal() {
-  const {
-    user,
-    cocoaStore,
-    addProduceModalOpen,
-    toggleAddProduceModal,
-    setCocoaStore,
-  } = useAppStore();
-  const [state, action] = useFormState(updateCocoaStoreQuantity, {
+export default function CreateDealModal() {
+  const user = useAppStore((state) => state.user);
+  const createDealModalOpen = useAppStore((state) => state.createDealModalOpen);
+  const { toggleCreateDealModal } = useAppStore();
+
+  const [state, action] = useFormState(createDeal, {
     status: "UNSET",
     message: "",
     timestamp: Date.now(),
@@ -38,10 +37,9 @@ export default function AddProduceModal() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      setCocoaStore(changedState.data as unknown as CocoaStore);
-      toggleAddProduceModal();
+      toggleCreateDealModal();
       toast.success(changedState.message);
-      window.location.reload()
+      window.location.reload();
     }
   });
 
@@ -49,21 +47,35 @@ export default function AddProduceModal() {
     <Dialog
       open={
         user !== undefined &&
-        user.role === USER_ROLES.FARMER &&
-        addProduceModalOpen
+        user.role === UserRole.Farmer &&
+        createDealModalOpen
       }
-      onOpenChange={toggleAddProduceModal}
+      onOpenChange={toggleCreateDealModal}
     >
       <DialogTrigger hidden></DialogTrigger>
 
       <DialogContent className="w-full max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Produce</DialogTitle>
+          <DialogTitle>Create New Deal</DialogTitle>
 
-          <DialogDescription>Add new harvest for sale</DialogDescription>
+          <DialogDescription>Add a new deal for sale</DialogDescription>
         </DialogHeader>
 
         <form action={action} className="w-full space-y-4">
+          <FormItem>
+            <FormLabel className="">Variant</FormLabel>
+
+            <Select name="variant" id="variant" required className="">
+              <option value="">select variant</option>
+
+              {Object.values(CocoaVariant).map((variant, index) => (
+                <option key={`option-${variant}`} value={variant}>
+                  {variant}
+                </option>
+              ))}
+            </Select>
+          </FormItem>
+
           <FormItem>
             <FormLabel className="">Cocoa Quantity (in bags)</FormLabel>
             <Input
@@ -82,8 +94,20 @@ export default function AddProduceModal() {
               name="pricePerItem"
               id="pricePerItem"
               type="number"
-              placeholder="e.g 300"
-              defaultValue={cocoaStore?.pricePerItem}
+              placeholder="e.g 300,000"
+              defaultValue={300_000}
+              required
+            />
+          </FormItem>
+
+          <FormItem>
+            <FormLabel className="">upload image</FormLabel>
+
+            <Input
+              name="image"
+              id="image"
+              type="file"
+              accept={"image/*"}
               required
             />
           </FormItem>
@@ -91,7 +115,7 @@ export default function AddProduceModal() {
           <div className="pt-5">
             <FormButton className="w-full bg-amber-800 hover:bg-amber-700">
               {({ loading }) => {
-                return loading ? <Spinner /> : "Add";
+                return loading ? <Spinner /> : "Create Deal";
               }}
             </FormButton>
           </div>

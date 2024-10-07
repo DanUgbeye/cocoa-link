@@ -15,15 +15,15 @@ import {
   completeOrder,
   deliverOrder,
 } from "@/server/modules/order/order.actions";
-import { Order, ORDER_STATUS, USER_ROLES } from "@/types";
+import { OrderStatus, OrderWithDeal, UserRole } from "@/types";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { Button } from "../ui/button";
 import Spinner from "../spinner";
+import { Button } from "../ui/button";
 
 interface Props {
-  orders: Order[];
+  orders: OrderWithDeal[];
 }
 
 export default function OrdersTable(props: Props) {
@@ -102,6 +102,8 @@ export default function OrdersTable(props: Props) {
 
             <TableHead className="">Location</TableHead>
 
+            <TableHead className="">Variant</TableHead>
+
             <TableHead className="">Quantity</TableHead>
 
             <TableHead className="">Amount</TableHead>
@@ -132,7 +134,15 @@ export default function OrdersTable(props: Props) {
                 </TableCell>
 
                 <TableCell>
-                  <div className="w-full px-2 font-medium">{item.quantity}</div>
+                  <div className="w-full px-2 font-medium">
+                    {item.dealId.variant}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="w-full px-2 font-medium">
+                    {item.dealId.quantity}
+                  </div>
                 </TableCell>
 
                 <TableCell className={cn("w-fit rounded font-medium")}>
@@ -148,13 +158,13 @@ export default function OrdersTable(props: Props) {
                       "w-28 rounded px-2 py-1 text-center font-medium",
                       {
                         "bg-green-100 text-green-600":
-                          item.status === ORDER_STATUS.COMPLETED,
+                          item.status === OrderStatus.Completed,
                         "bg-red-100 text-red-600":
-                          item.status === ORDER_STATUS.CANCELLED,
+                          item.status === OrderStatus.Cancelled,
                         "bg-amber-100 text-amber-600":
-                          item.status === ORDER_STATUS.PENDING,
+                          item.status === OrderStatus.Pending,
                         "bg-pink-100 text-pink-600":
-                          item.status === ORDER_STATUS.DELIVERED,
+                          item.status === OrderStatus.Delivered,
                       }
                     )}
                   >
@@ -165,9 +175,9 @@ export default function OrdersTable(props: Props) {
                 <TableCell>
                   {user !== undefined && (
                     <div className={"flex justify-end gap-2"}>
-                      {item.status === ORDER_STATUS.PENDING && (
+                      {item.status === OrderStatus.Pending && (
                         <>
-                          {user.role === USER_ROLES.FARMER && (
+                          {user.role === UserRole.Farmer && (
                             <Button
                               className="w-32 bg-green-500 hover:bg-green-600"
                               onClick={() => handleDeliverOrder(item._id)}
@@ -180,7 +190,7 @@ export default function OrdersTable(props: Props) {
                             </Button>
                           )}
 
-                          {user.role === USER_ROLES.INDUSTRY && (
+                          {user.role === UserRole.Industry && (
                             <Button
                               className="w-32 bg-red-500 hover:bg-red-600"
                               onClick={() => handleCancelOrder(item._id)}
@@ -195,15 +205,15 @@ export default function OrdersTable(props: Props) {
                         </>
                       )}
 
-                      {item.status === ORDER_STATUS.DELIVERED && (
+                      {item.status === OrderStatus.Delivered && (
                         <>
-                          {user.role === USER_ROLES.FARMER && (
+                          {user.role === UserRole.Farmer && (
                             <span className="italic text-neutral-400">
                               Awaiting confirmation
                             </span>
                           )}
 
-                          {user.role === USER_ROLES.INDUSTRY && (
+                          {user.role === UserRole.Industry && (
                             <>
                               <Button
                                 className="w-32 bg-green-500 hover:bg-green-600"
@@ -220,13 +230,13 @@ export default function OrdersTable(props: Props) {
                         </>
                       )}
 
-                      {item.status === ORDER_STATUS.COMPLETED && (
+                      {item.status === OrderStatus.Completed && (
                         <span className="italic text-neutral-400">
                           Order completed
                         </span>
                       )}
 
-                      {item.status === ORDER_STATUS.CANCELLED && (
+                      {item.status === OrderStatus.Cancelled && (
                         <span className="italic text-neutral-400">
                           Order cancelled
                         </span>

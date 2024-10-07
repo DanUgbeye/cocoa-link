@@ -1,21 +1,22 @@
-import { TRANSACTION_STATUS, TRANSACTION_TYPE } from "@/types";
+import { TransactionStatus, TransactionType } from "@/types";
 import mongoose from "mongoose";
 
 export const TransactionSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+    orderId: { type: mongoose.Types.ObjectId, required: false, ref: "Order" },
     amount: { type: Number, default: 0 },
     type: {
       type: String,
       required: true,
-      enum: Object.values(TRANSACTION_TYPE),
-      default: TRANSACTION_TYPE.PURCHASE,
+      enum: Object.values(TransactionType),
+      default: TransactionType.Purchase,
     },
     status: {
       type: String,
       required: true,
-      enum: Object.values(TRANSACTION_STATUS),
-      default: TRANSACTION_STATUS.PENDING,
+      enum: Object.values(TransactionStatus),
+      default: TransactionStatus.Pending,
     },
   },
   { timestamps: true }

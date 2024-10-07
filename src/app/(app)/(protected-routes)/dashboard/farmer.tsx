@@ -14,24 +14,25 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { Order, USER_ROLES } from "@/types";
+import { Deal, Metric, Order, OrderWithDeal, UserRole } from "@/types";
 import { Package, Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";
 
 interface Props {
-  orders: Order[];
+  deals: Deal[];
+  orders: OrderWithDeal[];
 }
 
 export default function FarmerDashboardPage(props: Props) {
   const { orders } = props;
   const user = useAppStore(({ user }) => user);
   const transactions = useAppStore(({ transactions }) => transactions);
-  const cocoaStore = useAppStore(({ cocoaStore }) => cocoaStore);
+  const metrics = useAppStore(({ metrics }) => metrics);
 
   return (
     <main className="py-10">
-      {user !== undefined && user.role === USER_ROLES.FARMER && (
+      {user !== undefined && user.role === UserRole.Farmer && (
         <Container className="space-y-10">
           <div className="space-y-1">
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
@@ -61,52 +62,53 @@ export default function FarmerDashboardPage(props: Props) {
               <Wallet className="size-14 stroke-1 text-amber-700 opacity-35" />
             </div>
 
-            <div className="flex items-center justify-between gap-4 rounded bg-white p-4">
-              <div className="flex flex-col">
-                <span>Cocoa Quantity (Bags)</span>
+            {/* {metrics && (
+              <div className="flex items-center justify-between gap-4 rounded bg-white p-4">
+                <div className="flex flex-col">
+                  <span>Cocoa Quantity (Bags)</span>
 
-                <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-bold">
-                    {Number(cocoaStore?.quantity || 0).toLocaleString(
-                      undefined,
-                      {
-                        notation: "compact",
-                      }
-                    )}
-                  </span>
-                  /
-                  <span className="text-xs">
-                    {Number(cocoaStore?.pricePerItem || 0).toLocaleString(
-                      undefined,
-                      {
-                        notation: "compact",
-                        style: "currency",
-                        currency: "NGN",
-                      }
-                    )}{" "}
-                    per Bag
-                  </span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold">
+                      {Number(metrics?.quantity || 0).toLocaleString(
+                        undefined,
+                        { notation: "compact" }
+                      )}
+                    </span>
+                    /
+                    <span className="text-xs">
+                      {Number(metrics?.pricePerItem || 0).toLocaleString(
+                        undefined,
+                        {
+                          notation: "compact",
+                          style: "currency",
+                          currency: "NGN",
+                        }
+                      )}{" "}
+                      per Bag
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <Package className="size-14 stroke-1 text-amber-700 opacity-35" />
-            </div>
+                <Package className="size-14 stroke-1 text-amber-700 opacity-35" />
+              </div>
+            )} */}
           </section>
 
           <section className="grid gap-5 md:grid-cols-3">
             <Stats
               name="Total Cocoa Bags Produced"
-              value={Number(
-                cocoaStore?.totalQuantityProduced || 0
-              ).toLocaleString(undefined, {
-                notation: "compact",
-                compactDisplay: "long",
-              })}
+              value={Number(metrics?.totalQuantityProduced || 0).toLocaleString(
+                undefined,
+                {
+                  notation: "compact",
+                  compactDisplay: "long",
+                }
+              )}
             />
 
             <Stats
               name="Total Cocoa Bags Sold"
-              value={Number(cocoaStore?.totalQuantitySold || 0).toLocaleString(
+              value={Number(metrics?.totalQuantitySold || 0).toLocaleString(
                 undefined,
                 { notation: "compact", compactDisplay: "long" }
               )}
@@ -114,7 +116,7 @@ export default function FarmerDashboardPage(props: Props) {
 
             <Stats
               name="Total Amount Sold"
-              value={Number(cocoaStore?.totalAmountSold || 0).toLocaleString(
+              value={Number(metrics?.totalAmountSold || 0).toLocaleString(
                 undefined,
                 {
                   notation: "compact",
@@ -152,9 +154,7 @@ export default function FarmerDashboardPage(props: Props) {
               {orders.length <= 0 ? (
                 <div className="py-5 text-center">no pending orders</div>
               ) : (
-                <OrdersTable
-                  orders={JSON.parse(JSON.stringify(orders)) as Order[]}
-                />
+                <OrdersTable orders={orders} />
               )}
             </CardContent>
           </Card>

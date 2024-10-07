@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { initialiseStore } = useAppStore();
+  const { initializeStore } = useAppStore();
   const [state, action] = useFormState(login, {
     status: "UNSET",
     message: "",
@@ -30,7 +30,7 @@ export default function LoginPage() {
     }
     if (changedState.status === "SUCCESS") {
       // const initialState = changedState.data as unknown as StoreInitialState;
-      // initialiseStore(initialState);
+      // initializeStore(initialState);
       toast.success(changedState.message);
       // router.push(PAGES.DASHBOARD);
     }

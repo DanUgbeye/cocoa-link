@@ -1,6 +1,9 @@
 import { Transaction } from "@/types/transaction.types";
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export interface TransactionDocument
-  extends Document<string, {}>,
-    Omit<Transaction, "_id"> {}
+  extends Document,
+    Omit<Transaction, "_id" | "orderId"> {
+  _id: ObjectId;
+  orderId: ObjectId;
+}

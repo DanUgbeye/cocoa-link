@@ -1,46 +1,51 @@
-import { CocoaStore, CocoaStoreWithUser, Transaction, User } from "@/types";
+import {
+  DealWithUser,
+  Metric,
+  Transaction,
+  User
+} from "@/types";
 import { create } from "zustand";
 
 export type StoreInitialState = {
   transactions: Transaction[];
   user?: User;
-  cocoaStore?: CocoaStore;
+  metrics?: Metric;
 };
 
 export type AppState = {
-  initialised: boolean;
-  sidenavOpen: boolean;
+  initialized: boolean;
+  sideNavOpen: boolean;
   transactions: Transaction[];
   user?: User;
-  cocoaStore?: CocoaStore;
+  metrics?: Metric;
 
   depositModalOpen: boolean;
   withdrawModalOpen: boolean;
-  addProduceModalOpen: boolean;
+  createDealModalOpen: boolean;
 
-  selectedDeal?: CocoaStoreWithUser;
+  selectedDeal?: DealWithUser;
 };
 
 export type AppActions = {
-  initialiseStore(state: StoreInitialState): void;
-  toggleSidenav(state?: boolean): void;
+  initializeStore(state: StoreInitialState): void;
+  toggleSideNav(state?: boolean): void;
   setUser(user?: User): void;
   setTransactions(transactions: Transaction[]): void;
-  setCocoaStore(cocoaStore?: CocoaStore): void;
+  setMetrics(metrics?: Metric): void;
 
   toggleDepositModal(state?: boolean): void;
   toggleWithdrawModal(state?: boolean): void;
-  toggleAddProduceModal(state?: boolean): void;
+  toggleCreateDealModal(state?: boolean): void;
 
-  setSelctedDeal(deal?: CocoaStoreWithUser): void;
+  setSelectedDeal(deal?: DealWithUser): void;
 };
 
 export type AppStore = AppState & AppActions;
 
 export const useAppStore = create<AppStore>((set, get) => ({
-  initialised: false,
-  initialiseStore(state) {
-    set({ ...state, initialised: true });
+  initialized: false,
+  initializeStore(state) {
+    set({ ...state, initialized: true });
   },
 
   depositModalOpen: false,
@@ -63,28 +68,28 @@ export const useAppStore = create<AppStore>((set, get) => ({
     }
   },
 
-  addProduceModalOpen: false,
-  toggleAddProduceModal(state) {
+  createDealModalOpen: false,
+  toggleCreateDealModal(state) {
     if (state !== undefined) {
-      set({ addProduceModalOpen: state });
+      set({ createDealModalOpen: state });
     } else {
-      const { addProduceModalOpen } = get();
-      set({ addProduceModalOpen: !addProduceModalOpen });
+      const { createDealModalOpen } = get();
+      set({ createDealModalOpen: !createDealModalOpen });
     }
   },
 
   selectedDeal: undefined,
-  setSelctedDeal(deal) {
+  setSelectedDeal(deal) {
     set({ selectedDeal: deal });
   },
 
-  sidenavOpen: false,
-  toggleSidenav(state) {
+  sideNavOpen: false,
+  toggleSideNav(state) {
     if (state !== undefined) {
-      set({ sidenavOpen: state });
+      set({ sideNavOpen: state });
     } else {
-      const { sidenavOpen } = get();
-      set({ sidenavOpen: !sidenavOpen });
+      const { sideNavOpen } = get();
+      set({ sideNavOpen: !sideNavOpen });
     }
   },
 
@@ -93,9 +98,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set({ user });
   },
 
-  cocoaStore: undefined,
-  setCocoaStore(cocoaStore) {
-    set({ cocoaStore });
+  metrics: undefined,
+  setMetrics(metrics) {
+    set({ metrics });
   },
 
   transactions: [],

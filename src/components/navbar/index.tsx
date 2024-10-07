@@ -23,17 +23,17 @@ import Link from "next/link";
 import { Container } from "../container";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-import { USER_ROLES } from "@/types";
+import { UserRole } from "@/types";
 
 interface NavbarProps {}
 
 export default function Navbar(props: NavbarProps) {
   const {
     user,
-    toggleSidenav,
+    toggleSideNav,
     toggleDepositModal,
     toggleWithdrawModal,
-    toggleAddProduceModal,
+    toggleCreateDealModal,
   } = useAppStore();
 
   async function handleLogout() {
@@ -49,7 +49,7 @@ export default function Navbar(props: NavbarProps) {
               variant={"outline"}
               className="size-9 bg-transparent p-2 text-black hover:bg-white/10"
               onClick={() => {
-                toggleSidenav();
+                toggleSideNav();
               }}
             >
               <Menu />
@@ -86,7 +86,7 @@ export default function Navbar(props: NavbarProps) {
                 <PopoverContent className="mr-8 w-52 p-2">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between gap-2 rounded px-2 py-2 text-sm font-semibold text-neutral-600">
-                      <div className="flex flex-col ">
+                      <div className="flex flex-col">
                         <span className="text-xs font-normal">Wallet</span>
                         <span>
                           {Number(user.walletBalance).toLocaleString(
@@ -129,15 +129,15 @@ export default function Navbar(props: NavbarProps) {
 
                     <Separator className=" " />
 
-                    {user.role === USER_ROLES.FARMER && (
+                    {user.role === UserRole.Farmer && (
                       <>
                         <div className="">
                           <Button
                             className="flex w-full items-center justify-start gap-2 rounded bg-transparent px-2 py-1 text-xs text-neutral-600 duration-300 hover:bg-amber-600/10"
-                            onClick={() => toggleAddProduceModal()}
+                            onClick={() => toggleCreateDealModal()}
                           >
                             <PackagePlus className="stroke-1.5 size-4" />
-                            Add Produce
+                            Create Deal
                           </Button>
                         </div>
 

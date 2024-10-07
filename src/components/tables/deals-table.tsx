@@ -10,12 +10,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { CocoaStoreWithUser } from "@/types";
+import { DealWithUser, MetricsWithUser } from "@/types";
 import { Button } from "../ui/button";
 
-export default function DealsTable(props: { items: CocoaStoreWithUser[] }) {
-  const { items } = props;
-  const { setSelctedDeal } = useAppStore();
+export default function DealsTable(props: { deals: DealWithUser[] }) {
+  const { deals } = props;
+  const { setSelectedDeal } = useAppStore();
 
   return (
     <div className="overflow-x-auto">
@@ -33,16 +33,16 @@ export default function DealsTable(props: { items: CocoaStoreWithUser[] }) {
         </TableHeader>
 
         <TableBody>
-          {items
+          {deals
             .filter((tr) => tr.quantity > 0)
             .map((item, index) => {
               return (
                 <TableRow key={item._id} className={cn("bg-accent")}>
                   <TableCell>
-                    <div className="font-medium">{item.userId.name}</div>
+                    <div className="font-medium">{item.dealer.name}</div>
 
                     <div className="text-muted-foreground line-clamp-3 hidden text-xs text-neutral-500 md:inline">
-                      {item.userId.email}
+                      {item.dealer.email}
                     </div>
                   </TableCell>
 
@@ -75,7 +75,7 @@ export default function DealsTable(props: { items: CocoaStoreWithUser[] }) {
                         className={
                           "h-fit bg-green-500 px-6 py-2 text-white hover:bg-green-600"
                         }
-                        onClick={() => setSelctedDeal(item)}
+                        onClick={() => setSelectedDeal(item)}
                       >
                         Order
                       </Button>

@@ -47,7 +47,7 @@ export class AuthorizationException extends HttpException {
 }
 
 export class BadRequestException extends HttpException {
-  constructor(message: string = "a problem occured with the request") {
+  constructor(message: string = "a problem occurred with the request") {
     super(message);
     this.type = "BAD_REQUEST_ERROR";
   }

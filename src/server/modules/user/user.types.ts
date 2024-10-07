@@ -1,10 +1,10 @@
 import { User } from "@/types";
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export type ServerUser = User & {
   password: string;
 };
 
-export interface UserDocument
-  extends Omit<ServerUser, "_id" | "createdAt" | "updatedAt">,
-    Document {}
+export interface UserDocument extends Omit<ServerUser, "_id">, Document {
+  _id: ObjectId;
+}

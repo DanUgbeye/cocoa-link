@@ -1,4 +1,4 @@
-import { USER_ROLES } from "@/types/user.types";
+import { UserRole } from "@/types/user.types";
 import mongoose from "mongoose";
 import { UserDocument } from "./user.types";
 
@@ -16,8 +16,8 @@ export const userSchema = new mongoose.Schema<UserDocument>(
     role: {
       type: String,
       required: true,
-      enum: [USER_ROLES.INDUSTRY, USER_ROLES.FARMER],
-      default: USER_ROLES.FARMER,
+      enum: Object.values(UserRole),
+      default: UserRole.Farmer,
     },
     password: {
       type: String,

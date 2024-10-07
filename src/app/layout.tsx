@@ -1,4 +1,4 @@
-import StoreProvider from "@/client/store/provider";
+import StoreProvider from "@/app/store-provider";
 import { cn } from "@/lib/utils";
 import { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";

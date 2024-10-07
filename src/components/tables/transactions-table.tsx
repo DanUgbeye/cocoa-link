@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { Transaction, TRANSACTION_STATUS } from "@/types";
+import { Transaction, TransactionStatus, TransactionType } from "@/types";
 
 interface Props {
   transactions: Transaction[];
@@ -36,24 +36,32 @@ export default function TransactionsTable(props: Props) {
             return (
               <TableRow key={item._id} className={cn("bg-accent")}>
                 <TableCell>
-                  <div className="font-medium min-w-40">
+                  <div className="min-w-40 font-medium">
                     {new Date(item.createdAt).toDateString()}
                   </div>
                 </TableCell>
 
                 <TableCell>
-                  <div className="font-medium">{item.type}</div>
+                  <div className="flex flex-col font-medium">
+                    <span>{item.type}</span>
+
+                    {(item.type === TransactionType.Purchase ||
+                      item.type === TransactionType.Sale ||
+                      item.type === TransactionType.Refund) && (
+                      <span className="text-xs capitalize">{item.orderId}</span>
+                    )}
+                  </div>
                 </TableCell>
 
                 <TableCell>
                   <div
                     className={cn("w-fit rounded px-2 py-1 font-medium", {
                       "bg-green-100 text-green-600":
-                        item.status === TRANSACTION_STATUS.SUCCESS,
+                        item.status === TransactionStatus.Success,
                       "bg-red-100 text-red-600":
-                        item.status === TRANSACTION_STATUS.FAILED,
+                        item.status === TransactionStatus.Failed,
                       "bg-amber-100 text-amber-400":
-                        item.status === TRANSACTION_STATUS.PENDING,
+                        item.status === TransactionStatus.Pending,
                     })}
                   >
                     {item.status}

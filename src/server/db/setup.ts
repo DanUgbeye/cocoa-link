@@ -1,4 +1,4 @@
-import { USER_ROLES } from "@/types";
+import { UserRole } from "@/types";
 import type _mongoose from "mongoose";
 import { Model } from "mongoose";
 import { SERVER_CONFIG } from "../config/server.config";
@@ -10,7 +10,7 @@ export async function setupDB(db: typeof _mongoose) {
     let userModel = db.models.User as Model<UserDocument>;
 
     // console.log("Checking Admin account ▪▪▪");
-    // const adminExists = await userModel.findOne({ role: USER_ROLES.ADMIN });
+    // const adminExists = await userModel.findOne({ role: UserRole.ADMIN });
     // if (adminExists !== null) {
     //   console.log("Admin account found ✅");
     //   return;
@@ -21,13 +21,13 @@ export async function setupDB(db: typeof _mongoose) {
     //   name: "Admin",
     //   email: SERVER_CONFIG.ADMIN_EMAIL,
     //   password: await passwordUtil.hashPassword(SERVER_CONFIG.ADMIN_PASSWORD),
-    //   role: USER_ROLES.ADMIN
+    //   role: UserRole.ADMIN
     // };
 
     // console.log("Creating Admin account ▪▪▪");
     // await userModel.create(newAdmin);
     console.log("Admin account created ✅");
   } catch (error: any) {
-    console.log("An error occured ❌", error);
+    console.log("An error occurred ❌", error);
   }
 }

@@ -1,9 +1,7 @@
-export const USER_ROLES = {
-  INDUSTRY: "industry",
-  FARMER: "farmer",
-} as const;
-
-export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
+export enum UserRole {
+  Industry = "Industry",
+  Farmer = "Farmer",
+}
 
 export type User = {
   _id: string;

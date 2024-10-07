@@ -1,9 +1,9 @@
 import { FormState } from "@/types/form.types";
 import { useEffect, useRef } from "react";
 
-export function useFormEffect(
-  formState: FormState,
-  onStateChange: (formState: FormState) => void
+export function useFormEffect<TData>(
+  formState: FormState<TData>,
+  onStateChange: (formState: FormState<TData>) => void
 ) {
   const prevTimestamp = useRef(formState.timestamp);
 
@@ -15,5 +15,5 @@ export function useFormEffect(
       prevTimestamp.current = formState.timestamp;
       onStateChange(formState);
     }
-  }, [formState, allowAction]);
+  }, [formState, allowAction, onStateChange]);
 }

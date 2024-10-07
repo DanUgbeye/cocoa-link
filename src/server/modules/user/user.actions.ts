@@ -2,13 +2,14 @@
 
 import { fromErrorToFormState, toFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
-import { FormState, TRANSACTION_STATUS, TRANSACTION_TYPE, User } from "@/types";
+import { FormState, TransactionStatus, TransactionType, User } from "@/types";
 import { Model } from "mongoose";
 import { z } from "zod";
 import { getLoggedInUser } from "../auth/auth.actions";
 import { TransactionDocument } from "../transaction/transaction.types";
 import { UserDocument } from "./user.types";
 import { revalidatePath } from "next/cache";
+import { MetricDocument } from "../metric/metric.types";
 
 export async function getAllUsers() {
   try {
@@ -29,7 +30,7 @@ export async function depositToWallet(
   try {
     const user = await getLoggedInUser();
     if (!user) {
-      throw new Error("UnAuthorised");
+      throw new Error("UnAuthorized");
     }
 
     const depositAmount = z
@@ -38,32 +39,45 @@ export async function depositToWallet(
 
     const db = await connectDB();
     const userModel = db.models.User as Model<UserDocument>;
+    const metricModel = db.models.Metric as Model<MetricDocument>;
     const transactionModel = db.models
       .Transaction as Model<TransactionDocument>;
 
+    // update wallet balance
     const userUpdate = await userModel.findByIdAndUpdate(
       user._id,
-      { walletBalance: user.walletBalance + depositAmount },
+      { $inc: { walletBalance: depositAmount } },
       { new: true }
     );
-
-    await transactionModel.create({
-      userId: user._id,
-      amount: depositAmount,
-      status: TRANSACTION_STATUS.SUCCESS,
-      type: TRANSACTION_TYPE.DEPOSIT,
-    });
 
     if (!userUpdate) {
       throw new Error("user not found");
     }
+
+    // create deposit transaction
+    await transactionModel.create({
+      userId: user._id,
+      amount: depositAmount,
+      status: TransactionStatus.Success,
+      type: TransactionType.Deposit,
+    });
+
+    // update user metrics
+    await metricModel.findOneAndUpdate(
+      { userId: user._id },
+      {
+        $inc: {
+          totalAmountDeposited: depositAmount,
+        },
+      }
+    );
 
     revalidatePath("/", "layout");
 
     return toFormState(
       "SUCCESS",
       "success",
-      JSON.parse(JSON.stringify(userUpdate?.toObject()))
+      JSON.parse(JSON.stringify(userUpdate))
     );
   } catch (error: any) {
     return fromErrorToFormState(error);
@@ -77,7 +91,7 @@ export async function withdrawFromWallet(
   try {
     const user = await getLoggedInUser();
     if (!user) {
-      throw new Error("UnAuthorised");
+      throw new Error("UnAuthorized");
     }
 
     const withdrawalAmount = z
@@ -90,12 +104,14 @@ export async function withdrawFromWallet(
 
     const db = await connectDB();
     const userModel = db.models.User as Model<UserDocument>;
+    const metricModel = db.models.Metric as Model<MetricDocument>;
     const transactionModel = db.models
       .Transaction as Model<TransactionDocument>;
 
+    // debit user wallet
     const userUpdate = await userModel.findByIdAndUpdate(
       user._id,
-      { walletBalance: user.walletBalance - withdrawalAmount },
+      { $inc: { walletBalance: -withdrawalAmount } },
       { new: true }
     );
 
@@ -103,19 +119,30 @@ export async function withdrawFromWallet(
       throw new Error("user not found");
     }
 
+    // create withdrawal transaction
     await transactionModel.create({
       userId: user._id,
       amount: -withdrawalAmount,
-      status: TRANSACTION_STATUS.SUCCESS,
-      type: TRANSACTION_TYPE.WITHDRAWAL,
+      status: TransactionStatus.Success,
+      type: TransactionType.Withdrawal,
     });
+
+    // update user metrics
+    await metricModel.findOneAndUpdate(
+      { userId: user._id },
+      {
+        $inc: {
+          totalAmountWithdrawn: withdrawalAmount,
+        },
+      }
+    );
 
     revalidatePath("/", "layout");
 
     return toFormState(
       "SUCCESS",
       "success",
-      JSON.parse(JSON.stringify(userUpdate?.toObject()))
+      JSON.parse(JSON.stringify(userUpdate))
     );
   } catch (error: any) {
     return fromErrorToFormState(error);

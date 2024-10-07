@@ -7,7 +7,7 @@ import { PropsWithChildren } from "react";
 import { ToastContainer } from "react-toastify";
 
 // CSS FILES
-import AddProduceModal from "@/components/modals/add-produce-modal";
+import CreateDealModal from "@/components/modals/create-deal-modal";
 import "react-circular-progressbar/dist/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import BuyModal from "@/components/modals/buy-modal";
@@ -27,7 +27,7 @@ export default function Providers({ children }: PropsWithChildren) {
       />
       <WithdrawModal />
       <DepositModal />
-      <AddProduceModal />
+      <CreateDealModal />
       <BuyModal />
 
       {children}

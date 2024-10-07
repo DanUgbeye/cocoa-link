@@ -10,8 +10,8 @@ import {
 import { PAGES } from "@/data/page-map";
 import connectDB from "@/server/db/connect";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
-import { CocoaStoreDocument } from "@/server/modules/cocoa-store/cocoa-store.types";
-import { CocoaStoreWithUser } from "@/types";
+import { DealDocument } from "@/server/modules/deal/deal.types";
+import { DealWithUser } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
 
@@ -20,11 +20,11 @@ export default async function MarketplacePage() {
   if (!user) redirect(PAGES.LOGIN);
 
   const db = await connectDB();
-  const cocoaStoreCollection = db.models
-    .CocoaStore as Model<CocoaStoreDocument>;
-  const marketDeals = await cocoaStoreCollection
+  const dealCollection = db.models.Deal as Model<DealDocument>;
+
+  const marketDeals = await dealCollection
     .find({ quantity: { $gt: 0 } })
-    .populate("userId");
+    .populate("dealer");
 
   return (
     <main className=" ">
@@ -44,10 +44,8 @@ export default async function MarketplacePage() {
               <div className="py-5 text-center">no available deals</div>
             ) : (
               <DealsTable
-                items={
-                  JSON.parse(
-                    JSON.stringify(marketDeals)
-                  ) as CocoaStoreWithUser[]
+                deals={
+                  JSON.parse(JSON.stringify(marketDeals)) as DealWithUser[]
                 }
               />
             )}

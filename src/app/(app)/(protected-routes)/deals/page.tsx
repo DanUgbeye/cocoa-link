@@ -1,5 +1,5 @@
 import { Container } from "@/components/container";
-import OrdersTable from "@/components/tables/orders-table";
+import DealsTable from "@/components/tables/deals-table";
 import {
   Card,
   CardContent,
@@ -10,22 +10,29 @@ import {
 import { PAGES } from "@/data/page-map";
 import connectDB from "@/server/db/connect";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
+import { DealDocument } from "@/server/modules/deal/deal.types";
 import { OrderDocument } from "@/server/modules/order/order.types";
-import { Order, OrderWithDeal } from "@/types";
+import { Deal, Order, OrderWithDeal, UserRole } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
+import { MyDealCard } from "./deal-card";
 
-export default async function OrdersPage() {
+export default async function DealsPage() {
   const user = await getLoggedInUser();
   if (!user) redirect(PAGES.LOGIN);
 
-  const db = await connectDB();
-  const orderModel = db.models.Order as Model<OrderDocument>;
+  if (user.role !== UserRole.Farmer) {
+    redirect(PAGES.DASHBOARD);
+  }
 
-  const orders = await orderModel
-    .find({ $or: [{ buyerId: user._id }, { sellerId: user._id }] })
-    .populate("dealId")
+  const db = await connectDB();
+  const dealModel = db.models.Deal as Model<DealDocument>;
+
+  const deals = await dealModel
+    .find({ dealer: user._id })
     .sort({ createdAt: "desc" });
+
+  const dealsAsObjects = JSON.parse(JSON.stringify(deals)) as Deal[];
 
   return (
     <main className=" ">
@@ -34,19 +41,21 @@ export default async function OrdersPage() {
           <CardHeader className="px-7">
             <div className="flex flex-wrap justify-between gap-4">
               <div className="space-y-1">
-                <CardTitle>Orders</CardTitle>
-                <CardDescription>Available orders</CardDescription>
+                <CardTitle>Deals</CardTitle>
+                <CardDescription>Your available deals</CardDescription>
               </div>
             </div>
           </CardHeader>
 
           <CardContent>
-            {orders.length <= 0 ? (
-              <div className="py-5 text-center">no available orders</div>
+            {dealsAsObjects.length <= 0 ? (
+              <div className="py-5 text-center">no available deals</div>
             ) : (
-              <OrdersTable
-                orders={JSON.parse(JSON.stringify(orders)) as OrderWithDeal[]}
-              />
+              <div className="">
+                {dealsAsObjects.map((deal) => (
+                  <MyDealCard key={deal._id} deal={deal} />
+                ))}
+              </div>
             )}
           </CardContent>
         </Card>

@@ -23,7 +23,7 @@ import { Separator } from "../ui/separator";
 
 export default function BuyModal() {
   const router = useRouter();
-  const { user, selectedDeal, setSelctedDeal } = useAppStore();
+  const { user, selectedDeal, setSelectedDeal } = useAppStore();
   const [state, action] = useFormState(createOrder, {
     status: "UNSET",
     message: "",
@@ -74,7 +74,7 @@ export default function BuyModal() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      setSelctedDeal(undefined);
+      setSelectedDeal(undefined);
       reset();
       toast.success(changedState.message);
       window.location.reload();
@@ -132,7 +132,7 @@ export default function BuyModal() {
   return (
     <Dialog
       open={user !== undefined && selectedDeal !== undefined}
-      onOpenChange={() => setSelctedDeal()}
+      onOpenChange={() => setSelectedDeal()}
     >
       {user !== undefined && selectedDeal !== undefined && (
         <>
@@ -141,13 +141,13 @@ export default function BuyModal() {
           <DialogContent className="max-h-[calc(100dvh-5rem)] w-full max-w-xl gap-2 px-0">
             <div className="space-y-2 px-5">
               <div className="text-xs uppercase text-neutral-400">
-                {selectedDeal.userId.role}
+                {selectedDeal.dealer.role}
               </div>
 
               <DialogHeader className="space-y-0">
-                <DialogTitle>{selectedDeal.userId.name}</DialogTitle>
+                <DialogTitle>{selectedDeal.dealer.name}</DialogTitle>
                 <DialogDescription>
-                  {selectedDeal.userId.email}
+                  {selectedDeal.dealer.email}
                 </DialogDescription>
               </DialogHeader>
             </div>
@@ -184,7 +184,9 @@ export default function BuyModal() {
 
                 <fieldset className="space-y-4 px-1.5 pt-6">
                   <FormItem>
-                    <FormLabel className="">Enter Location for delivery</FormLabel>
+                    <FormLabel className="">
+                      Enter Location for delivery
+                    </FormLabel>
 
                     <Input
                       name="location"
@@ -202,9 +204,7 @@ export default function BuyModal() {
                   </FormItem>
 
                   <FormItem>
-                    <FormLabel className="">
-                      Enter Quantity in Bags
-                    </FormLabel>
+                    <FormLabel className="">Enter Quantity in Bags</FormLabel>
 
                     <Input
                       name="quantity"
@@ -246,7 +246,7 @@ export default function BuyModal() {
                       name="sellerId"
                       id="sellerId"
                       type="text"
-                      defaultValue={selectedDeal.userId._id}
+                      defaultValue={selectedDeal.dealer._id}
                       hidden
                       className="hidden"
                     />

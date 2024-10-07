@@ -20,10 +20,10 @@ const config = {
     },
     extend: {
       margin: {
-        sidenav: "clamp(15rem, 10%, 15rem)",
+        "side-nav": "clamp(15rem, 10%, 15rem)",
       },
       width: {
-        sidenav: "clamp(15rem, 10%, 15rem)",
+        "side-nav": "clamp(15rem, 10%, 15rem)",
       },
       fontFamily: {
         montserrat: ["var(--font-montserrat)", ...fontFamily.sans],

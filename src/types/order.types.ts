@@ -1,9 +1,17 @@
+import { Deal } from "./deal.types";
+
+export enum OrderStatus {
+  Pending = "Pending",
+  Delivered = "Delivered",
+  Completed = "Completed",
+  Cancelled = "Cancelled",
+}
+
 export type Order = {
   _id: string;
+  dealId: string;
   buyerId: string;
   sellerId: string;
-  transactionId: string;
-  quantity: number;
   amount: number;
   status: OrderStatus;
   location: string;
@@ -12,16 +20,8 @@ export type Order = {
   updatedAt: Date;
 };
 
-export type CreateOrder = Omit<
-  Order,
-  "_id" | "transactionId" | "status" | "deliveredAt" | "createdAt" | "updatedAt"
->;
+export type CreateOrder = Pick<Order, "dealId" | "location">;
 
-export const ORDER_STATUS = {
-  PENDING: "Pending",
-  DELIVERED: "Delivered",
-  COMPLETED: "Completed",
-  CANCELLED: "Cancelled",
-} as const;
-
-export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
+export type OrderWithDeal = Omit<Order, "dealId"> & {
+  dealId: Deal;
+};

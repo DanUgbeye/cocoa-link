@@ -15,27 +15,23 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { CocoaStoreWithUser, Order, USER_ROLES } from "@/types";
+import { DealWithUser, OrderWithDeal, UserRole } from "@/types";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";
 
 export default function IndustryPage(props: {
-  marketDeals: CocoaStoreWithUser[];
-  stats: {
-    totalQuantityPurchased: number;
-    totalAmountSpent: number;
-    totalAmountDeposited: number;
-  };
-  orders: Order[];
+  marketDeals: DealWithUser[];
+  orders: OrderWithDeal[];
 }) {
-  const { marketDeals, stats, orders } = props;
+  const { marketDeals, orders } = props;
   const user = useAppStore(({ user }) => user);
+  const metrics = useAppStore(({ metrics }) => metrics);
   const transactions = useAppStore(({ transactions }) => transactions);
 
   return (
     <main className="py-10">
-      {user !== undefined && user.role === USER_ROLES.INDUSTRY && (
+      {user !== undefined && user.role === UserRole.Industry && (
         <Container className="space-y-10">
           <div className="space-y-1">
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
@@ -66,37 +62,42 @@ export default function IndustryPage(props: {
             </div>
           </section>
 
-          <section className="grid gap-5 md:grid-cols-3">
-            <Stats
-              name="Total Cocoa Bags Purchased"
-              value={Number(stats.totalQuantityPurchased).toLocaleString(
-                undefined,
-                { notation: "compact" }
-              )}
-            />
+          {metrics && (
+            <section className="grid gap-5 md:grid-cols-3">
+              <Stats
+                name="Total Cocoa Bags Purchased"
+                value={Number(metrics.totalQuantityPurchased).toLocaleString(
+                  undefined,
+                  { notation: "compact" }
+                )}
+              />
 
-            <Stats
-              name="Total Amount Deposited"
-              value={Number(stats.totalAmountDeposited).toLocaleString(
-                undefined,
-                {
-                  notation: "compact",
-                  style: "currency",
-                  currency: "NGN",
-                }
-              )}
-            />
+              <Stats
+                name="Total Amount Deposited"
+                value={Number(metrics.totalAmountDeposited).toLocaleString(
+                  undefined,
+                  {
+                    notation: "compact",
+                    style: "currency",
+                    currency: "NGN",
+                  }
+                )}
+              />
 
-            <Stats
-              name="Total Amount Spent"
-              value={Number(stats.totalAmountSpent).toLocaleString(undefined, {
-                notation: "compact",
-                compactDisplay: "long",
-                style: "currency",
-                currency: "NGN",
-              })}
-            />
-          </section>
+              <Stats
+                name="Total Amount Spent"
+                value={Number(metrics.totalAmountSpent).toLocaleString(
+                  undefined,
+                  {
+                    notation: "compact",
+                    compactDisplay: "long",
+                    style: "currency",
+                    currency: "NGN",
+                  }
+                )}
+              />
+            </section>
+          )}
 
           <Card>
             <CardHeader className="px-7">
@@ -124,9 +125,7 @@ export default function IndustryPage(props: {
               {orders.length <= 0 ? (
                 <div className="py-5 text-center">no pending orders</div>
               ) : (
-                <OrdersTable
-                  orders={JSON.parse(JSON.stringify(orders)) as Order[]}
-                />
+                <OrdersTable orders={orders} />
               )}
             </CardContent>
           </Card>
@@ -157,7 +156,7 @@ export default function IndustryPage(props: {
               {marketDeals.length <= 0 ? (
                 <div className="py-5 text-center">no available deals</div>
               ) : (
-                <DealsTable items={marketDeals} />
+                <DealsTable deals={marketDeals} />
               )}
             </CardContent>
           </Card>

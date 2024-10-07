@@ -4,6 +4,7 @@ export const PAGES = {
   LOGOUT: "/auth/logout",
 
   DASHBOARD: "/dashboard",
+  DEALS: "/deals",
   MARKET: "/marketplace",
   ORDERS: "/orders",
   TRANSACTIONS: "/transactions",
