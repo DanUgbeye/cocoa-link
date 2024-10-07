@@ -29,10 +29,12 @@ export default function LoginPage() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      // const initialState = changedState.data as unknown as StoreInitialState;
-      // initializeStore(initialState);
-      toast.success(changedState.message);
-      // router.push(PAGES.DASHBOARD);
+      const initialState = changedState.data;
+      if (initialState !== undefined) {
+        initializeStore(initialState);
+        toast.success(changedState.message);
+        router.replace(PAGES.DASHBOARD);
+      }
     }
   });
 

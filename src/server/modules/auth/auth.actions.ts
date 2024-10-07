@@ -2,8 +2,9 @@
 
 import { COOKIE_KEYS } from "@/data/keys";
 import { PAGES } from "@/data/page-map";
-import { fromErrorToFormState } from "@/lib/utils";
+import { fromErrorToFormState, toFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
+import { TransactionDocument } from "@/server/modules/transaction/transaction.types";
 import {
   UserLoginSchema,
   UserSignupSchema,
@@ -15,18 +16,21 @@ import {
 } from "@/server/utils/http-exceptions";
 import { passwordUtil } from "@/server/utils/password";
 import { tokenUtil } from "@/server/utils/token";
-import { AuthTokenPayload, User, UserRole } from "@/types";
+import { AuthTokenPayload, Metric, Transaction, User, UserRole } from "@/types";
 import { FormState } from "@/types/form.types";
 import { AuthTokenPayloadSchema } from "@/validation";
 import { Model } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { cache } from "react";
+import { StoreInitialState } from "@/client/store";
 import { MetricDocument } from "../metric/metric.types";
 import { UserDocument } from "../user/user.types";
 
-export async function signup(formState: FormState, formData: FormData) {
+export async function signup(
+  formState: FormState<StoreInitialState | undefined>,
+  formData: FormData
+) {
   try {
     let validData = UserSignupSchema.parse({
       name: formData.get("name"),
@@ -65,18 +69,25 @@ export async function signup(formState: FormState, formData: FormData) {
       value: token,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: expiresIn,
+      expires: expiresIn,
     });
 
-    revalidatePath("/", "layout");
+    // revalidatePath("/", "layout");
 
-    redirect(PAGES.DASHBOARD);
+    const initialState = await getUserInitialState(
+      JSON.parse(JSON.stringify(user)) as User
+    );
+
+    return toFormState("SUCCESS", "Signup successful", initialState);
   } catch (error: any) {
     return fromErrorToFormState(error);
   }
 }
 
-export async function login(formState: FormState, formData: FormData) {
+export async function login(
+  formState: FormState<StoreInitialState | undefined>,
+  formData: FormData
+) {
   try {
     let { email, password } = UserLoginSchema.parse({
       email: formData.get("email"),
@@ -110,12 +121,16 @@ export async function login(formState: FormState, formData: FormData) {
       value: token,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: expiresIn,
+      expires: expiresIn,
     });
 
-    revalidatePath("/", "layout");
+    // revalidatePath("/", "layout");
 
-    redirect(PAGES.DASHBOARD);
+    const initialState = await getUserInitialState(
+      JSON.parse(JSON.stringify(user)) as User
+    );
+
+    return toFormState("SUCCESS", "Login successful", initialState);
   } catch (error: any) {
     return fromErrorToFormState(error);
   }
@@ -123,7 +138,6 @@ export async function login(formState: FormState, formData: FormData) {
 
 export async function logout(redirectUrl?: string) {
   cookies().delete(COOKIE_KEYS.AUTH);
-  revalidatePath("/", "layout");
   redirect(redirectUrl ? redirectUrl : PAGES.LOGIN);
 }
 
@@ -170,5 +184,32 @@ export async function verifyAuth() {
     return true;
   } catch (error: any) {
     return false;
+  }
+}
+
+export async function getUserInitialState(
+  user: User
+): Promise<StoreInitialState> {
+  try {
+    const db = await connectDB();
+    const transactionsModel = db.models
+      .Transaction as Model<TransactionDocument>;
+    const metricsModel = db.models.Metric as Model<MetricDocument>;
+
+    const transactions = await transactionsModel
+      .find({ userId: user._id })
+      .sort({ createdAt: "desc" });
+    const metrics =
+      (await metricsModel.findOne({ userId: user._id })) ?? undefined;
+
+    return {
+      user,
+      metrics: metrics
+        ? (JSON.parse(JSON.stringify(metrics)) as Metric)
+        : undefined,
+      transactions: JSON.parse(JSON.stringify(transactions)) as Transaction[],
+    };
+  } catch (error: any) {
+    return { transactions: [] };
   }
 }

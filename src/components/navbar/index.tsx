@@ -24,10 +24,12 @@ import { Container } from "../container";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { UserRole } from "@/types";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {}
 
 export default function Navbar(props: NavbarProps) {
+  const router = useRouter();
   const {
     user,
     toggleSideNav,
@@ -37,7 +39,7 @@ export default function Navbar(props: NavbarProps) {
   } = useAppStore();
 
   async function handleLogout() {
-    await logout();
+    router.replace(PAGES.LOGOUT);
   }
 
   return (
@@ -74,8 +76,10 @@ export default function Navbar(props: NavbarProps) {
                       </AvatarFallback>
                     </Avatar>
 
-                    <div className="hidden flex-col sm:flex">
-                      <div className="text-sm font-bold">{user.name}</div>
+                    <div className="hidden min-w-fit flex-col sm:flex">
+                      <div className="w-fit max-w-32 truncate text-sm font-bold">
+                        {user.name}
+                      </div>
                       <div className="text-left text-xs capitalize text-neutral-400">
                         {user.role}
                       </div>

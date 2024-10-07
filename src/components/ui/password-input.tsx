@@ -49,7 +49,7 @@ export const PasswordInput = React.forwardRef<
           )}
           onClick={(e) => handleShowPassword()}
         >
-          {showPwd ? (
+          {!showPwd ? (
             <Eye strokeWidth={1.5} className="h-5 w-5" />
           ) : (
             <EyeOff strokeWidth={1.5} className="h-5 w-5" />

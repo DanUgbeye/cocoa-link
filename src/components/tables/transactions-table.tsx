@@ -27,7 +27,7 @@ export default function TransactionsTable(props: Props) {
 
             <TableHead className="">Status</TableHead>
 
-            <TableHead className="">Amount</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -69,10 +69,13 @@ export default function TransactionsTable(props: Props) {
                 </TableCell>
 
                 <TableCell
-                  className={cn("w-fit rounded px-2 py-1 font-medium", {
-                    "text-green-500": item.amount > 0,
-                    "text-red-500": item.amount < 0,
-                  })}
+                  className={cn(
+                    "w-fit rounded px-2 py-1 text-right font-medium",
+                    {
+                      "text-green-500": item.amount > 0,
+                      "text-red-500": item.amount < 0,
+                    }
+                  )}
                 >
                   {item.amount > 0 && "+"}
                   {Number(item.amount).toLocaleString(undefined, {
