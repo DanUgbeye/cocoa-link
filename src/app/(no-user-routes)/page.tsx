@@ -12,11 +12,13 @@ import { useFormEffect } from "@/hooks/use-form-effect";
 import { login } from "@/server/modules/auth/auth.actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const router = useRouter();
+  const user = useAppStore((state) => state.user);
   const { initializeStore } = useAppStore();
   const [state, action] = useFormState(login, {
     status: "UNSET",
@@ -37,6 +39,12 @@ export default function LoginPage() {
       }
     }
   });
+
+  useEffect(() => {
+    if (user !== undefined) {
+      router.replace(PAGES.DASHBOARD);
+    }
+  }, []);
 
   return (
     <main className="h-full min-h-screen">

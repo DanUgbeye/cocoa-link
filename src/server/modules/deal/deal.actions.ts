@@ -3,7 +3,7 @@
 import { fromErrorToFormState, toFormState } from "@/lib/utils";
 import connectDB from "@/server/db/connect";
 import HttpException from "@/server/utils/http-exceptions";
-import { Deal } from "@/types";
+import { Deal, FullDeal, FullDealWithUser } from "@/types";
 import { FormState } from "@/types/form.types";
 import { CocoaVariantSchema } from "@/validation";
 import { Model } from "mongoose";
@@ -17,9 +17,9 @@ export async function getDeals() {
   try {
     const db = await connectDB();
     const dealModel: Model<DealDocument> = db.models.Deal;
-    const deals = await dealModel.find();
+    const deals = await dealModel.find().populate("image").populate("dealer");
 
-    return JSON.parse(JSON.stringify(deals)) as Deal[];
+    return JSON.parse(JSON.stringify(deals)) as FullDealWithUser[];
   } catch (error: any) {
     // console.log(error);
     return undefined;
@@ -30,9 +30,9 @@ export async function getUserDeals(userId: string) {
   try {
     const db = await connectDB();
     const dealModel: Model<DealDocument> = db.models.Deal;
-    const deals = await dealModel.find({ dealer: userId });
+    const deals = await dealModel.find({ dealer: userId }).populate("image");
 
-    return JSON.parse(JSON.stringify(deals)) as Deal[];
+    return JSON.parse(JSON.stringify(deals)) as FullDeal[];
   } catch (error: any) {
     // console.log(error);
     return undefined;
@@ -51,10 +51,10 @@ export async function createDeal(
 
     let dealData = z
       .object({
-        quantity: z.number({ coerce: true }),
-        pricePerItem: z.number({ coerce: true }),
+        quantity: z.number({ coerce: true }).min(1, "Quantity is required"),
+        pricePerItem: z.number({ coerce: true }).min(1, "Price per item is required"),
         variant: CocoaVariantSchema,
-        image: z.string().url(),
+        image: z.string().min(1, "Image is required"),
       })
       .parse({
         quantity: formData.get("quantity"),
@@ -69,6 +69,7 @@ export async function createDeal(
 
     // create deal
     const deal = await dealModel.create({ ...dealData, dealer: user._id });
+    await deal.populate("image");
 
     // update user metrics
     await metricModel.findOneAndUpdate(
@@ -85,7 +86,7 @@ export async function createDeal(
     return toFormState(
       "SUCCESS",
       "Deal updated",
-      JSON.parse(JSON.stringify(deal)) as Deal
+      JSON.parse(JSON.stringify(deal)) as FullDeal
     );
   } catch (error: any) {
     return fromErrorToFormState(error);
@@ -133,6 +134,7 @@ export async function updateDeal(formState: FormState, formData: FormData) {
       deal.variant = variant;
     }
 
+    await deal.populate("image");
     await deal.save();
 
     revalidatePath("/", "layout");
@@ -140,7 +142,7 @@ export async function updateDeal(formState: FormState, formData: FormData) {
     return toFormState(
       "SUCCESS",
       "Deal updated",
-      JSON.parse(JSON.stringify(deal)) as Deal
+      JSON.parse(JSON.stringify(deal)) as FullDeal
     );
   } catch (error: any) {
     return fromErrorToFormState(error);

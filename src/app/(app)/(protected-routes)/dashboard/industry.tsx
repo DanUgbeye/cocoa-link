@@ -15,14 +15,20 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { DealWithUser, OrderWithDeal, UserRole } from "@/types";
+import {
+  DealWithUser,
+  FullDealWithUser,
+  OrderWithDeal,
+  OrderWithFullDeal,
+  UserRole,
+} from "@/types";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";
 
 export default function IndustryPage(props: {
-  marketDeals: DealWithUser[];
-  orders: OrderWithDeal[];
+  marketDeals: FullDealWithUser[];
+  orders: OrderWithFullDeal[];
 }) {
   const { marketDeals, orders } = props;
   const user = useAppStore(({ user }) => user);

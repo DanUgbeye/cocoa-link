@@ -9,7 +9,7 @@ export interface ClientAppConfig {
 function initializeClientAppConfig(): Readonly<ClientAppConfig> {
   return Object.freeze({
     CLIENT_BASE_URL: appUtils.getBaseUrl(),
-    API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
+    API_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL as string,
   });
 }
 

@@ -11,7 +11,7 @@ import { PAGES } from "@/data/page-map";
 import connectDB from "@/server/db/connect";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { DealDocument } from "@/server/modules/deal/deal.types";
-import { DealWithUser } from "@/types";
+import { DealStatus, FullDealWithUser } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
 
@@ -23,8 +23,9 @@ export default async function MarketplacePage() {
   const dealCollection = db.models.Deal as Model<DealDocument>;
 
   const marketDeals = await dealCollection
-    .find({ quantity: { $gt: 0 } })
-    .populate("dealer");
+    .find({ quantity: { $gt: 0 }, status: DealStatus.Pending })
+    .populate("dealer")
+    .populate("image");
 
   return (
     <main className=" ">
@@ -45,7 +46,7 @@ export default async function MarketplacePage() {
             ) : (
               <DealsTable
                 deals={
-                  JSON.parse(JSON.stringify(marketDeals)) as DealWithUser[]
+                  JSON.parse(JSON.stringify(marketDeals)) as FullDealWithUser[]
                 }
               />
             )}

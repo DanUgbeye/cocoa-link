@@ -14,18 +14,18 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { Deal, Metric, Order, OrderWithDeal, UserRole } from "@/types";
+import { Deal, FullDeal, Metric, Order, OrderWithDeal, UserRole } from "@/types";
 import { Package, Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";
 
 interface Props {
-  deals: Deal[];
+  deals: FullDeal[];
   orders: OrderWithDeal[];
 }
 
 export default function FarmerDashboardPage(props: Props) {
-  const { orders } = props;
+  const { orders, deals } = props;
   const user = useAppStore(({ user }) => user);
   const transactions = useAppStore(({ transactions }) => transactions);
   const metrics = useAppStore(({ metrics }) => metrics);

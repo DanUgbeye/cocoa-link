@@ -1,7 +1,8 @@
 import { CocoaVariant, DealStatus } from "@/types";
 import mongoose from "mongoose";
+import { DealDocument } from "./deal.types";
 
-export const DealSchema = new mongoose.Schema(
+export const DealSchema = new mongoose.Schema<DealDocument>(
   {
     dealer: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
     quantity: { type: Number, required: true, default: 0 },
@@ -11,11 +12,12 @@ export const DealSchema = new mongoose.Schema(
       required: true,
       enum: Object.values(CocoaVariant),
     },
-    image: { type: String },
+    image: { type: mongoose.Types.ObjectId, required: true, ref: "Upload" },
     status: {
       type: String,
       required: true,
       enum: Object.values(DealStatus),
+      default: DealStatus.Pending,
     },
   },
   { timestamps: true }

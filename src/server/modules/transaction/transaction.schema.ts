@@ -1,7 +1,8 @@
 import { TransactionStatus, TransactionType } from "@/types";
 import mongoose from "mongoose";
+import { TransactionDocument } from "./transaction.types";
 
-export const TransactionSchema = new mongoose.Schema(
+export const TransactionSchema = new mongoose.Schema<TransactionDocument>(
   {
     userId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
     orderId: { type: mongoose.Types.ObjectId, required: false, ref: "Order" },

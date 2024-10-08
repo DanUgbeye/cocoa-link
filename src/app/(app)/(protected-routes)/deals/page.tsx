@@ -1,5 +1,4 @@
 import { Container } from "@/components/container";
-import DealsTable from "@/components/tables/deals-table";
 import {
   Card,
   CardContent,
@@ -11,8 +10,7 @@ import { PAGES } from "@/data/page-map";
 import connectDB from "@/server/db/connect";
 import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { DealDocument } from "@/server/modules/deal/deal.types";
-import { OrderDocument } from "@/server/modules/order/order.types";
-import { Deal, Order, OrderWithDeal, UserRole } from "@/types";
+import { DealStatus, FullDeal, UserRole } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
 import { MyDealCard } from "./deal-card";
@@ -29,10 +27,11 @@ export default async function DealsPage() {
   const dealModel = db.models.Deal as Model<DealDocument>;
 
   const deals = await dealModel
-    .find({ dealer: user._id })
-    .sort({ createdAt: "desc" });
+    .find({ dealer: user._id, status: DealStatus.Pending })
+    .sort({ createdAt: "desc" })
+    .populate("image");
 
-  const dealsAsObjects = JSON.parse(JSON.stringify(deals)) as Deal[];
+  const dealsAsObjects = JSON.parse(JSON.stringify(deals)) as FullDeal[];
 
   return (
     <main className=" ">

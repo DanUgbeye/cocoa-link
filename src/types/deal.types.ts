@@ -1,3 +1,4 @@
+import { Upload } from "./upload.types";
 import { User } from "./user.types";
 
 export enum CocoaVariant {
@@ -24,6 +25,15 @@ export type Deal = {
   updatedAt: Date;
 };
 
+export type FullDeal = Deal & {
+  image: Upload;
+};
+
 export type DealWithUser = Omit<Deal, "dealer"> & {
   dealer: User;
 };
+
+export type FullDealWithUser =Omit<FullDeal, "dealer"> & {
+  dealer: User;
+};
+

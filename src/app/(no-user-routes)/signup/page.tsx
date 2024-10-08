@@ -14,12 +14,13 @@ import { signup } from "@/server/modules/auth/auth.actions";
 import { UserRole } from "@/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 
 export default function SignupPage() {
   const router = useRouter();
+  const user = useAppStore((state) => state.user);
   const { initializeStore } = useAppStore();
   const [state, action] = useFormState(signup, {
     status: "UNSET",
@@ -49,6 +50,12 @@ export default function SignupPage() {
       }
     }
   });
+
+  useEffect(() => {
+    if (user !== undefined) {
+      router.replace(PAGES.DASHBOARD);
+    }
+  }, []);
 
   return (
     <main className="h-full min-h-screen">

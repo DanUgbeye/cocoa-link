@@ -1,9 +1,10 @@
 import { model } from "mongoose";
+import { DealSchema } from "../modules/deal/deal.schema";
 import { MetricSchema } from "../modules/metric/metric.schema";
 import { OrderSchema } from "../modules/order/order.schema";
 import { TransactionSchema } from "../modules/transaction/transaction.schema";
+import { UploadSchema } from "../modules/upload/upload.schema";
 import { userSchema } from "../modules/user/user.schema";
-import { DealSchema } from "../modules/deal/deal.schema";
 
 export default function registerModels() {
   if (!global.registeredModels) {
@@ -21,6 +22,9 @@ export default function registerModels() {
 
     console.log("Registering Order Model");
     model("Order", OrderSchema);
+
+    console.log("Registering Upload Model");
+    model("Upload", UploadSchema);
 
     global.registeredModels = true;
   }

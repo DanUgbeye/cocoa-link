@@ -5,6 +5,8 @@ export interface ServerConfig {
   TOKEN_SECRET: string;
   EMAIL_SERVICE_EMAIL: string;
   EMAIL_SERVICE_PASSWORD: string;
+  UPLOADTHING_TOKEN: string;
+  BASE_URL: string;
 }
 
 export const SERVER_CONFIG: ServerConfig = {
@@ -14,4 +16,6 @@ export const SERVER_CONFIG: ServerConfig = {
   TOKEN_SECRET: process.env.TOKEN_SECRET as string,
   EMAIL_SERVICE_EMAIL: process.env.EMAIL_SERVICE_EMAIL as string,
   EMAIL_SERVICE_PASSWORD: process.env.EMAIL_SERVICE_PASSWORD as string,
+  UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN as string,
+  BASE_URL: process.env.NEXT_PUBLIC_BASE_URL as string,
 };

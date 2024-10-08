@@ -1,4 +1,4 @@
-import { Deal } from "./deal.types";
+import { Deal, FullDeal } from "./deal.types";
 
 export enum OrderStatus {
   Pending = "Pending",
@@ -24,4 +24,7 @@ export type CreateOrder = Pick<Order, "dealId" | "location">;
 
 export type OrderWithDeal = Omit<Order, "dealId"> & {
   dealId: Deal;
+};
+export type OrderWithFullDeal = Omit<Order, "dealId"> & {
+  dealId: FullDeal;
 };
