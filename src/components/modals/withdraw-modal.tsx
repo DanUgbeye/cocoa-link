@@ -36,7 +36,7 @@ export default function WithdrawModal() {
       setUser(changedState.data as unknown as User);
       toggleWithdrawModal();
       toast.success(changedState.message);
-      window.location.reload()
+      window.location.reload();
     }
   });
 

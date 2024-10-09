@@ -7,4 +7,3 @@ export * from "./side-nav.types";
 export * from "./transaction.types";
 export * from "./user.types";
 export * from "./upload.types";
-

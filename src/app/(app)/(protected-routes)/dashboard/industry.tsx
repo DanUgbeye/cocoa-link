@@ -15,11 +15,7 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import {
-  FullDealWithUser,
-  OrderWithFullDeal,
-  UserRole
-} from "@/types";
+import { FullDealWithUser, OrderWithFullDeal, UserRole } from "@/types";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";

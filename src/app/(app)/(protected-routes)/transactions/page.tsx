@@ -28,7 +28,9 @@ export default function TransactionsPage() {
 
         <CardContent>
           {transactions.length <= 0 ? (
-            <div className="py-5 text-neutral-400 text-center">no previous transactions</div>
+            <div className="py-5 text-center text-neutral-400">
+              no previous transactions
+            </div>
           ) : (
             <TransactionsTable transactions={transactions} />
           )}
