@@ -10,10 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { DealWithUser, MetricsWithUser } from "@/types";
+import { DealWithUser, FullDealWithUser, MetricsWithUser } from "@/types";
 import { Button } from "../ui/button";
 
-export default function DealsTable(props: { deals: DealWithUser[] }) {
+export default function DealsTable(props: { deals: FullDealWithUser[] }) {
   const { deals } = props;
   const { setSelectedDeal } = useAppStore();
 
@@ -24,9 +24,11 @@ export default function DealsTable(props: { deals: DealWithUser[] }) {
           <TableRow>
             <TableHead>Seller</TableHead>
 
+            <TableHead className="">Variant</TableHead>
+
             <TableHead className="">Quantity</TableHead>
 
-            <TableHead className="">Total Amount</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
 
             <TableHead className=""></TableHead>
           </TableRow>
@@ -46,6 +48,8 @@ export default function DealsTable(props: { deals: DealWithUser[] }) {
                     </div>
                   </TableCell>
 
+                  <TableCell className="">{item.variant}</TableCell>
+
                   <TableCell>
                     <div className="font-medium">{item.quantity} Bags</div>
 
@@ -59,7 +63,7 @@ export default function DealsTable(props: { deals: DealWithUser[] }) {
                     </div>
                   </TableCell>
 
-                  <TableCell className="">
+                  <TableCell className="text-right">
                     {Number(item.pricePerItem * item.quantity).toLocaleString(
                       undefined,
                       {
@@ -77,7 +81,7 @@ export default function DealsTable(props: { deals: DealWithUser[] }) {
                         }
                         onClick={() => setSelectedDeal(item)}
                       >
-                        Order
+                        View
                       </Button>
                     </div>
                   </TableCell>

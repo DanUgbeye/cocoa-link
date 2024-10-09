@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/card";
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
-import { Deal, FullDeal, Metric, Order, OrderWithDeal, UserRole } from "@/types";
+import { FullDeal, OrderWithFullDeal, UserRole } from "@/types";
 import { Package, Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";
 
 interface Props {
   deals: FullDeal[];
-  orders: OrderWithDeal[];
+  orders: OrderWithFullDeal[];
 }
 
 export default function FarmerDashboardPage(props: Props) {
@@ -55,6 +55,8 @@ export default function FarmerDashboardPage(props: Props) {
                     currency: "NGN",
                     notation:
                       user.walletBalance > 1_000_000 ? "compact" : "standard",
+                    minimumFractionDigits:
+                      user.walletBalance > 1_000_000 ? 2 : 0,
                   })}
                 </span>
               </div>
@@ -62,36 +64,15 @@ export default function FarmerDashboardPage(props: Props) {
               <Wallet className="size-14 stroke-1 text-amber-700 opacity-35" />
             </div>
 
-            {/* {metrics && (
-              <div className="flex items-center justify-between gap-4 rounded bg-white p-4">
-                <div className="flex flex-col">
-                  <span>Cocoa Quantity (Bags)</span>
+            <div className="flex items-center justify-between gap-4 rounded bg-white p-4">
+              <div className="flex flex-col">
+                <span>Available Deals</span>
 
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold">
-                      {Number(metrics?.quantity || 0).toLocaleString(
-                        undefined,
-                        { notation: "compact" }
-                      )}
-                    </span>
-                    /
-                    <span className="text-xs">
-                      {Number(metrics?.pricePerItem || 0).toLocaleString(
-                        undefined,
-                        {
-                          notation: "compact",
-                          style: "currency",
-                          currency: "NGN",
-                        }
-                      )}{" "}
-                      per Bag
-                    </span>
-                  </div>
-                </div>
-
-                <Package className="size-14 stroke-1 text-amber-700 opacity-35" />
+                <span className="text-2xl font-bold">{deals.length}</span>
               </div>
-            )} */}
+
+              <Package className="size-14 stroke-1 text-amber-700 opacity-35" />
+            </div>
           </section>
 
           <section className="grid gap-5 md:grid-cols-3">

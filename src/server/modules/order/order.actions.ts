@@ -13,13 +13,13 @@ import { FormState } from "@/types/form.types";
 import { Order, OrderStatus } from "@/types/order.types";
 import { Model } from "mongoose";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { getLoggedInUser } from "../auth/auth.actions";
 import { DealDocument } from "../deal/deal.types";
 import { MetricDocument } from "../metric/metric.types";
 import { TransactionDocument } from "../transaction/transaction.types";
 import { UserDocument } from "../user/user.types";
 import { OrderDocument } from "./order.types";
-import { CreateOrderSchema } from "./order.validation";
 
 export async function getOrder(orderId: string) {
   try {
@@ -44,10 +44,15 @@ export async function createOrder(
       throw new HttpException("Unauthorized", 403);
     }
 
-    let { dealId, location } = CreateOrderSchema.parse({
-      dealId: formData.get("dealId"),
-      location: formData.get("location"),
-    });
+    let { dealId, location } = z
+      .object({
+        dealId: z.string(),
+        location: z.string(),
+      })
+      .parse({
+        dealId: formData.get("dealId"),
+        location: formData.get("location"),
+      });
 
     const db = await connectDB();
     const transactionModel = db.models
@@ -68,6 +73,10 @@ export async function createOrder(
     }
 
     const orderAmount = deal.pricePerItem * deal.quantity;
+
+    if (user.walletBalance < orderAmount) {
+      throw new HttpException("Insufficient wallet balance");
+    }
 
     // create pending order
     const order = await orderModel.create({
@@ -94,15 +103,12 @@ export async function createOrder(
     });
 
     // update buyer metric
-    await metricModel.findByIdAndUpdate(
-      { userId: user._id },
-      {
-        $inc: {
-          totalAmountSpent: orderAmount,
-          totalQuantityPurchased: deal.quantity,
-        },
-      }
-    );
+    await metricModel.findByIdAndUpdate(user._id, {
+      $inc: {
+        totalAmountSpent: orderAmount,
+        totalQuantityPurchased: deal.quantity,
+      },
+    });
 
     // update deal
     deal.status = DealStatus.Sold;
@@ -117,6 +123,7 @@ export async function createOrder(
       timestamp: new Date().getTime(),
     } satisfies FormState<Order>;
   } catch (error: any) {
+    console.log(error);
     return fromErrorToFormState(error);
   }
 }
@@ -172,7 +179,7 @@ export async function cancelOrder(orderId: string) {
       .Transaction as Model<TransactionDocument>;
     const orderModel = db.models.Order as Model<OrderDocument>;
     const userModel = db.models.User as Model<UserDocument>;
-    const dealModel = db.models.Metric as Model<DealDocument>;
+    const dealModel = db.models.Deal as Model<DealDocument>;
     const metricModel = db.models.Metric as Model<MetricDocument>;
 
     const order = await orderModel.findOne({
@@ -246,7 +253,7 @@ export async function completeOrder(orderId: string) {
       .Transaction as Model<TransactionDocument>;
     const orderModel = db.models.Order as Model<OrderDocument>;
     const userModel = db.models.User as Model<UserDocument>;
-    const dealModel = db.models.Metric as Model<DealDocument>;
+    const dealModel = db.models.Deal as Model<DealDocument>;
     const metricModel = db.models.Metric as Model<MetricDocument>;
 
     const order = await orderModel.findOne({

@@ -48,7 +48,7 @@ export default function TransactionsTable(props: Props) {
                     {(item.type === TransactionType.Purchase ||
                       item.type === TransactionType.Sale ||
                       item.type === TransactionType.Refund) && (
-                      <span className="text-xs capitalize">{item.orderId}</span>
+                      <span className="text-xs uppercase text-neutral-400">{item.orderId}</span>
                     )}
                   </div>
                 </TableCell>

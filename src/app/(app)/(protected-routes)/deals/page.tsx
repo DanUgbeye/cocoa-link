@@ -13,7 +13,7 @@ import { DealDocument } from "@/server/modules/deal/deal.types";
 import { DealStatus, FullDeal, UserRole } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
-import { MyDealCard } from "./deal-card";
+import MyDealsList from "./my-deals-list";
 
 export default async function DealsPage() {
   const user = await getLoggedInUser();
@@ -50,11 +50,7 @@ export default async function DealsPage() {
             {dealsAsObjects.length <= 0 ? (
               <div className="py-5 text-center">no available deals</div>
             ) : (
-              <div className="">
-                {dealsAsObjects.map((deal) => (
-                  <MyDealCard key={deal._id} deal={deal} />
-                ))}
-              </div>
+              <MyDealsList deals={dealsAsObjects} />
             )}
           </CardContent>
         </Card>

@@ -16,11 +16,9 @@ import {
 import { PAGES } from "@/data/page-map";
 import { cn } from "@/lib/utils";
 import {
-  DealWithUser,
   FullDealWithUser,
-  OrderWithDeal,
   OrderWithFullDeal,
-  UserRole,
+  UserRole
 } from "@/types";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
@@ -60,6 +58,8 @@ export default function IndustryPage(props: {
                     currency: "NGN",
                     notation:
                       user.walletBalance > 1_000_000 ? "compact" : "standard",
+                    minimumFractionDigits:
+                      user.walletBalance > 1_000_000 ? 2 : 0,
                   })}
                 </span>
               </div>

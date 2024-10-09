@@ -25,7 +25,7 @@ export type Deal = {
   updatedAt: Date;
 };
 
-export type FullDeal = Deal & {
+export type FullDeal = Omit<Deal, "image"> & {
   image: Upload;
 };
 
@@ -33,7 +33,6 @@ export type DealWithUser = Omit<Deal, "dealer"> & {
   dealer: User;
 };
 
-export type FullDealWithUser =Omit<FullDeal, "dealer"> & {
+export type FullDealWithUser = Omit<FullDeal, "dealer"> & {
   dealer: User;
 };
-

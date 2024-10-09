@@ -4,12 +4,13 @@ import { getLoggedInUser } from "@/server/modules/auth/auth.actions";
 import { DealDocument } from "@/server/modules/deal/deal.types";
 import { OrderDocument } from "@/server/modules/order/order.types";
 import {
+  DealStatus,
   FullDeal,
   FullDealWithUser,
   OrderStatus,
   OrderWithDeal,
   OrderWithFullDeal,
-  UserRole
+  UserRole,
 } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
@@ -31,10 +32,11 @@ export default async function DashboardPage() {
     .populate("dealId")
     .populate("dealId.image")
     .sort({ createdAt: "desc" });
+  const ordersAsJSON: OrderWithFullDeal[] = JSON.parse(JSON.stringify(orders));
 
   if (user.role === UserRole.Industry) {
     const marketDeals = await dealModel
-      .find()
+      .find({ status: { $eq: DealStatus.Pending } })
       .populate("dealer")
       .populate("image");
 
@@ -43,17 +45,19 @@ export default async function DashboardPage() {
         marketDeals={
           JSON.parse(JSON.stringify(marketDeals)) as FullDealWithUser[]
         }
-        orders={JSON.parse(JSON.stringify(orders)) as OrderWithFullDeal[]}
+        orders={ordersAsJSON}
       />
     );
   }
 
-  const deals = await dealModel.find({ dealer: user._id }).populate("image");
+  const deals = await dealModel
+    .find({ dealer: user._id, status: DealStatus.Pending })
+    .populate("image");
 
   return (
     <FarmerDashboardPage
       deals={JSON.parse(JSON.stringify(deals)) as FullDeal[]}
-      orders={JSON.parse(JSON.stringify(orders)) as OrderWithDeal[]}
+      orders={ordersAsJSON}
     />
   );
 }

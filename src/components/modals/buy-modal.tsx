@@ -19,7 +19,6 @@ import FormButton from "../form-button";
 import Spinner from "../spinner";
 import { FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 
 export default function BuyModal() {
   const router = useRouter();
@@ -30,16 +29,19 @@ export default function BuyModal() {
     timestamp: Date.now(),
   });
 
+  const dealAmount = useMemo(() => {
+    if (!selectedDeal) return 0;
+    return selectedDeal.pricePerItem * selectedDeal.quantity;
+  }, [selectedDeal]);
+
   const [formDirty, setFormDirty] = useState(false);
   const [formData, setFormData] = useState({
-    quantity: 0,
-    amount: 0,
+    amount: dealAmount,
     location: "",
   });
   const [formErrors, setFormErrors] = useState<{
     [key in keyof typeof formData]: string | undefined;
   }>({
-    quantity: undefined,
     amount: undefined,
     location: undefined,
   });
@@ -48,22 +50,21 @@ export default function BuyModal() {
     field: TKey,
     value: (typeof formData)[TKey]
   ) {
-    setFormDirty(true);
+    !formDirty && setFormDirty(true);
     setFormData((prev) => ({ ...prev, [field]: value }));
   }
 
   function reset() {
     setFormDirty(false);
-    setFormData({ amount: 0, quantity: 0, location: "" });
+    setFormData({ amount: dealAmount, location: "" });
     setFormErrors({
       amount: undefined,
-      quantity: undefined,
       location: undefined,
     });
   }
 
   const errorsExist = useMemo(() => {
-    if (formErrors.amount !== undefined || formErrors.quantity !== undefined) {
+    if (Object.values(formErrors).some((error) => error !== undefined)) {
       return true;
     }
     return false;
@@ -82,18 +83,15 @@ export default function BuyModal() {
   });
 
   useEffect(() => {
-    if (!selectedDeal) return;
-
-    const quantity = formData.quantity ? Number(formData.quantity) : 0;
-    const amount = quantity * selectedDeal.pricePerItem;
-    handleInput("amount", amount);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.quantity, selectedDeal]);
+    if (dealAmount !== formData.amount) {
+      setFormData((prev) => ({ ...prev, amount: dealAmount }));
+    }
+  }, [formData, dealAmount]);
 
   useEffect(() => {
     if (!selectedDeal || !user || !formDirty) return;
 
-    if (formData.amount && formData.amount > user.walletBalance) {
+    if (formData.amount > user.walletBalance) {
       setFormErrors((prev) => ({
         ...prev,
         amount: "Wallet balance insufficient",
@@ -102,23 +100,6 @@ export default function BuyModal() {
       setFormErrors((prev) => ({
         ...prev,
         amount: undefined,
-      }));
-    }
-
-    if (!formData.quantity || formData.quantity === 0) {
-      setFormErrors((prev) => ({
-        ...prev,
-        quantity: "Quantity is required",
-      }));
-    } else if (formData.quantity > selectedDeal.quantity) {
-      setFormErrors((prev) => ({
-        ...prev,
-        quantity: "Not enough quantity",
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        quantity: undefined,
       }));
     }
 
@@ -138,28 +119,35 @@ export default function BuyModal() {
         <>
           <DialogTrigger hidden></DialogTrigger>
 
-          <DialogContent className="max-h-[calc(100dvh-5rem)] w-full max-w-xl gap-2 px-0">
-            <div className="space-y-2 px-5">
-              <div className="text-xs uppercase text-neutral-400">
-                {selectedDeal.dealer.role}
-              </div>
-
-              <DialogHeader className="space-y-0">
-                <DialogTitle>{selectedDeal.dealer.name}</DialogTitle>
-                <DialogDescription>
-                  {selectedDeal.dealer.email}
-                </DialogDescription>
-              </DialogHeader>
-            </div>
-
-            <Separator />
-
+          <DialogContent className="w-full max-w-xl gap-2 px-0">
             <form
               action={!errorsExist ? action : undefined}
-              className="flex flex-col gap-2"
+              className="grid h-[min(35rem,calc(100dvh-2rem))] w-full grid-rows-[auto,1fr,auto] gap-2 divide-y"
             >
-              <div className="h-full max-h-[calc(100dvh-25rem)] w-full overflow-y-auto px-5">
-                <div className="flex flex-col pt-3">
+              <div className="space-y-2 px-5">
+                <div className="text-xs uppercase text-neutral-400">
+                  {selectedDeal.dealer.role}
+                </div>
+
+                <DialogHeader className="space-y-0">
+                  <DialogTitle>{selectedDeal.dealer.name}</DialogTitle>
+                  <DialogDescription>
+                    {selectedDeal.dealer.email}
+                  </DialogDescription>
+                </DialogHeader>
+              </div>
+
+              <div className="w-full overflow-y-auto px-5 py-2">
+                <div className="flex flex-col gap-4 pt-3">
+                  <div className="relative overflow-clip rounded border">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={selectedDeal.image.url}
+                      alt="deal display image"
+                      className="h-60 w-full overflow-clip rounded object-cover"
+                    />
+                  </div>
+
                   <div className="flex items-center gap-3">
                     <div className="text-6xl font-bold">
                       {selectedDeal.quantity}
@@ -171,10 +159,7 @@ export default function BuyModal() {
                       <div className="text-xs text-neutral-500">
                         {Number(selectedDeal.pricePerItem).toLocaleString(
                           undefined,
-                          {
-                            style: "currency",
-                            currency: "NGN",
-                          }
+                          { style: "currency", currency: "NGN" }
                         )}{" "}
                         per bag
                       </div>
@@ -183,6 +168,35 @@ export default function BuyModal() {
                 </div>
 
                 <fieldset className="space-y-4 px-1.5 pt-6">
+                  <Input
+                    name="dealId"
+                    id="dealId"
+                    type="string"
+                    defaultValue={selectedDeal._id}
+                    className="hidden"
+                  />
+
+                  <FormItem>
+                    <FormLabel className="">Total Cost</FormLabel>
+
+                    <div className="">
+                      <div className="text-lg font-bold">
+                        {Number(dealAmount).toLocaleString(undefined, {
+                          style: "currency",
+                          currency: "NGN",
+                        })}
+                      </div>
+
+                      <FormMessage
+                        message={
+                          dealAmount > user.walletBalance
+                            ? "Wallet balance insufficient"
+                            : undefined
+                        }
+                      />
+                    </div>
+                  </FormItem>
+
                   <FormItem>
                     <FormLabel className="">
                       Enter Location for delivery
@@ -202,68 +216,8 @@ export default function BuyModal() {
 
                     <FormMessage message={formErrors.location} />
                   </FormItem>
-
-                  <FormItem>
-                    <FormLabel className="">Enter Quantity in Bags</FormLabel>
-
-                    <Input
-                      name="quantity"
-                      id="quantity"
-                      type="number"
-                      placeholder="e.g 20"
-                      value={formData.quantity || ""}
-                      onChange={(e) =>
-                        handleInput("quantity", Number(e.target.value || 0))
-                      }
-                      required
-                      max={selectedDeal.quantity}
-                    />
-
-                    <FormMessage message={formErrors.quantity} />
-                  </FormItem>
-
-                  <FormItem>
-                    <FormLabel className="">Total Cost</FormLabel>
-                    <Input
-                      name="amount"
-                      id="amount"
-                      type="number"
-                      value={formData.amount}
-                      hidden
-                      className="hidden"
-                    />
-
-                    <Input
-                      name="buyerId"
-                      id="buyerId"
-                      type="text"
-                      defaultValue={user._id}
-                      hidden
-                      className="hidden"
-                    />
-
-                    <Input
-                      name="sellerId"
-                      id="sellerId"
-                      type="text"
-                      defaultValue={selectedDeal.dealer._id}
-                      hidden
-                      className="hidden"
-                    />
-
-                    <div className="text-lg font-bold">
-                      {Number(formData.amount).toLocaleString(undefined, {
-                        style: "currency",
-                        currency: "NGN",
-                      })}
-                    </div>
-
-                    <FormMessage message={formErrors.amount} />
-                  </FormItem>
                 </fieldset>
               </div>
-
-              <Separator />
 
               <div className="space-y-2 px-5 pt-5">
                 <FormButton

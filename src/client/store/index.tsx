@@ -1,8 +1,10 @@
 import {
   DealWithUser,
+  FullDeal,
+  FullDealWithUser,
   Metric,
   Transaction,
-  User
+  User,
 } from "@/types";
 import { create } from "zustand";
 
@@ -23,7 +25,8 @@ export type AppState = {
   withdrawModalOpen: boolean;
   createDealModalOpen: boolean;
 
-  selectedDeal?: DealWithUser;
+  selectedDeal?: FullDealWithUser;
+  dealToEdit?: FullDeal;
 };
 
 export type AppActions = {
@@ -36,8 +39,9 @@ export type AppActions = {
   toggleDepositModal(state?: boolean): void;
   toggleWithdrawModal(state?: boolean): void;
   toggleCreateDealModal(state?: boolean): void;
+  toggleEditDealModal(deal?: FullDeal): void;
 
-  setSelectedDeal(deal?: DealWithUser): void;
+  setSelectedDeal(deal?: FullDealWithUser): void;
 };
 
 export type AppStore = AppState & AppActions;
@@ -75,6 +79,13 @@ export const useAppStore = create<AppStore>((set, get) => ({
     } else {
       const { createDealModalOpen } = get();
       set({ createDealModalOpen: !createDealModalOpen });
+    }
+  },
+  toggleEditDealModal(deal) {
+    if (deal === undefined) {
+      set({ createDealModalOpen: false, dealToEdit: undefined });
+    } else {
+      set({ createDealModalOpen: true, dealToEdit: deal });
     }
   },
 
