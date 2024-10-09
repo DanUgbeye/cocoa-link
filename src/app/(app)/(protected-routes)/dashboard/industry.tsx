@@ -28,7 +28,6 @@ export default function IndustryPage(props: {
   const user = useAppStore(({ user }) => user);
   const metrics = useAppStore(({ metrics }) => metrics);
   const transactions = useAppStore(({ transactions }) => transactions);
-  console.log(metrics)
 
   return (
     <main className="py-10">
