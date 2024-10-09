@@ -52,9 +52,7 @@ export async function signup(
 
     try {
       user = await userModel.create(validData);
-      if (validData.role === UserRole.Farmer) {
-        await metricsModel.create({ userId: user._id });
-      }
+      await metricsModel.create({ userId: user._id });
     } catch (error: any) {
       throw new ServerException(error.message);
     }
