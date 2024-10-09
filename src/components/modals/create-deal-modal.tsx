@@ -99,7 +99,13 @@ export default function CreateOrEditDealModal() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      handleCloseModal(false);
+      if (dealToEdit) {
+        toggleEditDealModal(undefined);
+      } else {
+        toggleCreateDealModal(false);
+        selectedFile && setSelectedFile(undefined);
+        uploadedData && setUploadedData(undefined);
+      }
       toast.success(changedState.message);
       // window.location.reload();
       router.refresh();
