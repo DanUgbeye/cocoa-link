@@ -99,11 +99,7 @@ export default function CreateOrEditDealModal() {
       toast.error(changedState.message);
     }
     if (changedState.status === "SUCCESS") {
-      if (dealToEdit) {
-        toggleEditDealModal(undefined);
-      } else {
-        toggleCreateDealModal();
-      }
+      handleCloseModal(false);
       toast.success(changedState.message);
       // window.location.reload();
       router.refresh();
