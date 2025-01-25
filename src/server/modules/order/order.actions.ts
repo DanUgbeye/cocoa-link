@@ -44,14 +44,12 @@ export async function createOrder(
       throw new HttpException("Unauthorized", 403);
     }
 
-    let { dealId, location } = z
+    let { dealId } = z
       .object({
         dealId: z.string(),
-        location: z.string(),
       })
       .parse({
         dealId: formData.get("dealId"),
-        location: formData.get("location"),
       });
 
     const db = await connectDB();
@@ -84,7 +82,7 @@ export async function createOrder(
       buyerId: user._id,
       sellerId: deal.dealer,
       amount: orderAmount,
-      location,
+      location: deal.location,
       status: OrderStatus.Pending,
     });
 

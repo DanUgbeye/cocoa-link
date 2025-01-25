@@ -14,6 +14,7 @@ import { DealStatus, FullDeal, UserRole } from "@/types";
 import { Model } from "mongoose";
 import { redirect } from "next/navigation";
 import MyDealsList from "./my-deals-list";
+import { CreateDealButton } from "./create-deal-button";
 
 export default async function DealsPage() {
   const user = await getLoggedInUser();
@@ -43,6 +44,8 @@ export default async function DealsPage() {
                 <CardTitle>Deals</CardTitle>
                 <CardDescription>Your available deals</CardDescription>
               </div>
+
+              <CreateDealButton />
             </div>
           </CardHeader>
 

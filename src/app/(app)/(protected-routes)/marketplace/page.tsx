@@ -1,4 +1,5 @@
 import { Container } from "@/components/container";
+import DealList from "@/components/tables/deal-list";
 import DealsTable from "@/components/tables/deals-table";
 import {
   Card,
@@ -30,8 +31,8 @@ export default async function MarketplacePage() {
   return (
     <main className=" ">
       <Container className="py-10">
-        <Card>
-          <CardHeader className="px-7">
+        <Card className="bg-transparent border-none p-0">
+          <CardHeader className="px-0">
             <div className="flex flex-wrap justify-between gap-4">
               <div className="space-y-1">
                 <CardTitle>Marketplace</CardTitle>
@@ -40,11 +41,11 @@ export default async function MarketplacePage() {
             </div>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="p-0">
             {marketDeals.length <= 0 ? (
               <div className="py-5 text-center">no available deals</div>
             ) : (
-              <DealsTable
+              <DealList
                 deals={
                   JSON.parse(JSON.stringify(marketDeals)) as FullDealWithUser[]
                 }

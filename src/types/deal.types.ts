@@ -21,6 +21,7 @@ export type Deal = {
   variant: CocoaVariant;
   image: string;
   status: DealStatus;
+  location: string | null;
   createdAt: Date;
   updatedAt: Date;
 };

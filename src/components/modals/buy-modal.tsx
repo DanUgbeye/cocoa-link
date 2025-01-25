@@ -37,13 +37,13 @@ export default function BuyModal() {
   const [formDirty, setFormDirty] = useState(false);
   const [formData, setFormData] = useState({
     amount: dealAmount,
-    location: "",
+    // location: "",
   });
   const [formErrors, setFormErrors] = useState<{
     [key in keyof typeof formData]: string | undefined;
   }>({
     amount: undefined,
-    location: undefined,
+    // location: undefined,
   });
 
   function handleInput<TKey extends keyof typeof formData>(
@@ -56,10 +56,10 @@ export default function BuyModal() {
 
   function reset() {
     setFormDirty(false);
-    setFormData({ amount: dealAmount, location: "" });
+    setFormData({ amount: dealAmount });
     setFormErrors({
       amount: undefined,
-      location: undefined,
+      // location: undefined,
     });
   }
 
@@ -103,11 +103,11 @@ export default function BuyModal() {
       }));
     }
 
-    if (formData.location === undefined || formData.location.length === 0) {
-      setFormErrors((prev) => ({ ...prev, location: "Location is required" }));
-    } else {
-      setFormErrors((prev) => ({ ...prev, location: undefined }));
-    }
+    // if (formData.location === undefined || formData.location.length === 0) {
+    //   setFormErrors((prev) => ({ ...prev, location: "Location is required" }));
+    // } else {
+    //   setFormErrors((prev) => ({ ...prev, location: undefined }));
+    // }
   }, [formData, formDirty, user, selectedDeal]);
 
   return (
@@ -167,7 +167,7 @@ export default function BuyModal() {
                   </div>
                 </div>
 
-                <fieldset className="space-y-4 px-1.5 pt-6">
+                <fieldset className="space-y-4 px-1.5 pt-2">
                   <Input
                     name="dealId"
                     id="dealId"
@@ -176,8 +176,8 @@ export default function BuyModal() {
                     className="hidden"
                   />
 
-                  <FormItem>
-                    <FormLabel className="">Total Cost</FormLabel>
+                  <FormItem className="space-y-0">
+                    <FormLabel className="text-neutral-400">Total Cost</FormLabel>
 
                     <div className="">
                       <div className="text-lg font-bold">
@@ -197,25 +197,15 @@ export default function BuyModal() {
                     </div>
                   </FormItem>
 
-                  <FormItem>
-                    <FormLabel className="">
-                      Enter Location for delivery
-                    </FormLabel>
+                  {selectedDeal.location && (
+                    <FormItem className="space-y-0">
+                      <FormLabel className="text-neutral-400">Location</FormLabel>
 
-                    <Input
-                      name="location"
-                      id="location"
-                      type="text"
-                      placeholder="e.g Lagos"
-                      value={formData.location || ""}
-                      onChange={(e) =>
-                        handleInput("location", String(e.target.value))
-                      }
-                      required
-                    />
-
-                    <FormMessage message={formErrors.location} />
-                  </FormItem>
+                      <div className="truncate text-lg font-semibold">
+                        {selectedDeal.location}
+                      </div>
+                    </FormItem>
+                  )}
                 </fieldset>
               </div>
 

@@ -135,7 +135,9 @@ export default function OrdersTable(props: Props) {
                 </TableCell>
 
                 <TableCell>
-                  <div className="w-full px-2 font-medium">{item.location}</div>
+                  <div className="w-full px-2 font-medium">
+                    {item.dealId?.location ?? item?.location ?? ""}
+                  </div>
                 </TableCell>
 
                 <TableCell>

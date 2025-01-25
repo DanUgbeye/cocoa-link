@@ -58,12 +58,14 @@ export async function createDeal(
           .min(1, "Price per item is required"),
         variant: CocoaVariantSchema,
         image: z.string().min(1, "Image is required"),
+        location: z.string().nullable().default(null),
       })
       .parse({
         quantity: formData.get("quantity"),
         pricePerItem: formData.get("pricePerItem"),
         variant: formData.get("variant"),
         image: formData.get("image"),
+        location: formData.get("location"),
       });
 
     const db = await connectDB();
@@ -106,18 +108,20 @@ export async function updateDeal(
       throw new HttpException("Unauthorized", 401);
     }
 
-    let { dealId, quantity, pricePerItem, variant } = z
+    let { dealId, quantity, pricePerItem, variant, location } = z
       .object({
         dealId: z.string(),
         quantity: z.number({ coerce: true }).optional(),
         pricePerItem: z.number({ coerce: true }).optional(),
         variant: CocoaVariantSchema.optional(),
+        location: z.string().nullable().default(null),
       })
       .parse({
         dealId: formData.get("dealId"),
         quantity: formData.get("quantity"),
         pricePerItem: formData.get("pricePerItem"),
         variant: formData.get("variant"),
+        location: formData.get("location"),
       });
 
     const db = await connectDB();
@@ -147,6 +151,10 @@ export async function updateDeal(
 
     if (variant) {
       deal.variant = variant;
+    }
+
+    if (location) {
+      deal.location = location;
     }
 
     await deal.populate("image");

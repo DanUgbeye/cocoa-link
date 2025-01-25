@@ -132,6 +132,7 @@ export default function CreateOrEditDealModal() {
             <DialogTitle>
               {dealToEdit ? "Edit Deal" : "Create New Deal"}
             </DialogTitle>
+
             <DialogDescription>
               {dealToEdit
                 ? "Edit the existing deal"
@@ -291,6 +292,21 @@ export default function CreateOrEditDealModal() {
                 placeholder="e.g 300,000"
                 required
                 defaultValue={dealToEdit ? dealToEdit.pricePerItem : ""}
+              />
+            </FormItem>
+
+            <FormItem>
+              <FormLabel htmlFor="location" className="">
+                Location
+              </FormLabel>
+
+              <Input
+                name="location"
+                id="location"
+                type="text"
+                placeholder="location"
+                required
+                defaultValue={dealToEdit?.location ?? ""}
               />
             </FormItem>
           </div>

@@ -19,6 +19,7 @@ export const DealSchema = new mongoose.Schema<DealDocument>(
       enum: Object.values(DealStatus),
       default: DealStatus.Pending,
     },
+    location: { type: String, required: false, default: null },
   },
   { timestamps: true }
 );

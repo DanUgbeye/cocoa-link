@@ -52,27 +52,36 @@ export function MyDealCard(props: Props) {
           </span>
         </div>
 
-        <div className="flex items-center justify-end gap-2 py-2">
-          <Button
-            className="size-8 bg-blue-600 p-1 hover:bg-blue-700"
-            onClick={() => onEdit?.(deal)}
-            disabled={deal.status !== DealStatus.Pending}
-          >
-            <Pencil className="size-4" />
-          </Button>
+        <div className="flex items-center justify-between gap-2 py-2">
+          {deal.location && (
+            <div className="flex flex-col">
+              <span className="text-xs text-neutral-500">Location</span>
+              <span className="text-base font-semibold truncate">{deal.location}</span>
+            </div>
+          )}
 
-          <Button
-            variant="destructive"
-            className="size-8 p-1"
-            onClick={() => onDelete?.(deal)}
-            disabled={deal.status !== DealStatus.Pending || loading?.delete}
-          >
-            {!loading?.delete ? (
-              <Trash2 className="size-4" />
-            ) : (
-              <Spinner className="size-4" />
-            )}
-          </Button>
+          <div className="ml-auto flex w-fit items-center justify-end gap-2">
+            <Button
+              className="size-8 bg-blue-600 p-1 hover:bg-blue-700"
+              onClick={() => onEdit?.(deal)}
+              disabled={deal.status !== DealStatus.Pending}
+            >
+              <Pencil className="size-4" />
+            </Button>
+
+            <Button
+              variant="destructive"
+              className="size-8 p-1"
+              onClick={() => onDelete?.(deal)}
+              disabled={deal.status !== DealStatus.Pending || loading?.delete}
+            >
+              {!loading?.delete ? (
+                <Trash2 className="size-4" />
+              ) : (
+                <Spinner className="size-4" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

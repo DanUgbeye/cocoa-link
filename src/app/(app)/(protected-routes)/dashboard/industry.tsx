@@ -19,6 +19,7 @@ import { FullDealWithUser, OrderWithFullDeal, UserRole } from "@/types";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import Stats from "./stats";
+import DealList from "@/components/tables/deal-list";
 
 export default function IndustryPage(props: {
   marketDeals: FullDealWithUser[];
@@ -158,7 +159,7 @@ export default function IndustryPage(props: {
               {marketDeals.length <= 0 ? (
                 <div className="py-5 text-center">no available deals</div>
               ) : (
-                <DealsTable deals={marketDeals} />
+                <DealList deals={marketDeals} />
               )}
             </CardContent>
           </Card>
